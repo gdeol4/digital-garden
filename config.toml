@@ -1,0 +1,74 @@
+baseURL = "https://www.example.com"
+languageCode = "en-us"
+title = "Notes on machine learning, bioinformatics, and drug discovery"
+theme = "digital-garden"
+copyright = "Gurkamal Deol"
+
+
+[params]
+  name = "Welcome to my digital garden"
+  description = "I'm gurkamal deol, a developer exploring topics in drug discovery, machine learning, and bioinformatics."
+  initials = "home"
+  googleAnalytics = ""
+
+  [[params.social]]
+    name = "Github"
+    link = "https://github.com/"
+    icon = "fab fa-github"
+
+  [[params.social]]
+    name = "Medium" 
+    link = "https://medium.com/@gurkamaldeol"
+    icon = "fab fa-medium-m"
+
+  [[params.social]]
+    name = "LinkedIn"
+    link = "https://www.linkedin.com/in/gurkamal-deol-508675174/"
+    icon = "fab fa-linkedin-in"
+
+
+[menu]
+  [[menu.main]]
+    name = "Digital Garden"
+    url = "/garden/"
+    weight = 1
+  [[menu.main]]
+    name = "Projects"
+    url = "/projects/"
+    weight = 2
+  [[menu.main]]
+    name = "Library"
+    url = "/library/"
+    weight = 3
+  [[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 4
+
+
+[taxonomies]
+  garden_tags = 'garden_tags'
+  project_tags = 'project_tags'
+
+[imaging]
+  anchor = 'Smart'
+  bgColor = '#ffffff'
+  hint = 'photo'
+  quality = 75
+  resampleFilter = 'Box'
+
+[markup]
+  defaultMarkdownHandler = 'goldmark'
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.goldmark.extensions]
+    definitionList = true
+    footnote = true
+    linkify = true
+    strikethrough = true
+    table = true
+    taskList = true
+    typographer = true
+  [markup.highlight]
+    # Choose from https://xyproto.github.io/splash/docs/all.html
+    style = 'rainbow_dash'
