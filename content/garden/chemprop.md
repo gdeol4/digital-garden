@@ -60,13 +60,13 @@ display(mol_scaffold_generic)
 print(smiles_scaffold_generic)
 ```
 
-![prop1](/prop1.png)
+![prop1](images/prop1.png)
 
 ```python
 CN1CCCCC1CCN2C3=CC=CC=C3SC4=C2C=C(C=C4)SC
 ```
 
-![prop2](/prop2.png)
+![prop2](images/prop2.png)
 
 ```python
 C1CCC(CCC2C3CCCCC3CC3CCCCC32)CC1
