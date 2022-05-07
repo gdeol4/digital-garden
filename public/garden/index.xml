@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Notes and code on Notes on machine learning, bioinformatics, and drug discovery</title>
+    <link>https://github.com/gdeol4/digital-garden/garden/</link>
+    <description>Recent content in Notes and code on Notes on machine learning, bioinformatics, and drug discovery</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Gurkamal Deol</copyright>
+    <lastBuildDate>Fri, 01 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://github.com/gdeol4/digital-garden/garden/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Preprocessing molecular data with Datamol</title>
+      <link>https://github.com/gdeol4/digital-garden/garden/datamol/</link>
+      <pubDate>Fri, 22 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/gdeol4/digital-garden/garden/datamol/</guid>
+      <description>Sanitizing and manipulating labeled blood-brain barrier permeable molecules.</description>
+    </item>
+    
+    <item>
+      <title>Processing the B3DB brain-blood barrier dataset</title>
+      <link>https://github.com/gdeol4/digital-garden/garden/b3db/</link>
+      <pubDate>Fri, 22 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/gdeol4/digital-garden/garden/b3db/</guid>
+      <description>Sanitizing and manipulating labeled blood-brain barrier permeable molecules.</description>
+    </item>
+    
+    <item>
+      <title>Scaffold splitting and model training using chemprop</title>
+      <link>https://github.com/gdeol4/digital-garden/garden/chemprop/</link>
+      <pubDate>Fri, 22 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/gdeol4/digital-garden/garden/chemprop/</guid>
+      <description>Chemically aware data splitting  using scaffold splitting. Data is then trained using a directed message passing neural network (D-MPNN).</description>
+    </item>
+    
+    <item>
+      <title>A python function to perform restriction enzyme digest</title>
+      <link>https://github.com/gdeol4/digital-garden/garden/python_digest/</link>
+      <pubDate>Mon, 18 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/gdeol4/digital-garden/garden/python_digest/</guid>
+      <description>Implementing restriction digestion using regular expressions, lists, and dictionaries.</description>
+    </item>
+    
+    <item>
+      <title>A primer on Apache Airflow</title>
+      <link>https://github.com/gdeol4/digital-garden/garden/airflow-primer/</link>
+      <pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/gdeol4/digital-garden/garden/airflow-primer/</guid>
+      <description>Airflow basics for reference, and some pictures I drew</description>
+    </item>
+    
+  </channel>
+</rss>

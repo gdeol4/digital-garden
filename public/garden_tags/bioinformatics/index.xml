@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bioinformatics on Notes on machine learning, bioinformatics, and drug discovery</title>
+    <link>https://github.com/gdeol4/digital-garden/garden_tags/bioinformatics/</link>
+    <description>Recent content in bioinformatics on Notes on machine learning, bioinformatics, and drug discovery</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Gurkamal Deol</copyright>
+    <lastBuildDate>Mon, 18 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://github.com/gdeol4/digital-garden/garden_tags/bioinformatics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A python function to perform restriction enzyme digest</title>
+      <link>https://github.com/gdeol4/digital-garden/garden/python_digest/</link>
+      <pubDate>Mon, 18 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/gdeol4/digital-garden/garden/python_digest/</guid>
+      <description>Implementing restriction digestion using regular expressions, lists, and dictionaries.</description>
+    </item>
+    
+  </channel>
+</rss>

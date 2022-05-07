@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700;800&family=Frank+Ruhl+Libre:wght@200;300;400;500;600&family=Encode+Sans+Semi+Condensed:wght@400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/all.min.css">
+    <link disabled id="dark-mode-theme" rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/my_style.css">
+    
+    
+    
+    <title>Notes on machine learning, bioinformatics, and drug discovery | Toxic SMILES - molecular classification</title>
+    <meta name="description" content="A Deployed machine learning model that identifies P53 agonists usings SMILES strings.">
+</head><body><nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="https://github.com/gdeol4/digital-garden">
+            
+            <b style="font-weight: 800;">home</b>
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto mt-2 mt-lg-0"><li class='nav-item '>
+                    <a class="nav-link" href="/gdeol4/digital-garden/garden/"> Digital Garden</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/gdeol4/digital-garden/projects/"> Projects</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/gdeol4/digital-garden/library/"> Library</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/gdeol4/digital-garden/about/"> About</a>
+                </li>
+             
+            <li class="nav-item px-2 pt-1">
+                <a class="btn fas fa-moon" id="dark-mode-toggle"></a>
+            </li>
+            </ul>
+        </div>
+    </div>
+</nav><div id="content">
+
+<div class="container" style="max-width: 1000px;">
+    <div class="py-4 rounded-3">
+        <div class="container-fluid py-2">
+            <h1 class="display-2 mb-4 text-center">Toxic SMILES - molecular classification</h1>
+        </div>
+        
+        <p class="text-center fs-4 fst-italic serif">A Deployed machine learning model that identifies P53 agonists usings SMILES strings.</p>
+        
+        <div class="text-center pt-4">
+            
+            
+            <a href="https://toxic-smiles.onrender.com/" role="button" class="btn btn-sm btn-link mx-2" target="_blank">
+                <i class="fas fa-external-link-alt fs-5"></i>
+            Link to live app
+            </a>
+            
+            <a href="https://github.com/gdeol4/toxic-smiles" role="button" class="btn btn-sm btn-link mx-2" target="_blank">
+                <i class="fab alt brands fa-github fs-5"></i>
+            The github repo
+            </a>
+            
+            
+        </div>
+    </div>
+    <div class="row justify-content-center mb-5">
+        <div class="col-12">
+            <p class="card-date m-0">
+                
+                
+                    Created Dec 1, 2019 - 
+                
+                Last updated: Dec 1, 2019
+            </p>
+            <hr class="dropdown-divider">
+            <div class="row justify-content-between">
+                <div class="col-sm-4">
+                    
+    
+    <span class="status">Evergreen 🌳</span>
+    
+
+                </div>
+                <div class="col-sm-8" style="text-align: right;">
+                    
+                
+                
+                    
+                    <span class="badge tag-badge">Machine learning</span>
+                    
+                    <span class="badge tag-badge">Drug discovery</span>
+                    
+                    <span class="badge tag-badge">Python</span>
+                    
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-2">
+        <div class="serif main-content">
+            <h1 id="toxic-smiles-small-molecule-classifer">Toxic SMILES small molecule classifer</h1>
+<p>This project was built using RDKIT, Flask, Microsoft Azure, Docker, and Scikit-learn. The model was trained using the TOX21 dataset with about ~8000 molecules. An in-depth write up can be found here with details including correcting class-imbalance, different classifeirs used, performance metrics, and the theory behind the project.</p>
+<p>The web app is now hosted on Render as the cost of Microsoft Azure is much higher.</p>
+<h4 id="the-app-can-be-found-herehttpstoxic-smilesonrendercom"><a href="https://toxic-smiles.onrender.com/">The app can be found here!</a></h4>
+<h2 id="what-is-tox-21">What is Tox 21?</h2>
+<p>The Toxicology in the 21st Century program, or Tox21, is a unique collaboration between several federal agencies to develop new ways to rapidly test whether substances adversely affect human health. Substances assayed in Tox21 include a diverse range of products such as: commercial chemicals, pesticides, food additives/contaminants, and medical compounds.</p>
+<h2 id="why-the-p53-protein">Why the p53 protein?</h2>
+<p>The p53 gene encodes a protein of the same name and is known as a tumor-suppressor protein. The p53 protein is expressed in cells when they undergo DNA damage — which can transform a normal cell into a cancerous one. To counteract the effects, p53 can cause growth arrest, repair DNA, or begin the process of cell death. Therefore, when DNA damage occurs, there is a significant increase in p53 expression. This increase in protein expression is a good indicator of irregular cell health. The Tox21 data was generated by testing cell lines which produce a florescent reporter gene product under the control of p53 cellular machinery. By measuring levels of the reporter gene product against various compounds, researchers were able to determine whether a compound was an agonist (activator) of the p53 pathway or not.</p>
+<h2 id="predicting-agonists-using-molecular-fingerprinting">Predicting agonists using molecular fingerprinting</h2>
+<p>Fingerprinting is a way to represent molecular structure and properties as binary bit strings (0’s and 1&rsquo;s). This representation was initially developed and applied to searching databases for molecules with a specific substructure — but it can also be applied to machine learning. A hash function is a random number generator and is applied to each feature of a molecule, such as the types of bonds and molecules present, which means that they act as seeds to the function.</p>
+
+            
+        </div>
+    </div>
+</div>
+
+
+        </div><div class="container">
+    <div class="row justify-content-between">
+        <div class="col-sm-4">
+            <p class="footer">Gurkamal Deol 2022 </p>
+        </div>
+        <div class="col-sm-6 d-flex flex-row-reverse">
+            
+            <a class="footer-social px-2" href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
+            
+            <a class="footer-social px-2" href="https://medium.com/@gurkamaldeol" target="_blank"><i class="fab fa-medium-m"></i></a>
+            
+            <a class="footer-social px-2" href="https://www.linkedin.com/in/gurkamal-deol-508675174/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            
+        </div>
+    </div>
+</div><script src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script src="/js/isotope.pkgd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+<script src="/js/dark.js"></script>
+<script src="/js/isotope.js"></script>
+<script src="/js/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, securityLevel: 'loose'});</script></body>
+</html>

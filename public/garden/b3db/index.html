@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700;800&family=Frank+Ruhl+Libre:wght@200;300;400;500;600&family=Encode+Sans+Semi+Condensed:wght@400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/all.min.css">
+    <link disabled id="dark-mode-theme" rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/my_style.css">
+    
+    
+    
+    <title>Notes on machine learning, bioinformatics, and drug discovery | Processing the B3DB brain-blood barrier dataset</title>
+    <meta name="description" content="Sanitizing and manipulating labeled blood-brain barrier permeable molecules.">
+</head><body><nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="https://github.com/gdeol4/digital-garden">
+            
+            <b style="font-weight: 800;">home</b>
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto mt-2 mt-lg-0"><li class='nav-item '>
+                    <a class="nav-link" href="/gdeol4/digital-garden/garden/"> Digital Garden</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/gdeol4/digital-garden/projects/"> Projects</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/gdeol4/digital-garden/library/"> Library</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/gdeol4/digital-garden/about/"> About</a>
+                </li>
+             
+            <li class="nav-item px-2 pt-1">
+                <a class="btn fas fa-moon" id="dark-mode-toggle"></a>
+            </li>
+            </ul>
+        </div>
+    </div>
+</nav><div id="content">
+
+<div class="container" style="max-width: 1000px;">
+    <div class="py-4 rounded-3">
+        <div class="container-fluid py-2">
+            <h1 class="display-2 mb-4 text-center">Processing the B3DB brain-blood barrier dataset</h1>
+        </div>
+        
+        <p class="text-center fs-4 fst-italic serif">Sanitizing and manipulating labeled blood-brain barrier permeable molecules.</p>
+        
+        <div class="text-center pt-4">
+            
+        </div>
+    </div>
+    <div class="row justify-content-center mb-5">
+        <div class="col-12">
+            <p class="card-date m-0">
+                
+                
+                    Created Oct 22, 2021 - 
+                
+                Last updated: Oct 22, 2021
+            </p>
+            <hr class="dropdown-divider">
+            <div class="row justify-content-between">
+                <div class="col-sm-4">
+                    
+    
+    <span class="status">Growing 🌿</span>
+    
+
+                </div>
+                <div class="col-sm-8" style="text-align: right;">
+                    
+                
+                    
+                    <span class="badge tag-badge">python</span>
+                    
+                    <span class="badge tag-badge">cheminformatics</span>
+                    
+                    <span class="badge tag-badge">drug discovery</span>
+                    
+                    <span class="badge tag-badge">data</span>
+                    
+                
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-2">
+        <div class="serif main-content">
+            <h1 id="gathering-data-on-blood-brain-barrier-permeability">Gathering data on blood brain barrier permeability</h1>
+<p>This post is a part of a fullstack machine learning web app project and this notebook contains the data needed to build and train the models. The goal in this post is to clean and preprocess the B3DB dataset and merge it with the blood brain permeability data from MoleculeNet. The merged dataset should contain nearly 10,000 molecules labeled with their ability to pass through the blood brain barrier. The notebook provided in the B3DB repository also contains an interesting PCA plot, which is a good starting place for EDA when the data is merged.</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#2c5dcd;font-weight:bold">import</span> numpy <span style="color:#2c5dcd;font-weight:bold">as</span> np
+<span style="color:#2c5dcd;font-weight:bold">import</span> pandas <span style="color:#2c5dcd;font-weight:bold">as</span> pd
+<span style="color:#2c5dcd;font-weight:bold">import</span> seaborn <span style="color:#2c5dcd;font-weight:bold">as</span> sns
+<span style="color:#2c5dcd;font-weight:bold">import</span> matplotlib.pyplot <span style="color:#2c5dcd;font-weight:bold">as</span> plt
+<span style="color:#2c5dcd;font-weight:bold">from</span> rdkit <span style="color:#2c5dcd;font-weight:bold">import</span> Chem
+<span style="color:#2c5dcd;font-weight:bold">from</span> rdkit.Chem <span style="color:#2c5dcd;font-weight:bold">import</span> AllChem
+<span style="color:#2c5dcd;font-weight:bold">from</span> sklearn.decomposition <span style="color:#2c5dcd;font-weight:bold">import</span> PCA
+<span style="color:#2c5dcd;font-weight:bold">import</span> datamol <span style="color:#2c5dcd;font-weight:bold">as</span> dm
+
+
+<span style="color:#2c5dcd">%</span>matplotlib inline
+</code></pre></div><h1 id="removing-remapping-and-creating-features">Removing, remapping, and creating features</h1>
+<p>This dataset has features that can be dropped since they won&rsquo;t contribute to model training. Some features are then calculated from the SMILES data.</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># reading in the data</span>
+bbb_df <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>read_csv(<span style="color:#0c6">&#34;data/B3DB_classification.tsv&#34;</span>, sep<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#34;</span><span style="color:#c5060b;font-weight:bold">\t</span><span style="color:#0c6">&#34;</span>)
+
+<span style="color:#0080ff;font-style:italic"># dropping columns</span>
+bbb_df <span style="color:#2c5dcd">=</span> bbb_df<span style="color:#2c5dcd">.</span>drop([<span style="color:#0c6">&#34;CID&#34;</span>, <span style="color:#0c6">&#34;logBB&#34;</span>, <span style="color:#0c6">&#34;Inchi&#34;</span>, <span style="color:#0c6">&#34;threshold&#34;</span>, <span style="color:#0c6">&#34;reference&#34;</span>, <span style="color:#0c6">&#34;group&#34;</span>, <span style="color:#0c6">&#34;comments&#34;</span>, <span style="color:#0c6">&#34;NO.&#34;</span>, <span style="color:#0c6">&#34;IUPAC_name&#34;</span>, <span style="color:#0c6">&#34;compound_name&#34;</span>], axis<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">1</span>)
+
+<span style="color:#0080ff;font-style:italic"># mapping given labels to binary</span>
+bbb_df[<span style="color:#0c6">&#39;BBB+/BBB-&#39;</span>] <span style="color:#2c5dcd">=</span> bbb_df[<span style="color:#0c6">&#39;BBB+/BBB-&#39;</span>]<span style="color:#2c5dcd">.</span>map({<span style="color:#0c6">&#39;BBB+&#39;</span>: <span style="color:#5918bb;font-weight:bold">1</span>, <span style="color:#0c6">&#39;BBB-&#39;</span>: <span style="color:#5918bb;font-weight:bold">0</span>})
+</code></pre></div><h1 id="feature-generation">Feature generation</h1>
+<p>The function below processes and generates features such as mol objects, selfies, inchi, and inchikeys for each molecule using the datamol library.</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># preprocessing function for molecules</span>
+<span style="color:#2c5dcd;font-weight:bold">def</span> <span style="color:#ff8000;font-weight:bold">preprocess_smiles</span>(df):
+    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>to_mol(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;SMILES&#39;</span>]] <span style="color:#0080ff;font-style:italic"># generating mols from SMILES</span>
+    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>fix_mol(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># Fixing mols</span>
+
+    df <span style="color:#2c5dcd">=</span> df<span style="color:#2c5dcd">.</span>dropna() <span style="color:#0080ff;font-style:italic"># dropping NA values</span>
+
+    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>sanitize_mol(x, sanifix<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>, charge_neutral<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># sanitize mol objects</span>
+    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>standardize_mol(x, disconnect_metals<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>, normalize<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>, reionize<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>, uncharge<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>, stereo<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># standardize mol objects</span>
+
+    df[<span style="color:#0c6">&#34;standard_smiles&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>standardize_smiles(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;SMILES&#39;</span>]] <span style="color:#0080ff;font-style:italic"># standardize SMILES</span>
+    df[<span style="color:#0c6">&#34;selfies&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>to_selfies(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># generate SELFIES</span>
+    df[<span style="color:#0c6">&#34;inchi&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>to_inchi(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># Generating InChi</span>
+    df[<span style="color:#0c6">&#34;inchikey&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>to_inchikey(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># Generating InChIKey</span>
+
+    <span style="color:#2c5dcd;font-weight:bold">return</span> df
+
+data_clean <span style="color:#2c5dcd">=</span> preprocess_smiles(bbb_df)
+
+<span style="color:#0080ff;font-style:italic"># Making a copy of the dataframe for later</span>
+B3DB <span style="color:#2c5dcd">=</span> data_clean
+data_clean<span style="color:#2c5dcd">.</span>head()
+
+<span style="color:#0080ff;font-style:italic"># Saving the data as B3DB; after where its found</span>
+data_clean<span style="color:#2c5dcd">.</span>to_csv(<span style="color:#0c6">&#39;./data/B3DB.csv&#39;</span>, index<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>)
+</code></pre></div><h1 id="merging-the-two-datasets">Merging the two datasets</h1>
+<p>The datasets would have ideally added up to 9846 molecules but that doesnt account for duplicates. Since the B3DB consists of data from across 50 studies, I assumed most of the molecules from MoleculeNet would appear in B3DB.</p>
+<p>Counting the unique inchikey values confirmed this, leaving the final dataset with 8091 molecules. This number is lower than the sum of both dataframes but it adds 284 novel compounds to the final dataset.</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># Loading the MoleculeNet dataset</span>
+MolNet <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>read_csv(<span style="color:#0c6">&#34;data/MoleculeNet.csv&#34;</span>)
+
+<span style="color:#0080ff;font-style:italic"># concatenating both dataframes</span>
+final_df <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>concat([MolNet, B3DB])
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># Number of molecules before filtering for duplicates</span>
+final_df<span style="color:#2c5dcd">.</span>shape
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">(<span style="color:#5918bb;font-weight:bold">9846</span>, <span style="color:#5918bb;font-weight:bold">7</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># inchikey values should be unique to each molecule </span>
+final_df<span style="color:#2c5dcd">.</span>inchikey<span style="color:#2c5dcd">.</span>value_counts()
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">FXHJGPDCPMCUKW<span style="color:#2c5dcd">-</span>UHFFFAOYSA<span style="color:#2c5dcd">-</span>N    <span style="color:#5918bb;font-weight:bold">4</span>
+UHSKFQJFRQCDBE<span style="color:#2c5dcd">-</span>UHFFFAOYSA<span style="color:#2c5dcd">-</span>N    <span style="color:#5918bb;font-weight:bold">4</span>
+CSIVCTHRYRVJCI<span style="color:#2c5dcd">-</span>UHFFFAOYSA<span style="color:#2c5dcd">-</span>N    <span style="color:#5918bb;font-weight:bold">4</span>
+UUQMNUMQCIQDMZ<span style="color:#2c5dcd">-</span>UHFFFAOYSA<span style="color:#2c5dcd">-</span>N    <span style="color:#5918bb;font-weight:bold">4</span>
+XHMYQXZLVLGNKX<span style="color:#2c5dcd">-</span>UHFFFAOYSA<span style="color:#2c5dcd">-</span>N    <span style="color:#5918bb;font-weight:bold">3</span>
+                              <span style="color:#2c5dcd">..</span>
+XYGVIBXOJOOCFR<span style="color:#2c5dcd">-</span>BTJKTKAUSA<span style="color:#2c5dcd">-</span>N    <span style="color:#5918bb;font-weight:bold">1</span>
+NINYZUDVKTUKIA<span style="color:#2c5dcd">-</span>UHFFFAOYSA<span style="color:#2c5dcd">-</span>N    <span style="color:#5918bb;font-weight:bold">1</span>
+BVCKFLJARNKCSS<span style="color:#2c5dcd">-</span>ZJLJEUSSSA<span style="color:#2c5dcd">-</span>N    <span style="color:#5918bb;font-weight:bold">1</span>
+HOCWPKXKMNXINF<span style="color:#2c5dcd">-</span>CJIHYQBJSA<span style="color:#2c5dcd">-</span>N    <span style="color:#5918bb;font-weight:bold">1</span>
+UWHAHBDBSBVMIY<span style="color:#2c5dcd">-</span>VUXXLBMGSA<span style="color:#2c5dcd">-</span>N    <span style="color:#5918bb;font-weight:bold">1</span>
+Name: inchikey, Length: <span style="color:#5918bb;font-weight:bold">8091</span>, dtype: int64
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># Dropping duplicates based on unique inchikey values</span>
+final_df <span style="color:#2c5dcd">=</span> final_df<span style="color:#2c5dcd">.</span>drop_duplicates(subset<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#39;inchikey&#39;</span>, keep<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#34;first&#34;</span>)
+
+<span style="color:#0080ff;font-style:italic"># Saving the final dataframe as b3_molecules</span>
+final_df<span style="color:#2c5dcd">.</span>to_csv(<span style="color:#0c6">&#39;./data/b3_molecules.csv&#39;</span>, index<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>)
+</code></pre></div><h1 id="pca-analysis">PCA analysis</h1>
+<p>PCA does not discard any variables and instead it reduces the number of dimensions by constructing principal components. Principal components describe variation and account for the varied influences of the original features.</p>
+<p>Each SMILES string will have a morgan fingerprint generated. These fingerprints are binary 2048 bit arrays which describe molecular structure.</p>
+<p>Three plots were made, the first using the MolNet dataset, the B3DB data next, and the combined data last.</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># MolNet</span>
+<span style="color:#0080ff;font-style:italic"># compute ECFP6 Morgan fingerprints with radius 3</span>
+fps_molnet <span style="color:#2c5dcd">=</span> []
+
+<span style="color:#2c5dcd;font-weight:bold">for</span> idx, row <span style="color:#2c5dcd;font-weight:bold">in</span> MolNet<span style="color:#2c5dcd">.</span>iterrows():
+    mol <span style="color:#2c5dcd">=</span> Chem<span style="color:#2c5dcd">.</span>MolFromSmiles(row[<span style="color:#0c6">&#34;SMILES&#34;</span>])
+    mol <span style="color:#2c5dcd">=</span> Chem<span style="color:#2c5dcd">.</span>AddHs(mol)
+    
+    fp <span style="color:#2c5dcd">=</span> AllChem<span style="color:#2c5dcd">.</span>GetMorganFingerprintAsBitVect(mol<span style="color:#2c5dcd">=</span>mol, 
+                                               radius<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">3</span>, 
+                                               nBits<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">2048</span>,
+                                               useChirality<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>, 
+                                               useFeatures<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>)
+    fps_molnet<span style="color:#2c5dcd">.</span>append(fp<span style="color:#2c5dcd">.</span>ToBitString())
+
+<span style="color:#0080ff;font-style:italic"># Computing ECFP6 fingerprints for B3DB</span>
+fps_B3DB <span style="color:#2c5dcd">=</span> []
+
+<span style="color:#2c5dcd;font-weight:bold">for</span> idx, row <span style="color:#2c5dcd;font-weight:bold">in</span> B3DB<span style="color:#2c5dcd">.</span>iterrows():
+    mol <span style="color:#2c5dcd">=</span> Chem<span style="color:#2c5dcd">.</span>MolFromSmiles(row[<span style="color:#0c6">&#34;SMILES&#34;</span>])
+    mol <span style="color:#2c5dcd">=</span> Chem<span style="color:#2c5dcd">.</span>AddHs(mol)
+    
+    fp <span style="color:#2c5dcd">=</span> AllChem<span style="color:#2c5dcd">.</span>GetMorganFingerprintAsBitVect(mol<span style="color:#2c5dcd">=</span>mol, 
+                                               radius<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">3</span>, 
+                                               nBits<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">2048</span>,
+                                               useChirality<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>, 
+                                               useFeatures<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>)
+    fps_B3DB<span style="color:#2c5dcd">.</span>append(fp<span style="color:#2c5dcd">.</span>ToBitString())
+
+<span style="color:#0080ff;font-style:italic"># Computing ECFP6 fingerprints for B3DB</span>
+fps_final <span style="color:#2c5dcd">=</span> []
+<span style="color:#2c5dcd;font-weight:bold">for</span> idx, row <span style="color:#2c5dcd;font-weight:bold">in</span> final_df<span style="color:#2c5dcd">.</span>iterrows():
+    mol <span style="color:#2c5dcd">=</span> Chem<span style="color:#2c5dcd">.</span>MolFromSmiles(row[<span style="color:#0c6">&#34;SMILES&#34;</span>])
+    mol <span style="color:#2c5dcd">=</span> Chem<span style="color:#2c5dcd">.</span>AddHs(mol)
+    
+    fp <span style="color:#2c5dcd">=</span> AllChem<span style="color:#2c5dcd">.</span>GetMorganFingerprintAsBitVect(mol<span style="color:#2c5dcd">=</span>mol, 
+                                               radius<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">3</span>, 
+                                               nBits<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">2048</span>,
+                                               useChirality<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>, 
+                                               useFeatures<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>)
+    fps_final<span style="color:#2c5dcd">.</span>append(fp<span style="color:#2c5dcd">.</span>ToBitString())
+
+<span style="color:#0080ff;font-style:italic"># Create a numpy array and use the u1 datatype (uint8 8-bit unsigned integer)</span>
+fps_arr_molnet <span style="color:#2c5dcd">=</span> np<span style="color:#2c5dcd">.</span>array([np<span style="color:#2c5dcd">.</span>fromiter(fp, <span style="color:#0c6">&#34;u1&#34;</span>) <span style="color:#2c5dcd;font-weight:bold">for</span> fp <span style="color:#2c5dcd;font-weight:bold">in</span> fps_molnet])
+fps_arr_B3DB <span style="color:#2c5dcd">=</span> np<span style="color:#2c5dcd">.</span>array([np<span style="color:#2c5dcd">.</span>fromiter(fp, <span style="color:#0c6">&#34;u1&#34;</span>) <span style="color:#2c5dcd;font-weight:bold">for</span> fp <span style="color:#2c5dcd;font-weight:bold">in</span> fps_B3DB])
+fps_arr_final <span style="color:#2c5dcd">=</span> np<span style="color:#2c5dcd">.</span>array([np<span style="color:#2c5dcd">.</span>fromiter(fp, <span style="color:#0c6">&#34;u1&#34;</span>) <span style="color:#2c5dcd;font-weight:bold">for</span> fp <span style="color:#2c5dcd;font-weight:bold">in</span> fps_final])
+
+<span style="color:#0080ff;font-style:italic"># PCA on MolNet molecules</span>
+molnet_fps <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>DataFrame(fps_arr_molnet, index<span style="color:#2c5dcd">=</span>MolNet<span style="color:#2c5dcd">.</span>index)
+molnet_fps <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>concat([MolNet, molnet_fps], axis<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">1</span>)
+
+pca_molnet <span style="color:#2c5dcd">=</span> PCA(n_components<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">2</span>)
+arr_fp_embedded <span style="color:#2c5dcd">=</span> pca<span style="color:#2c5dcd">.</span>fit_transform(fps_arr_molnet)
+molnet_fps[<span style="color:#0c6">&#34;PC_1&#34;</span>] <span style="color:#2c5dcd">=</span> arr_fp_embedded[:, <span style="color:#5918bb;font-weight:bold">0</span>]
+molnet_fps[<span style="color:#0c6">&#34;PC_2&#34;</span>] <span style="color:#2c5dcd">=</span> arr_fp_embedded[:, <span style="color:#5918bb;font-weight:bold">1</span>]
+
+<span style="color:#0080ff;font-style:italic"># PCA on B3DB molecules</span>
+B3DB_fps <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>DataFrame(fps_arr_B3DB, index<span style="color:#2c5dcd">=</span>B3DB<span style="color:#2c5dcd">.</span>index)
+B3DB_fps <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>concat([B3DB, B3DB_fps], axis<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">1</span>)
+
+pca_B3DB <span style="color:#2c5dcd">=</span> PCA(n_components<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">2</span>)
+arr_fp_embedded <span style="color:#2c5dcd">=</span> pca<span style="color:#2c5dcd">.</span>fit_transform(fps_arr_B3DB)
+B3DB_fps[<span style="color:#0c6">&#34;PC_1&#34;</span>] <span style="color:#2c5dcd">=</span> arr_fp_embedded[:, <span style="color:#5918bb;font-weight:bold">0</span>]
+B3DB_fps[<span style="color:#0c6">&#34;PC_2&#34;</span>] <span style="color:#2c5dcd">=</span> arr_fp_embedded[:, <span style="color:#5918bb;font-weight:bold">1</span>]
+
+<span style="color:#0080ff;font-style:italic"># PCA on final set of molecules</span>
+final_fps <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>DataFrame(fps_arr_final, index<span style="color:#2c5dcd">=</span>final_df<span style="color:#2c5dcd">.</span>index)
+final_fps <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>concat([final_df, final_fps], axis<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">1</span>)
+
+pca_final <span style="color:#2c5dcd">=</span> PCA(n_components<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">2</span>)
+arr_fp_embedded <span style="color:#2c5dcd">=</span> pca<span style="color:#2c5dcd">.</span>fit_transform(fps_arr_final)
+final_fps[<span style="color:#0c6">&#34;PC_1&#34;</span>] <span style="color:#2c5dcd">=</span> arr_fp_embedded[:, <span style="color:#5918bb;font-weight:bold">0</span>]
+final_fps[<span style="color:#0c6">&#34;PC_2&#34;</span>] <span style="color:#2c5dcd">=</span> arr_fp_embedded[:, <span style="color:#5918bb;font-weight:bold">1</span>]
+</code></pre></div><h1 id="pca-visualizations">PCA Visualizations</h1>
+<p>PCA of molecules in the MoleculeNet dataset</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig_molnet <span style="color:#2c5dcd">=</span> plt<span style="color:#2c5dcd">.</span>figure(figsize<span style="color:#2c5dcd">=</span>(<span style="color:#5918bb;font-weight:bold">15</span>, <span style="color:#5918bb;font-weight:bold">10</span>))
+
+plt<span style="color:#2c5dcd">.</span>xlabel(<span style="color:#0c6">&#34;PC 1&#34;</span>, fontsize<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">14</span>)
+plt<span style="color:#2c5dcd">.</span>ylabel(<span style="color:#0c6">&#34;PC 2&#34;</span>, fontsize<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">14</span>)
+
+sns<span style="color:#2c5dcd">.</span>scatterplot(data<span style="color:#2c5dcd">=</span>molnet_fps, x<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#34;PC_1&#34;</span>, y<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#34;PC_2&#34;</span>,
+                hue<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#34;BBB+/BBB-&#34;</span>,
+                palette<span style="color:#2c5dcd">=</span>sns<span style="color:#2c5dcd">.</span>color_palette([<span style="color:#0c6">&#34;hotpink&#34;</span>, <span style="color:#0c6">&#34;dodgerblue&#34;</span>]),
+                linewidth<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">0.1</span>,
+                )<span style="color:#2c5dcd">.</span>set(title<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#39;PCA of molecules in the MolecularNet dataset&#39;</span>)
+plt<span style="color:#2c5dcd">.</span>show()
+</code></pre></div><p><img src="images/pca1.png" alt="pca1"></p>
+<p>PCA of molecules in the B3DB dataset</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig_B3DB <span style="color:#2c5dcd">=</span> plt<span style="color:#2c5dcd">.</span>figure(figsize<span style="color:#2c5dcd">=</span>(<span style="color:#5918bb;font-weight:bold">15</span>, <span style="color:#5918bb;font-weight:bold">10</span>))
+
+plt<span style="color:#2c5dcd">.</span>xlabel(<span style="color:#0c6">&#34;PC 1&#34;</span>, fontsize<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">14</span>)
+plt<span style="color:#2c5dcd">.</span>ylabel(<span style="color:#0c6">&#34;PC 2&#34;</span>, fontsize<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">14</span>)
+
+sns<span style="color:#2c5dcd">.</span>scatterplot(data<span style="color:#2c5dcd">=</span>B3DB_fps, x<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#34;PC_1&#34;</span>, y<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#34;PC_2&#34;</span>,
+                hue<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#34;BBB+/BBB-&#34;</span>,
+                palette<span style="color:#2c5dcd">=</span>sns<span style="color:#2c5dcd">.</span>color_palette([<span style="color:#0c6">&#34;hotpink&#34;</span>, <span style="color:#0c6">&#34;dodgerblue&#34;</span>]),
+                linewidth<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">0.1</span>,
+                )<span style="color:#2c5dcd">.</span>set(title<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#39;PCA of molecules in the B3DB dataset&#39;</span>)
+plt<span style="color:#2c5dcd">.</span>show()
+</code></pre></div><p><img src="images/pca2.png" alt="pca2"></p>
+<p>PCA of molecules in the combined and filtered dataset</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig_final <span style="color:#2c5dcd">=</span> plt<span style="color:#2c5dcd">.</span>figure(figsize<span style="color:#2c5dcd">=</span>(<span style="color:#5918bb;font-weight:bold">15</span>, <span style="color:#5918bb;font-weight:bold">10</span>))
+
+plt<span style="color:#2c5dcd">.</span>xlabel(<span style="color:#0c6">&#34;PC 1&#34;</span>, fontsize<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">14</span>)
+plt<span style="color:#2c5dcd">.</span>ylabel(<span style="color:#0c6">&#34;PC 2&#34;</span>, fontsize<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">14</span>)
+
+sns<span style="color:#2c5dcd">.</span>scatterplot(data<span style="color:#2c5dcd">=</span>final_fps, x<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#34;PC_1&#34;</span>, y<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#34;PC_2&#34;</span>,
+                hue<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#34;BBB+/BBB-&#34;</span>,
+                palette<span style="color:#2c5dcd">=</span>sns<span style="color:#2c5dcd">.</span>color_palette([<span style="color:#0c6">&#34;hotpink&#34;</span>, <span style="color:#0c6">&#34;dodgerblue&#34;</span>]),
+                linewidth<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">0.1</span>,
+                )<span style="color:#2c5dcd">.</span>set(title<span style="color:#2c5dcd">=</span><span style="color:#0c6">&#39;PCA of molecules in the combined and filtered dataset&#39;</span>)
+plt<span style="color:#2c5dcd">.</span>show()
+</code></pre></div><p><img src="images/pca3.png" alt="pca3"></p>
+
+            
+        </div>
+    </div>
+</div>
+
+
+        </div><div class="container">
+    <div class="row justify-content-between">
+        <div class="col-sm-4">
+            <p class="footer">Gurkamal Deol 2022 </p>
+        </div>
+        <div class="col-sm-6 d-flex flex-row-reverse">
+            
+            <a class="footer-social px-2" href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
+            
+            <a class="footer-social px-2" href="https://medium.com/@gurkamaldeol" target="_blank"><i class="fab fa-medium-m"></i></a>
+            
+            <a class="footer-social px-2" href="https://www.linkedin.com/in/gurkamal-deol-508675174/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            
+        </div>
+    </div>
+</div><script src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script src="/js/isotope.pkgd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+<script src="/js/dark.js"></script>
+<script src="/js/isotope.js"></script>
+<script src="/js/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, securityLevel: 'loose'});</script></body>
+</html>

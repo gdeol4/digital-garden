@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700;800&family=Frank+Ruhl+Libre:wght@200;300;400;500;600&family=Encode+Sans+Semi+Condensed:wght@400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/all.min.css">
+    <link disabled id="dark-mode-theme" rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/my_style.css">
+    
+    
+    
+    <title>Notes on machine learning, bioinformatics, and drug discovery | A primer on Apache Airflow</title>
+    <meta name="description" content="Airflow basics for reference, and some pictures I drew">
+</head><body><nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="https://github.com/gdeol4/digital-garden">
+            
+            <b style="font-weight: 800;">home</b>
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto mt-2 mt-lg-0"><li class='nav-item '>
+                    <a class="nav-link" href="/gdeol4/digital-garden/garden/"> Digital Garden</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/gdeol4/digital-garden/projects/"> Projects</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/gdeol4/digital-garden/library/"> Library</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/gdeol4/digital-garden/about/"> About</a>
+                </li>
+             
+            <li class="nav-item px-2 pt-1">
+                <a class="btn fas fa-moon" id="dark-mode-toggle"></a>
+            </li>
+            </ul>
+        </div>
+    </div>
+</nav><div id="content">
+
+<div class="container" style="max-width: 1000px;">
+    <div class="py-4 rounded-3">
+        <div class="container-fluid py-2">
+            <h1 class="display-2 mb-4 text-center">A primer on Apache Airflow</h1>
+        </div>
+        
+        <p class="text-center fs-4 fst-italic serif">Airflow basics for reference, and some pictures I drew</p>
+        
+        <div class="text-center pt-4">
+            
+        </div>
+    </div>
+    <div class="row justify-content-center mb-5">
+        <div class="col-12">
+            <p class="card-date m-0">
+                
+                
+                    Created Apr 20, 2021 - 
+                
+                Last updated: Apr 20, 2021
+            </p>
+            <hr class="dropdown-divider">
+            <div class="row justify-content-between">
+                <div class="col-sm-4">
+                    
+    
+    <span class="status">Evergreen 🌳</span>
+    
+
+                </div>
+                <div class="col-sm-8" style="text-align: right;">
+                    
+                
+                    
+                    <span class="badge tag-badge">python</span>
+                    
+                    <span class="badge tag-badge">data</span>
+                    
+                
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-2">
+        <div class="serif main-content">
+            <h1 id="what-is-airflow">What is airflow?</h1>
+<p>Airflow is a platform used to author, schedule, and monitor workflows.
+It’s essentially a queuing system that runs on a metadata database and a scheduler that runs tasks. Workflows are written as Directed Acyclic Graphs (DAGs). A workflow and DAG are interchangeable.</p>
+<h1 id="what-are-dags">What are DAGs?</h1>
+<p>A DAG is a collection of tasks you want to run and are organized in a way that illustrates dependencies and relationships between tasks.
+The image below shows how a DAG is a unidirectional, acyclic graph, where each node in the graph is a task and edges define dependencies among tasks. There is no case where you should be able to go backwards from a forward node to one that&rsquo;s already been executed.</p>
+<p><img src="images/airflow1_1.jpeg" alt="Scenario 1: Across columns"></p>
+<p>A DAG can be broken up into smaller and smaller jobs and gives the user full control by generating dynamic pipelines written in code. Airflow DAGs are also extensible and can scale. DAGs are powerful because they allow for collaborative, manageable, and testable workflows. A bonus is that Airflow is developed in python and can interface with any python API.</p>
+<p><img src="images/airflow1_2.jpeg" alt="Scenario 1: Across columns"></p>
+<p>The image above shows how Airflow divides the tasks into branches so that if one fails, there is still output from the other. Also, the processing time is reduced as parallel computing occurs. The chances of failure should decrease overall as each task is independent.</p>
+<h2 id="how-are-tasks-executed">How are tasks executed?</h2>
+<p>An operator represents a single task in a workflow that helps carry out your task (running a python function for example).
+Operators determine what actually gets to be done when your dag runs.
+A task is an operator when instantiated. It is something on which the worker works upon.</p>
+<h2 id="airflow-architecture">Airflow Architecture</h2>
+<p><img src="images/airflow1_3.jpeg" alt="Scenario 1: Across columns"></p>
+<ul>
+<li>Metadata — is a relational database with info on task state, such as the top ten tasks consuming the most memory, it contains all data pertaining to jobs currently running as well as historical data.</li>
+<li>Scheduler — decides which task to run, when, and in what order.</li>
+<li>Web server— the UI which is essentially a flask app that talks to the metadata.</li>
+<li>Executor — performs the task at ground level. The executor is a message queuing process that figures out which workers will execute which tasks. The default is the sequential executor — which cannot run tasks in parallel — meaning it can’t be used for production level code. The local executor can be used too which will run tasks till all resources on the server are at capacity. This is good for a moderate amount of DAGs. Both of these are used in single node clusters and therefore cannot be used to scaled.</li>
+<li>Multi node clusters — have the same components and only the scheduler and web server are placed in the same node (master), the workers are placed in a separate instance. This set up works well because it allows for scaling by letting you add more multi-node clusters (celery is the executor of choice here for python).</li>
+</ul>
+<p>If you&rsquo;re not dealing with terabytes of data then it&rsquo;s better to have the scheduler, web server, and executor together in the master node/cluster. The downside is that this single cluster approach runs everything on the same machine, so if you make a change to a DAG/scheduler, then you need to restart the entire workflow — even tasks that were in the process of executing. Celery avoids this.</p>
+<p><img src="images/airflow1_4.jpeg" alt="Scenario 1: Across columns"></p>
+<p>If you do build a distributed workflow with celery then a queuing system component is needed (like Redis). For local workflows, the queuing is handled by the system.</p>
+<h2 id="the-life-cycle-of-a-task">The life cycle of a task</h2>
+<ol>
+<li>The scheduler periodically checks the DAG folder to see if there are any DAGS that need to be run.</li>
+<li>If any DAGS are found pending execution, the scheduler creates a diagram for it, which is an instantiation of a DAG in real time.</li>
+<li>The scheduler will update the DAG state to running in the metadata and the tasks will execute.</li>
+<li>The scheduler then reads the DAG and puts the tasks in order of execution into the queuing system in the form of a message. Each message contains info like DAG ID, TASK ID, and function to be executed.</li>
+<li>The status of these tasks changes to queued at that point.</li>
+<li>The executor then begins to execute tasks and sends fail/success messages for the tasks to the metadata.</li>
+<li>The scheduler finally updates the status of the diagram when all tasks have run to success or failure.</li>
+</ol>
+
+            
+        </div>
+    </div>
+</div>
+
+
+        </div><div class="container">
+    <div class="row justify-content-between">
+        <div class="col-sm-4">
+            <p class="footer">Gurkamal Deol 2022 </p>
+        </div>
+        <div class="col-sm-6 d-flex flex-row-reverse">
+            
+            <a class="footer-social px-2" href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
+            
+            <a class="footer-social px-2" href="https://medium.com/@gurkamaldeol" target="_blank"><i class="fab fa-medium-m"></i></a>
+            
+            <a class="footer-social px-2" href="https://www.linkedin.com/in/gurkamal-deol-508675174/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            
+        </div>
+    </div>
+</div><script src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script src="/js/isotope.pkgd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+<script src="/js/dark.js"></script>
+<script src="/js/isotope.js"></script>
+<script src="/js/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, securityLevel: 'loose'});</script></body>
+</html>

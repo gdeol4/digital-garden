@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Machine learning on Notes on machine learning, bioinformatics, and drug discovery</title>
+    <link>https://github.com/gdeol4/digital-garden/project_tags/machine-learning/</link>
+    <description>Recent content in Machine learning on Notes on machine learning, bioinformatics, and drug discovery</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Gurkamal Deol</copyright>
+    <lastBuildDate>Sun, 01 Dec 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://github.com/gdeol4/digital-garden/project_tags/machine-learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Toxic SMILES - molecular classification</title>
+      <link>https://github.com/gdeol4/digital-garden/projects/toxic_smiles/</link>
+      <pubDate>Sun, 01 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://github.com/gdeol4/digital-garden/projects/toxic_smiles/</guid>
+      <description>A Deployed machine learning model that identifies P53 agonists usings SMILES strings.</description>
+    </item>
+    
+  </channel>
+</rss>
