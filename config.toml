@@ -1,4 +1,4 @@
-baseURL = "https://github.com/gdeol4/digital-garden"
+baseURL = ""
 languageCode = "en-us"
 title = "Notes on machine learning, bioinformatics, and drug discovery"
 theme = "digital-garden"
