@@ -17,7 +17,7 @@ It’s essentially a queuing system that runs on a metadata database and a sched
 A DAG is a collection of tasks you want to run and are organized in a way that illustrates dependencies and relationships between tasks.
 The image below shows how a DAG is a unidirectional, acyclic graph, where each node in the graph is a task and edges define dependencies among tasks. There is no case where you should be able to go backwards from a forward node to one that's already been executed.
 
-![Scenario 1: Across columns](images/airflow1_1.jpeg)
+![Scenario 1: Across columns](static/images/airflow1_1.jpeg)
 
 A DAG can be broken up into smaller and smaller jobs and gives the user full control by generating dynamic pipelines written in code. Airflow DAGs are also extensible and can scale. DAGs are powerful because they allow for collaborative, manageable, and testable workflows. A bonus is that Airflow is developed in python and can interface with any python API.
 
