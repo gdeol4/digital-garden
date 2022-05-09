@@ -226,7 +226,7 @@ sns.scatterplot(data=molnet_fps, x="PC_1", y="PC_2",
 plt.show()
 ```
 
-![pca1](images/pca1.png)
+![pca1](/pca1.png)
 
 PCA of molecules in the B3DB dataset
 
@@ -244,7 +244,7 @@ sns.scatterplot(data=B3DB_fps, x="PC_1", y="PC_2",
 plt.show()
 ```
 
-![pca2](images/pca2.png)
+![pca2](/pca2.png)
 
 PCA of molecules in the combined and filtered dataset
 
@@ -262,5 +262,5 @@ sns.scatterplot(data=final_fps, x="PC_1", y="PC_2",
 plt.show()
 ```
 
-![pca3](images/pca3.png)
+![pca3](/pca3.png)
 

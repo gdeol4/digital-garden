@@ -58,7 +58,7 @@ BBBP_df
 
 Mols and smiles need to be sanitized as it will leave us with SMILES that are complete nonesense, for example, errors resulting from kekulization.
 
-![kekul](images/kekul.jpg)
+![kekul](/kekul.jpg)
 
 RDkit generates the alternate position of double bonds, and then (in a second step they call "aromatization") labels the ring as aromatic. In panel (2), there are three possible Lewis structures contributing to the actual structure (i.e. there is resonance), so the software would have to generate all three to be able to search for identical structures.[^1]
 
