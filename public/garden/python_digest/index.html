@@ -21,7 +21,7 @@
     <meta name="description" content="Implementing restriction digestion using regular expressions, lists, and dictionaries.">
 </head><body><nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="">
+        <a class="navbar-brand" href="/">
             
             <b style="font-weight: 800;">home</b>
             
@@ -99,72 +99,72 @@
     <div class="container-fluid py-2">
         <div class="serif main-content">
             <p>Restriction enzymes are proteins produced by bacteria that cleave DNA at specific sites along the molecule. The enzyme functions on a specific, short nucleotide sequence and cuts the DNA only at that specific site, which is known as restriction site or target sequence. In the bacterial cell, restriction enzymes cleave foreign DNA, thus eliminating infecting organisms. The activity of a restriction enzyme can be defined by its recognition site on the DNA sequence and the position relative to the recognition site, at which it cuts the DNA.</p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># create enzyme dictionary</span>
-</span></span><span style="display:flex;"><span>restrictionEnzymes <span style="color:#2c5dcd">=</span> {}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># add &#34;bamH1&#34; and &#34;sma1&#34; enzymes, their target sequence and</span>
-</span></span><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># position releative to the recognition site</span>
-</span></span><span style="display:flex;"><span>restrictionEnzymes[<span style="color:#0c6">&#39;bamH1&#39;</span>] <span style="color:#2c5dcd">=</span> [<span style="color:#0c6">&#39;ggatcc&#39;</span>,<span style="color:#5918bb;font-weight:bold">0</span>]
-</span></span><span style="display:flex;"><span>restrictionEnzymes[<span style="color:#0c6">&#39;sma1&#39;</span>] <span style="color:#2c5dcd">=</span> [<span style="color:#0c6">&#39;cccggg&#39;</span>,<span style="color:#5918bb;font-weight:bold">2</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># a function to calculate the molecular weight of dna sequences</span>
-</span></span><span style="display:flex;"><span><span style="color:#2c5dcd;font-weight:bold">def</span> <span style="color:#ff8000;font-weight:bold">oligoMolecularWeight</span>(sequence):
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#0080ff;font-style:italic"># create a dictionairy of DNA basepair molecular weights</span>
-</span></span><span style="display:flex;"><span>    dnaMolecularWeight <span style="color:#2c5dcd">=</span> {<span style="color:#0c6">&#39;a&#39;</span>:<span style="color:#5918bb;font-weight:bold">313.2</span>,<span style="color:#0c6">&#39;c&#39;</span>:<span style="color:#5918bb;font-weight:bold">289.2</span>,<span style="color:#0c6">&#39;t&#39;</span>:<span style="color:#5918bb;font-weight:bold">304.2</span>,<span style="color:#0c6">&#39;g&#39;</span>:<span style="color:#5918bb;font-weight:bold">329.2</span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#0080ff;font-style:italic"># initialize molecular weight</span>
-</span></span><span style="display:flex;"><span>    molecularWeight <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.0</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#0080ff;font-style:italic"># iterate through DNA sequnce and update weight of sequence</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#2c5dcd;font-weight:bold">for</span> base <span style="color:#2c5dcd;font-weight:bold">in</span> sequence:
-</span></span><span style="display:flex;"><span>        molecularWeight <span style="color:#2c5dcd">+=</span> dnaMolecularWeight[base]
-</span></span><span style="display:flex;"><span>    <span style="color:#2c5dcd;font-weight:bold">return</span> molecularWeight
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># the primary function for restriction digest</span>
-</span></span><span style="display:flex;"><span><span style="color:#2c5dcd;font-weight:bold">def</span> <span style="color:#ff8000;font-weight:bold">digest</span>(sequence, enzyme):
-</span></span><span style="display:flex;"><span>    <span style="color:#0080ff;font-style:italic"># set target sequence</span>
-</span></span><span style="display:flex;"><span>    target <span style="color:#2c5dcd">=</span> restrictionEnzymes[enzyme][<span style="color:#5918bb;font-weight:bold">0</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#0080ff;font-style:italic"># enzyme cut position relative to recognition site</span>
-</span></span><span style="display:flex;"><span>    cutPosition <span style="color:#2c5dcd">=</span> restrictionEnzymes[enzyme][<span style="color:#5918bb;font-weight:bold">1</span>]
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#0080ff;font-style:italic"># a list to collect DNA fragments</span>
-</span></span><span style="display:flex;"><span>    fragments <span style="color:#2c5dcd">=</span> []
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#0080ff;font-style:italic"># counter for the position of the last restriction site; </span>
-</span></span><span style="display:flex;"><span>    <span style="color:#0080ff;font-style:italic"># beginning of sequence</span>
-</span></span><span style="display:flex;"><span>    found <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#0080ff;font-style:italic"># a variable to store the position of the last cut;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#0080ff;font-style:italic"># end of sequence</span>
-</span></span><span style="display:flex;"><span>    lastCut <span style="color:#2c5dcd">=</span> found
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#0080ff;font-style:italic"># variable to set where to search for the next site from</span>
-</span></span><span style="display:flex;"><span>    searchFrom <span style="color:#2c5dcd">=</span> lastCut
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#2c5dcd;font-weight:bold">while</span> found <span style="color:#2c5dcd">!=</span> <span style="color:#2c5dcd">-</span><span style="color:#5918bb;font-weight:bold">1</span>:
-</span></span><span style="display:flex;"><span>        found <span style="color:#2c5dcd">=</span> sequence<span style="color:#2c5dcd">.</span>find(target, searchFrom)
-</span></span><span style="display:flex;"><span>        <span style="color:#2c5dcd;font-weight:bold">if</span> found <span style="color:#2c5dcd">!=</span> <span style="color:#2c5dcd">-</span><span style="color:#5918bb;font-weight:bold">1</span>:
-</span></span><span style="display:flex;"><span>            fragment <span style="color:#2c5dcd">=</span> sequence[lastCut:found<span style="color:#2c5dcd">+</span>cutPosition]
-</span></span><span style="display:flex;"><span>            mwt <span style="color:#2c5dcd">=</span> oligoMolecularWeight(fragment)
-</span></span><span style="display:flex;"><span>            fragments<span style="color:#2c5dcd">.</span>append((fragment,mwt))
-</span></span><span style="display:flex;"><span>        <span style="color:#2c5dcd;font-weight:bold">else</span>:
-</span></span><span style="display:flex;"><span>            fragment <span style="color:#2c5dcd">=</span> sequence[lastCut:]
-</span></span><span style="display:flex;"><span>            mwt <span style="color:#2c5dcd">=</span> oligoMolecularWeight(fragment)
-</span></span><span style="display:flex;"><span>            fragments<span style="color:#2c5dcd">.</span>append((fragment,mwt))
-</span></span><span style="display:flex;"><span>        lastCut <span style="color:#2c5dcd">=</span> found <span style="color:#2c5dcd">+</span> cutPosition
-</span></span><span style="display:flex;"><span>        searchFrom <span style="color:#2c5dcd">=</span> lastCut <span style="color:#2c5dcd">+</span> <span style="color:#5918bb;font-weight:bold">1</span>
-</span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#2c5dcd;font-weight:bold">return</span> fragments
-</span></span></code></pre></div><p>Running the function on a test sequence results in the following:</p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>digestSequence <span style="color:#2c5dcd">=</span> <span style="color:#0c6">&#34;gcgatgctaggatccgcgatcgcgtacgatcgtacgcggtacggacggatccttctc&#34;</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>digested_dna <span style="color:#2c5dcd">=</span> digest(digestSequence,<span style="color:#0c6">&#39;bamH1&#39;</span>)
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#5918bb;font-weight:bold">print</span>(digested_dna)
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>[(<span style="color:#0c6">&#39;gcgatgcta&#39;</span>, <span style="color:#5918bb;font-weight:bold">2800.7999999999997</span>), 
-</span></span><span style="display:flex;"><span>(<span style="color:#0c6">&#39;ggatccgcgatcgcgtacgatcgtacgcggtacggac&#39;</span>, <span style="color:#5918bb;font-weight:bold">11478.400000000005</span>), 
-</span></span><span style="display:flex;"><span>(<span style="color:#0c6">&#39;ggatccttctc&#39;</span>, <span style="color:#5918bb;font-weight:bold">3345.1999999999994</span>)]
-</span></span></code></pre></div>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># create enzyme dictionary</span>
+restrictionEnzymes <span style="color:#2c5dcd">=</span> {}
+
+<span style="color:#0080ff;font-style:italic"># add &#34;bamH1&#34; and &#34;sma1&#34; enzymes, their target sequence and</span>
+<span style="color:#0080ff;font-style:italic"># position releative to the recognition site</span>
+restrictionEnzymes[<span style="color:#0c6">&#39;bamH1&#39;</span>] <span style="color:#2c5dcd">=</span> [<span style="color:#0c6">&#39;ggatcc&#39;</span>,<span style="color:#5918bb;font-weight:bold">0</span>]
+restrictionEnzymes[<span style="color:#0c6">&#39;sma1&#39;</span>] <span style="color:#2c5dcd">=</span> [<span style="color:#0c6">&#39;cccggg&#39;</span>,<span style="color:#5918bb;font-weight:bold">2</span>]
+
+<span style="color:#0080ff;font-style:italic"># a function to calculate the molecular weight of dna sequences</span>
+<span style="color:#2c5dcd;font-weight:bold">def</span> <span style="color:#ff8000;font-weight:bold">oligoMolecularWeight</span>(sequence):
+
+    <span style="color:#0080ff;font-style:italic"># create a dictionairy of DNA basepair molecular weights</span>
+    dnaMolecularWeight <span style="color:#2c5dcd">=</span> {<span style="color:#0c6">&#39;a&#39;</span>:<span style="color:#5918bb;font-weight:bold">313.2</span>,<span style="color:#0c6">&#39;c&#39;</span>:<span style="color:#5918bb;font-weight:bold">289.2</span>,<span style="color:#0c6">&#39;t&#39;</span>:<span style="color:#5918bb;font-weight:bold">304.2</span>,<span style="color:#0c6">&#39;g&#39;</span>:<span style="color:#5918bb;font-weight:bold">329.2</span>}
+
+    <span style="color:#0080ff;font-style:italic"># initialize molecular weight</span>
+    molecularWeight <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.0</span>
+
+    <span style="color:#0080ff;font-style:italic"># iterate through DNA sequnce and update weight of sequence</span>
+    <span style="color:#2c5dcd;font-weight:bold">for</span> base <span style="color:#2c5dcd;font-weight:bold">in</span> sequence:
+        molecularWeight <span style="color:#2c5dcd">+=</span> dnaMolecularWeight[base]
+    <span style="color:#2c5dcd;font-weight:bold">return</span> molecularWeight
+
+<span style="color:#0080ff;font-style:italic"># the primary function for restriction digest</span>
+<span style="color:#2c5dcd;font-weight:bold">def</span> <span style="color:#ff8000;font-weight:bold">digest</span>(sequence, enzyme):
+    <span style="color:#0080ff;font-style:italic"># set target sequence</span>
+    target <span style="color:#2c5dcd">=</span> restrictionEnzymes[enzyme][<span style="color:#5918bb;font-weight:bold">0</span>]
+
+    <span style="color:#0080ff;font-style:italic"># enzyme cut position relative to recognition site</span>
+    cutPosition <span style="color:#2c5dcd">=</span> restrictionEnzymes[enzyme][<span style="color:#5918bb;font-weight:bold">1</span>]
+
+    <span style="color:#0080ff;font-style:italic"># a list to collect DNA fragments</span>
+    fragments <span style="color:#2c5dcd">=</span> []
+
+    <span style="color:#0080ff;font-style:italic"># counter for the position of the last restriction site; </span>
+    <span style="color:#0080ff;font-style:italic"># beginning of sequence</span>
+    found <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0</span>
+
+    <span style="color:#0080ff;font-style:italic"># a variable to store the position of the last cut;</span>
+    <span style="color:#0080ff;font-style:italic"># end of sequence</span>
+    lastCut <span style="color:#2c5dcd">=</span> found
+
+    <span style="color:#0080ff;font-style:italic"># variable to set where to search for the next site from</span>
+    searchFrom <span style="color:#2c5dcd">=</span> lastCut
+
+    <span style="color:#2c5dcd;font-weight:bold">while</span> found <span style="color:#2c5dcd">!=</span> <span style="color:#2c5dcd">-</span><span style="color:#5918bb;font-weight:bold">1</span>:
+        found <span style="color:#2c5dcd">=</span> sequence<span style="color:#2c5dcd">.</span>find(target, searchFrom)
+        <span style="color:#2c5dcd;font-weight:bold">if</span> found <span style="color:#2c5dcd">!=</span> <span style="color:#2c5dcd">-</span><span style="color:#5918bb;font-weight:bold">1</span>:
+            fragment <span style="color:#2c5dcd">=</span> sequence[lastCut:found<span style="color:#2c5dcd">+</span>cutPosition]
+            mwt <span style="color:#2c5dcd">=</span> oligoMolecularWeight(fragment)
+            fragments<span style="color:#2c5dcd">.</span>append((fragment,mwt))
+        <span style="color:#2c5dcd;font-weight:bold">else</span>:
+            fragment <span style="color:#2c5dcd">=</span> sequence[lastCut:]
+            mwt <span style="color:#2c5dcd">=</span> oligoMolecularWeight(fragment)
+            fragments<span style="color:#2c5dcd">.</span>append((fragment,mwt))
+        lastCut <span style="color:#2c5dcd">=</span> found <span style="color:#2c5dcd">+</span> cutPosition
+        searchFrom <span style="color:#2c5dcd">=</span> lastCut <span style="color:#2c5dcd">+</span> <span style="color:#5918bb;font-weight:bold">1</span>
+    
+    <span style="color:#2c5dcd;font-weight:bold">return</span> fragments
+</code></pre></div><p>Running the function on a test sequence results in the following:</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">digestSequence <span style="color:#2c5dcd">=</span> <span style="color:#0c6">&#34;gcgatgctaggatccgcgatcgcgtacgatcgtacgcggtacggacggatccttctc&#34;</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">digested_dna <span style="color:#2c5dcd">=</span> digest(digestSequence,<span style="color:#0c6">&#39;bamH1&#39;</span>)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#5918bb;font-weight:bold">print</span>(digested_dna)
+</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">[(<span style="color:#0c6">&#39;gcgatgcta&#39;</span>, <span style="color:#5918bb;font-weight:bold">2800.7999999999997</span>), 
+(<span style="color:#0c6">&#39;ggatccgcgatcgcgtacgatcgtacgcggtacggac&#39;</span>, <span style="color:#5918bb;font-weight:bold">11478.400000000005</span>), 
+(<span style="color:#0c6">&#39;ggatccttctc&#39;</span>, <span style="color:#5918bb;font-weight:bold">3345.1999999999994</span>)]
+</code></pre></div>
             
         </div>
     </div>

@@ -21,7 +21,7 @@
     <meta name="description" content="Airflow basics for reference, and some pictures I drew">
 </head><body><nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="">
+        <a class="navbar-brand" href="/">
             
             <b style="font-weight: 800;">home</b>
             
@@ -104,16 +104,15 @@ It’s essentially a queuing system that runs on a metadata database and a sched
 <h1 id="what-are-dags">What are DAGs?</h1>
 <p>A DAG is a collection of tasks you want to run and are organized in a way that illustrates dependencies and relationships between tasks.
 The image below shows how a DAG is a unidirectional, acyclic graph, where each node in the graph is a task and edges define dependencies among tasks. There is no case where you should be able to go backwards from a forward node to one that&rsquo;s already been executed.</p>
-<p><img src="/static/images/airflow1_1.jpeg" alt="Scenario 1: Across columns"></p>
 <p>A DAG can be broken up into smaller and smaller jobs and gives the user full control by generating dynamic pipelines written in code. Airflow DAGs are also extensible and can scale. DAGs are powerful because they allow for collaborative, manageable, and testable workflows. A bonus is that Airflow is developed in python and can interface with any python API.</p>
-<p><img src="images/airflow1_2.jpeg" alt="Scenario 1: Across columns"></p>
+<p><img src="/airflow1_2.jpeg" alt="Scenario 1: Across columns"></p>
 <p>The image above shows how Airflow divides the tasks into branches so that if one fails, there is still output from the other. Also, the processing time is reduced as parallel computing occurs. The chances of failure should decrease overall as each task is independent.</p>
 <h2 id="how-are-tasks-executed">How are tasks executed?</h2>
 <p>An operator represents a single task in a workflow that helps carry out your task (running a python function for example).
 Operators determine what actually gets to be done when your dag runs.
 A task is an operator when instantiated. It is something on which the worker works upon.</p>
 <h2 id="airflow-architecture">Airflow Architecture</h2>
-<p><img src="images/airflow1_3.jpeg" alt="Scenario 1: Across columns"></p>
+<p><img src="/airflow1_3.jpeg" alt="Scenario 1: Across columns"></p>
 <ul>
 <li>Metadata — is a relational database with info on task state, such as the top ten tasks consuming the most memory, it contains all data pertaining to jobs currently running as well as historical data.</li>
 <li>Scheduler — decides which task to run, when, and in what order.</li>
@@ -122,7 +121,7 @@ A task is an operator when instantiated. It is something on which the worker wor
 <li>Multi node clusters — have the same components and only the scheduler and web server are placed in the same node (master), the workers are placed in a separate instance. This set up works well because it allows for scaling by letting you add more multi-node clusters (celery is the executor of choice here for python).</li>
 </ul>
 <p>If you&rsquo;re not dealing with terabytes of data then it&rsquo;s better to have the scheduler, web server, and executor together in the master node/cluster. The downside is that this single cluster approach runs everything on the same machine, so if you make a change to a DAG/scheduler, then you need to restart the entire workflow — even tasks that were in the process of executing. Celery avoids this.</p>
-<p><img src="images/airflow1_4.jpeg" alt="Scenario 1: Across columns"></p>
+<p><img src="/airflow1_4.jpeg" alt="Scenario 1: Across columns"></p>
 <p>If you do build a distributed workflow with celery then a queuing system component is needed (like Redis). For local workflows, the queuing is handled by the system.</p>
 <h2 id="the-life-cycle-of-a-task">The life cycle of a task</h2>
 <ol>

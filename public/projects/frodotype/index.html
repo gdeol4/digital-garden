@@ -21,7 +21,7 @@
     <meta name="description" content="A GPT2 generator finetuned on fantasy novels. Built using Tensorflow, Chart.js, GCP and Docker">
 </head><body><nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="">
+        <a class="navbar-brand" href="/">
             
             <b style="font-weight: 800;">home</b>
             
@@ -122,16 +122,16 @@
 <h2 id="gathering-the-data">Gathering the data</h2>
 <p>The 102 books used were converted from the Amazon Kindle format .azw to plain text files. This processes included stripping all images, formattting, and hyperlinks. The books were then manually stripped of their table of contents, appencices, and glossaries. The final text file used to retrain the model was put together using the following commands:</p>
 <p>1.Concatenate the files:</p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#2c5dcd;font-weight:bold">for</span> f in *.txt <span style="color:#2c5dcd;font-weight:bold">do</span> <span style="color:#2c5dcd">(</span>cat <span style="color:#0c6">&#34;</span><span style="color:#0c6">${</span>f<span style="color:#0c6">}</span><span style="color:#0c6">&#34;</span>; <span style="color:#5918bb;font-weight:bold">echo</span><span style="color:#2c5dcd">)</span> &gt;&gt; unprocessed.txt; <span style="color:#2c5dcd;font-weight:bold">done</span>
-</span></span></code></pre></div><ol start="2">
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#2c5dcd;font-weight:bold">for</span> f in *.txt <span style="color:#2c5dcd;font-weight:bold">do</span> <span style="color:#2c5dcd">(</span>cat <span style="color:#0c6">&#34;</span><span style="color:#0c6">${</span>f<span style="color:#0c6">}</span><span style="color:#0c6">&#34;</span>; <span style="color:#5918bb;font-weight:bold">echo</span><span style="color:#2c5dcd">)</span> &gt;&gt; unprocessed.txt; <span style="color:#2c5dcd;font-weight:bold">done</span>
+</code></pre></div><ol start="2">
 <li>Deleting all none ASCII charcaters:</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ LC_ALL<span style="color:#2c5dcd">=</span>C tr -dc <span style="color:#0c6">&#39;\0-\177&#39;</span> &lt; unprocessed.txt &gt; processed.txt
-</span></span></code></pre></div><ol start="3">
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ LC_ALL<span style="color:#2c5dcd">=</span>C tr -dc <span style="color:#0c6">&#39;\0-\177&#39;</span> &lt; unprocessed.txt &gt; processed.txt
+</code></pre></div><ol start="3">
 <li>Removing numbers and dashes from the text:</li>
 </ol>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ tr -d <span style="color:#0c6">&#39;[0-9-]&#39;</span> &lt; processed.txt &gt; final.txt
-</span></span></code></pre></div><p>Additional processing is done in the text-analysis notebook.</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ tr -d <span style="color:#0c6">&#39;[0-9-]&#39;</span> &lt; processed.txt &gt; final.txt
+</code></pre></div><p>Additional processing is done in the text-analysis notebook.</p>
 <h2 id="training-the-model">Training the model</h2>
 <p>The model was trained on a Google Deep Learning VM using a Tesla K80 GPU, TensorFlow 1.15, and CUDA 10.0.</p>
 <p>The model was retrained using gpt-2-simple, a python package that eases the process of tweeking hyperparameters. The model was trained for three differeing lengths. The one used in this app was trianed for 45,000 steps or approximattly 90 hours. Two additional models were trained at 25,000 steps and 80,000 steps. The smaller of the two models had a much higher loss value, while the larger model had a simillar loss that began to increase towards the end.</p>
