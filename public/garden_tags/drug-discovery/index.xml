@@ -2,36 +2,36 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>drug discovery on Notes on machine learning, bioinformatics, and drug discovery</title>
-    <link>https://github.com/gdeol4/digital-garden/garden_tags/drug-discovery/</link>
+    <link>/garden_tags/drug-discovery/</link>
     <description>Recent content in drug discovery on Notes on machine learning, bioinformatics, and drug discovery</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Gurkamal Deol</copyright>
-    <lastBuildDate>Fri, 22 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://github.com/gdeol4/digital-garden/garden_tags/drug-discovery/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 22 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="/garden_tags/drug-discovery/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Preprocessing molecular data with Datamol</title>
-      <link>https://github.com/gdeol4/digital-garden/garden/datamol/</link>
+      <link>/garden/datamol/</link>
       <pubDate>Fri, 22 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://github.com/gdeol4/digital-garden/garden/datamol/</guid>
+      <guid>/garden/datamol/</guid>
       <description>Sanitizing and manipulating labeled blood-brain barrier permeable molecules.</description>
     </item>
     
     <item>
       <title>Processing the B3DB brain-blood barrier dataset</title>
-      <link>https://github.com/gdeol4/digital-garden/garden/b3db/</link>
+      <link>/garden/b3db/</link>
       <pubDate>Fri, 22 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://github.com/gdeol4/digital-garden/garden/b3db/</guid>
+      <guid>/garden/b3db/</guid>
       <description>Sanitizing and manipulating labeled blood-brain barrier permeable molecules.</description>
     </item>
     
     <item>
       <title>Scaffold splitting and model training using chemprop</title>
-      <link>https://github.com/gdeol4/digital-garden/garden/chemprop/</link>
+      <link>/garden/chemprop/</link>
       <pubDate>Fri, 22 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://github.com/gdeol4/digital-garden/garden/chemprop/</guid>
+      <guid>/garden/chemprop/</guid>
       <description>Chemically aware data splitting  using scaffold splitting. Data is then trained using a directed message passing neural network (D-MPNN).</description>
     </item>
     

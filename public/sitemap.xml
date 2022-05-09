@@ -2,82 +2,82 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://github.com/gdeol4/digital-garden/projects/frodotype/</loc>
+    <loc>/projects/frodotype/</loc>
     <lastmod>2020-01-17T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/projects/toxic_smiles/</loc>
+    <loc>/projects/toxic_smiles/</loc>
     <lastmod>2019-12-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/about/</loc>
+    <loc>/about/</loc>
     <lastmod>2022-05-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/</loc>
+    <loc>/</loc>
     <lastmod>2022-05-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/projects/</loc>
+    <loc>/projects/</loc>
     <lastmod>2022-05-06T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/garden_tags/cheminformatics/</loc>
+    <loc>/garden_tags/cheminformatics/</loc>
     <lastmod>2021-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/garden_tags/data/</loc>
+    <loc>/garden_tags/data/</loc>
     <lastmod>2021-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/garden_tags/deep-learning/</loc>
+    <loc>/garden_tags/deep-learning/</loc>
     <lastmod>2021-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/garden_tags/drug-discovery/</loc>
+    <loc>/garden_tags/drug-discovery/</loc>
     <lastmod>2021-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/garden_tags/</loc>
+    <loc>/garden_tags/</loc>
     <lastmod>2021-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/garden/datamol/</loc>
+    <loc>/garden/datamol/</loc>
     <lastmod>2021-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/garden/b3db/</loc>
+    <loc>/garden/b3db/</loc>
     <lastmod>2021-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/garden_tags/python/</loc>
+    <loc>/garden_tags/python/</loc>
     <lastmod>2021-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/garden/chemprop/</loc>
+    <loc>/garden/chemprop/</loc>
     <lastmod>2021-10-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/garden/python_digest/</loc>
+    <loc>/garden/python_digest/</loc>
     <lastmod>2021-10-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/garden_tags/bioinformatics/</loc>
+    <loc>/garden_tags/bioinformatics/</loc>
     <lastmod>2021-10-18T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/garden/airflow-primer/</loc>
+    <loc>/garden/airflow-primer/</loc>
     <lastmod>2021-04-20T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/library/</loc>
+    <loc>/library/</loc>
     <lastmod>2021-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/garden/</loc>
+    <loc>/garden/</loc>
     <lastmod>2021-01-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/project_tags/nlp/</loc>
+    <loc>/project_tags/nlp/</loc>
     <lastmod>2020-01-17T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/project_tags/</loc>
+    <loc>/project_tags/</loc>
     <lastmod>2020-01-17T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/project_tags/tensorflow/</loc>
+    <loc>/project_tags/tensorflow/</loc>
     <lastmod>2020-01-17T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/project_tags/web-app/</loc>
+    <loc>/project_tags/web-app/</loc>
     <lastmod>2020-01-17T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/project_tags/drug-discovery/</loc>
+    <loc>/project_tags/drug-discovery/</loc>
     <lastmod>2019-12-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/project_tags/machine-learning/</loc>
+    <loc>/project_tags/machine-learning/</loc>
     <lastmod>2019-12-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://github.com/gdeol4/digital-garden/project_tags/python/</loc>
+    <loc>/project_tags/python/</loc>
     <lastmod>2019-12-01T00:00:00+00:00</lastmod>
   </url>
 </urlset>

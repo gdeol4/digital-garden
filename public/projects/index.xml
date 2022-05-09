@@ -2,27 +2,27 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Projects on Notes on machine learning, bioinformatics, and drug discovery</title>
-    <link>https://github.com/gdeol4/digital-garden/projects/</link>
+    <link>/projects/</link>
     <description>Recent content in Projects on Notes on machine learning, bioinformatics, and drug discovery</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Gurkamal Deol</copyright>
-    <lastBuildDate>Fri, 06 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://github.com/gdeol4/digital-garden/projects/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/projects/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Frodotype - text generator</title>
-      <link>https://github.com/gdeol4/digital-garden/projects/frodotype/</link>
+      <link>/projects/frodotype/</link>
       <pubDate>Fri, 17 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://github.com/gdeol4/digital-garden/projects/frodotype/</guid>
+      <guid>/projects/frodotype/</guid>
       <description>A GPT2 generator finetuned on fantasy novels. Built using Tensorflow, Chart.js, GCP and Docker</description>
     </item>
     
     <item>
       <title>Toxic SMILES - molecular classification</title>
-      <link>https://github.com/gdeol4/digital-garden/projects/toxic_smiles/</link>
+      <link>/projects/toxic_smiles/</link>
       <pubDate>Sun, 01 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://github.com/gdeol4/digital-garden/projects/toxic_smiles/</guid>
+      <guid>/projects/toxic_smiles/</guid>
       <description>A Deployed machine learning model that identifies P53 agonists usings SMILES strings.</description>
     </item>
     

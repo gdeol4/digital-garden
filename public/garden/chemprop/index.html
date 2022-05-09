@@ -21,7 +21,7 @@
     <meta name="description" content="Chemically aware data splitting  using scaffold splitting. Data is then trained using a directed message passing neural network (D-MPNN).">
 </head><body><nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="https://github.com/gdeol4/digital-garden">
+        <a class="navbar-brand" href="">
             
             <b style="font-weight: 800;">home</b>
             
@@ -31,16 +31,16 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ms-auto mt-2 mt-lg-0"><li class='nav-item '>
-                    <a class="nav-link" href="/gdeol4/digital-garden/garden/"> Digital Garden</a>
+                    <a class="nav-link" href="/garden/"> Digital Garden</a>
                 </li>
             <li class='nav-item '>
-                    <a class="nav-link" href="/gdeol4/digital-garden/projects/"> Projects</a>
+                    <a class="nav-link" href="/projects/"> Projects</a>
                 </li>
             <li class='nav-item '>
-                    <a class="nav-link" href="/gdeol4/digital-garden/library/"> Library</a>
+                    <a class="nav-link" href="/library/"> Library</a>
                 </li>
             <li class='nav-item '>
-                    <a class="nav-link" href="/gdeol4/digital-garden/about/"> About</a>
+                    <a class="nav-link" href="/about/"> About</a>
                 </li>
              
             <li class="nav-item px-2 pt-1">
@@ -121,57 +121,57 @@
 <p>Compared to a random split, a scaffold split is a more challenging and realistic evaluation setting as it more closely approximates the split present in real-world property prediction data.</p>
 <p>A molecule compared to its scaffold below:</p>
 <h3 id="molecular-compound-and-its-generic-bemis-murcko-scaffold">Molecular compound and its generic Bemis-Murcko scaffold</h3>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#2c5dcd;font-weight:bold">from</span> rdkit <span style="color:#2c5dcd;font-weight:bold">import</span> Chem
-<span style="color:#2c5dcd;font-weight:bold">from</span> rdkit.Chem.Scaffolds <span style="color:#2c5dcd;font-weight:bold">import</span> MurckoScaffold
-
-<span style="color:#0080ff;font-style:italic"># define compound via its SMILES string</span>
-smiles <span style="color:#2c5dcd">=</span> <span style="color:#0c6">&#34;CN1CCCCC1CCN2C3=CC=CC=C3SC4=C2C=C(C=C4)SC&#34;</span>
-<span style="color:#0080ff;font-style:italic"># convert SMILES string to RDKit mol object </span>
-mol <span style="color:#2c5dcd">=</span> Chem<span style="color:#2c5dcd">.</span>MolFromSmiles(smiles)
-<span style="color:#0080ff;font-style:italic"># create RDKit mol object corresponding to Bemis-Murcko scaffold of original compound</span>
-mol_scaffold <span style="color:#2c5dcd">=</span> MurckoScaffold<span style="color:#2c5dcd">.</span>GetScaffoldForMol(mol)
-<span style="color:#0080ff;font-style:italic"># make the scaffold generic by replacing all atoms with carbons and all bonds with single bonds</span>
-mol_scaffold_generic <span style="color:#2c5dcd">=</span> MurckoScaffold<span style="color:#2c5dcd">.</span>MakeScaffoldGeneric(mol_scaffold)
-<span style="color:#0080ff;font-style:italic"># convert the generic scaffold mol object back to a SMILES string format</span>
-smiles_scaffold_generic <span style="color:#2c5dcd">=</span> Chem<span style="color:#2c5dcd">.</span>CanonSmiles(Chem<span style="color:#2c5dcd">.</span>MolToSmiles(mol_scaffold_generic))
-<span style="color:#0080ff;font-style:italic"># display compound and its generic Bemis-Murcko scaffold</span>
-display(mol)
-<span style="color:#5918bb;font-weight:bold">print</span>(smiles)
-display(mol_scaffold_generic)
-<span style="color:#5918bb;font-weight:bold">print</span>(smiles_scaffold_generic)
-</code></pre></div><p><img src="images/prop1.png" alt="prop1"></p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">CN1CCCCC1CCN2C3<span style="color:#2c5dcd">=</span>CC<span style="color:#2c5dcd">=</span>CC<span style="color:#2c5dcd">=</span>C3SC4<span style="color:#2c5dcd">=</span>C2C<span style="color:#2c5dcd">=</span>C(C<span style="color:#2c5dcd">=</span>C4)SC
-</code></pre></div><p><img src="images/prop2.png" alt="prop2"></p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">C1CCC(CCC2C3CCCCC3CC3CCCCC32)CC1
-</code></pre></div><h1 id="generating-generic-bemis-murcko-scaffolds">Generating generic Bemis-Murcko scaffolds</h1>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#2c5dcd;font-weight:bold">from</span> rdkit <span style="color:#2c5dcd;font-weight:bold">import</span> Chem
+</span></span><span style="display:flex;"><span><span style="color:#2c5dcd;font-weight:bold">from</span> rdkit.Chem.Scaffolds <span style="color:#2c5dcd;font-weight:bold">import</span> MurckoScaffold
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># define compound via its SMILES string</span>
+</span></span><span style="display:flex;"><span>smiles <span style="color:#2c5dcd">=</span> <span style="color:#0c6">&#34;CN1CCCCC1CCN2C3=CC=CC=C3SC4=C2C=C(C=C4)SC&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># convert SMILES string to RDKit mol object </span>
+</span></span><span style="display:flex;"><span>mol <span style="color:#2c5dcd">=</span> Chem<span style="color:#2c5dcd">.</span>MolFromSmiles(smiles)
+</span></span><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># create RDKit mol object corresponding to Bemis-Murcko scaffold of original compound</span>
+</span></span><span style="display:flex;"><span>mol_scaffold <span style="color:#2c5dcd">=</span> MurckoScaffold<span style="color:#2c5dcd">.</span>GetScaffoldForMol(mol)
+</span></span><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># make the scaffold generic by replacing all atoms with carbons and all bonds with single bonds</span>
+</span></span><span style="display:flex;"><span>mol_scaffold_generic <span style="color:#2c5dcd">=</span> MurckoScaffold<span style="color:#2c5dcd">.</span>MakeScaffoldGeneric(mol_scaffold)
+</span></span><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># convert the generic scaffold mol object back to a SMILES string format</span>
+</span></span><span style="display:flex;"><span>smiles_scaffold_generic <span style="color:#2c5dcd">=</span> Chem<span style="color:#2c5dcd">.</span>CanonSmiles(Chem<span style="color:#2c5dcd">.</span>MolToSmiles(mol_scaffold_generic))
+</span></span><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># display compound and its generic Bemis-Murcko scaffold</span>
+</span></span><span style="display:flex;"><span>display(mol)
+</span></span><span style="display:flex;"><span><span style="color:#5918bb;font-weight:bold">print</span>(smiles)
+</span></span><span style="display:flex;"><span>display(mol_scaffold_generic)
+</span></span><span style="display:flex;"><span><span style="color:#5918bb;font-weight:bold">print</span>(smiles_scaffold_generic)
+</span></span></code></pre></div><p><img src="images/prop1.png" alt="prop1"></p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>CN1CCCCC1CCN2C3<span style="color:#2c5dcd">=</span>CC<span style="color:#2c5dcd">=</span>CC<span style="color:#2c5dcd">=</span>C3SC4<span style="color:#2c5dcd">=</span>C2C<span style="color:#2c5dcd">=</span>C(C<span style="color:#2c5dcd">=</span>C4)SC
+</span></span></code></pre></div><p><img src="images/prop2.png" alt="prop2"></p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>C1CCC(CCC2C3CCCCC3CC3CCCCC32)CC1
+</span></span></code></pre></div><h1 id="generating-generic-bemis-murcko-scaffolds">Generating generic Bemis-Murcko scaffolds</h1>
 <p>Below I&rsquo;ve written code to generate the scaffolds and a few other related molecular representations. But binning and writing the code to split them myself would take too much time so I use a built-in feature of chemprop to split the data before model training.</p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># import packages</span>
-
-<span style="color:#2c5dcd;font-weight:bold">import</span> chemprop
-<span style="color:#2c5dcd;font-weight:bold">import</span> pandas <span style="color:#2c5dcd;font-weight:bold">as</span> pd
-<span style="color:#2c5dcd;font-weight:bold">import</span> datamol <span style="color:#2c5dcd;font-weight:bold">as</span> dm
-pd<span style="color:#2c5dcd">.</span>options<span style="color:#2c5dcd">.</span>mode<span style="color:#2c5dcd">.</span>chained_assignment <span style="color:#2c5dcd">=</span> <span style="color:#2c5dcd;font-weight:bold">None</span>  <span style="color:#0080ff;font-style:italic"># default=&#39;warn&#39;</span>
-
-
-<span style="color:#0080ff;font-style:italic"># loading the datasets</span>
-MolNet <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>read_csv(<span style="color:#0c6">&#34;data/MoleculeNet.csv&#34;</span>)
-B3DB <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>read_csv(<span style="color:#0c6">&#34;data/B3DB.csv&#34;</span>)
-b3_molecules <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>read_csv(<span style="color:#0c6">&#34;data/b3_molecules.csv&#34;</span>)
-</code></pre></div><h2 id="scaffold_split-function">scaffold_split function</h2>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># import packages</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#2c5dcd;font-weight:bold">import</span> chemprop
+</span></span><span style="display:flex;"><span><span style="color:#2c5dcd;font-weight:bold">import</span> pandas <span style="color:#2c5dcd;font-weight:bold">as</span> pd
+</span></span><span style="display:flex;"><span><span style="color:#2c5dcd;font-weight:bold">import</span> datamol <span style="color:#2c5dcd;font-weight:bold">as</span> dm
+</span></span><span style="display:flex;"><span>pd<span style="color:#2c5dcd">.</span>options<span style="color:#2c5dcd">.</span>mode<span style="color:#2c5dcd">.</span>chained_assignment <span style="color:#2c5dcd">=</span> <span style="color:#2c5dcd;font-weight:bold">None</span>  <span style="color:#0080ff;font-style:italic"># default=&#39;warn&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># loading the datasets</span>
+</span></span><span style="display:flex;"><span>MolNet <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>read_csv(<span style="color:#0c6">&#34;data/MoleculeNet.csv&#34;</span>)
+</span></span><span style="display:flex;"><span>B3DB <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>read_csv(<span style="color:#0c6">&#34;data/B3DB.csv&#34;</span>)
+</span></span><span style="display:flex;"><span>b3_molecules <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>read_csv(<span style="color:#0c6">&#34;data/b3_molecules.csv&#34;</span>)
+</span></span></code></pre></div><h2 id="scaffold_split-function">scaffold_split function</h2>
 <p>This function generates and sanitizes mols, generates a scaffold from the mol object, generalizes the scaffold, and lastly converts the scaffold to a SMILES string, returning a dataframe.</p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#2c5dcd;font-weight:bold">def</span> <span style="color:#ff8000;font-weight:bold">scaffold_split</span>(df):
-    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [Chem<span style="color:#2c5dcd">.</span>MolFromSmiles(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#34;standard_smiles&#34;</span>]] <span style="color:#0080ff;font-style:italic"># generating mols from the standard_smiles column</span>
-    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>sanitize_mol(x, sanifix<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>, charge_neutral<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># sanitize mol objects</span>
-    df <span style="color:#2c5dcd">=</span> df<span style="color:#2c5dcd">.</span>dropna() <span style="color:#0080ff;font-style:italic"># dropping NA values</span>
-    df[<span style="color:#0c6">&#34;scaffold&#34;</span>] <span style="color:#2c5dcd">=</span> [MurckoScaffold<span style="color:#2c5dcd">.</span>GetScaffoldForMol(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#34;mol&#34;</span>]] <span style="color:#0080ff;font-style:italic"># generating scaffolds from mol object</span>
-    df[<span style="color:#0c6">&#34;mol_scaffold_generic&#34;</span>] <span style="color:#2c5dcd">=</span> [MurckoScaffold<span style="color:#2c5dcd">.</span>MakeScaffoldGeneric(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#34;scaffold&#34;</span>]] <span style="color:#0080ff;font-style:italic"># generalizing scaffolds</span>
-    <span style="color:#0080ff;font-style:italic"># convert the generic scaffold mol object back to a SMILES string format</span>
-    df[<span style="color:#0c6">&#34;smiles_scaffold_generic&#34;</span>] <span style="color:#2c5dcd">=</span> [Chem<span style="color:#2c5dcd">.</span>CanonSmiles(Chem<span style="color:#2c5dcd">.</span>MolToSmiles(x)) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#34;mol_scaffold_generic&#34;</span>]]
-    
-    <span style="color:#2c5dcd;font-weight:bold">return</span> df
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># the data prior to processing</span>
-MolNet<span style="color:#2c5dcd">.</span>head(<span style="color:#5918bb;font-weight:bold">1</span>)
-</code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#2c5dcd;font-weight:bold">def</span> <span style="color:#ff8000;font-weight:bold">scaffold_split</span>(df):
+</span></span><span style="display:flex;"><span>    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [Chem<span style="color:#2c5dcd">.</span>MolFromSmiles(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#34;standard_smiles&#34;</span>]] <span style="color:#0080ff;font-style:italic"># generating mols from the standard_smiles column</span>
+</span></span><span style="display:flex;"><span>    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>sanitize_mol(x, sanifix<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>, charge_neutral<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># sanitize mol objects</span>
+</span></span><span style="display:flex;"><span>    df <span style="color:#2c5dcd">=</span> df<span style="color:#2c5dcd">.</span>dropna() <span style="color:#0080ff;font-style:italic"># dropping NA values</span>
+</span></span><span style="display:flex;"><span>    df[<span style="color:#0c6">&#34;scaffold&#34;</span>] <span style="color:#2c5dcd">=</span> [MurckoScaffold<span style="color:#2c5dcd">.</span>GetScaffoldForMol(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#34;mol&#34;</span>]] <span style="color:#0080ff;font-style:italic"># generating scaffolds from mol object</span>
+</span></span><span style="display:flex;"><span>    df[<span style="color:#0c6">&#34;mol_scaffold_generic&#34;</span>] <span style="color:#2c5dcd">=</span> [MurckoScaffold<span style="color:#2c5dcd">.</span>MakeScaffoldGeneric(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#34;scaffold&#34;</span>]] <span style="color:#0080ff;font-style:italic"># generalizing scaffolds</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0080ff;font-style:italic"># convert the generic scaffold mol object back to a SMILES string format</span>
+</span></span><span style="display:flex;"><span>    df[<span style="color:#0c6">&#34;smiles_scaffold_generic&#34;</span>] <span style="color:#2c5dcd">=</span> [Chem<span style="color:#2c5dcd">.</span>CanonSmiles(Chem<span style="color:#2c5dcd">.</span>MolToSmiles(x)) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#34;mol_scaffold_generic&#34;</span>]]
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#2c5dcd;font-weight:bold">return</span> df
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># the data prior to processing</span>
+</span></span><span style="display:flex;"><span>MolNet<span style="color:#2c5dcd">.</span>head(<span style="color:#5918bb;font-weight:bold">1</span>)
+</span></span></code></pre></div><hr>
 <table>
 <thead>
 <tr>
@@ -196,10 +196,10 @@ MolNet<span style="color:#2c5dcd">.</span>head(<span style="color:#5918bb;font-w
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># results of the scaffold generating function</span>
-data_split <span style="color:#2c5dcd">=</span> scaffold_split(b3_molecules)
-data_split<span style="color:#2c5dcd">.</span>head(<span style="color:#5918bb;font-weight:bold">1</span>)
-</code></pre></div><p>The three additionally generated columns below:</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># results of the scaffold generating function</span>
+</span></span><span style="display:flex;"><span>data_split <span style="color:#2c5dcd">=</span> scaffold_split(b3_molecules)
+</span></span><span style="display:flex;"><span>data_split<span style="color:#2c5dcd">.</span>head(<span style="color:#5918bb;font-weight:bold">1</span>)
+</span></span></code></pre></div><p>The three additionally generated columns below:</p>
 <hr>
 <table>
 <thead>
@@ -219,22 +219,22 @@ data_split<span style="color:#2c5dcd">.</span>head(<span style="color:#5918bb;fo
 </table>
 <h2 id="chemprop_prep-function">chemprop_prep function</h2>
 <p>This function serves to prepare the data to be used by the chemprop library. Specifically, the input data must contain a SMILES string in the first column and the target value - a binary value in this experiment. The resulting dataframe is saved as a CSV file to later be used by chemprop.</p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># A function to process the data for use with the chemprop library</span>
-<span style="color:#2c5dcd;font-weight:bold">def</span> <span style="color:#ff8000;font-weight:bold">chemprop_prep</span>(df, filename):
-    df <span style="color:#2c5dcd">=</span> df<span style="color:#2c5dcd">.</span>drop([<span style="color:#0c6">&#34;mol&#34;</span>, <span style="color:#0c6">&#34;SMILES&#34;</span>, <span style="color:#0c6">&#34;selfies&#34;</span>, <span style="color:#0c6">&#34;inchi&#34;</span>, <span style="color:#0c6">&#34;inchikey&#34;</span>], axis<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">1</span>) <span style="color:#0080ff;font-style:italic"># drop all columns except the smiles and target</span>
-    df[<span style="color:#0c6">&#34;smiles&#34;</span>] <span style="color:#2c5dcd">=</span> df[<span style="color:#0c6">&#34;standard_smiles&#34;</span>] <span style="color:#0080ff;font-style:italic"># use standard smiles inplace of smiles</span>
-    df <span style="color:#2c5dcd">=</span> df<span style="color:#2c5dcd">.</span>drop([<span style="color:#0c6">&#34;standard_smiles&#34;</span>], axis<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">1</span>) <span style="color:#0080ff;font-style:italic"># drop this column now</span>
-    df <span style="color:#2c5dcd">=</span> df[[<span style="color:#0c6">&#34;smiles&#34;</span>, <span style="color:#0c6">&#34;BBB+/BBB-&#34;</span>]] <span style="color:#0080ff;font-style:italic"># reorder the columns with smiles first and target second</span>
-    df<span style="color:#2c5dcd">.</span>to_csv(<span style="color:#0c6">&#39;./data/&#39;</span> <span style="color:#2c5dcd">+</span> filename <span style="color:#2c5dcd">+</span> <span style="color:#0c6">&#39;.csv&#39;</span>, index<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>) <span style="color:#0080ff;font-style:italic"># save the file</span>
-
-    <span style="color:#2c5dcd;font-weight:bold">return</span> df
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># Processing the three different datasets</span>
-molnet_chemprop <span style="color:#2c5dcd">=</span> chemprop_prep(MolNet, <span style="color:#0c6">&#39;molnet_chemprop&#39;</span>)
-B3DB_chemprop <span style="color:#2c5dcd">=</span> chemprop_prep(B3DB, <span style="color:#0c6">&#39;B3DB_chemprep&#39;</span>)
-b3_mol_chemprop <span style="color:#2c5dcd">=</span> chemprop_prep(b3_molecules, <span style="color:#0c6">&#39;b3_mol_chemprop&#39;</span>)
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># results of processing</span>
-molnet_chemprop<span style="color:#2c5dcd">.</span>head(<span style="color:#5918bb;font-weight:bold">1</span>)
-</code></pre></div><table>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># A function to process the data for use with the chemprop library</span>
+</span></span><span style="display:flex;"><span><span style="color:#2c5dcd;font-weight:bold">def</span> <span style="color:#ff8000;font-weight:bold">chemprop_prep</span>(df, filename):
+</span></span><span style="display:flex;"><span>    df <span style="color:#2c5dcd">=</span> df<span style="color:#2c5dcd">.</span>drop([<span style="color:#0c6">&#34;mol&#34;</span>, <span style="color:#0c6">&#34;SMILES&#34;</span>, <span style="color:#0c6">&#34;selfies&#34;</span>, <span style="color:#0c6">&#34;inchi&#34;</span>, <span style="color:#0c6">&#34;inchikey&#34;</span>], axis<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">1</span>) <span style="color:#0080ff;font-style:italic"># drop all columns except the smiles and target</span>
+</span></span><span style="display:flex;"><span>    df[<span style="color:#0c6">&#34;smiles&#34;</span>] <span style="color:#2c5dcd">=</span> df[<span style="color:#0c6">&#34;standard_smiles&#34;</span>] <span style="color:#0080ff;font-style:italic"># use standard smiles inplace of smiles</span>
+</span></span><span style="display:flex;"><span>    df <span style="color:#2c5dcd">=</span> df<span style="color:#2c5dcd">.</span>drop([<span style="color:#0c6">&#34;standard_smiles&#34;</span>], axis<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">1</span>) <span style="color:#0080ff;font-style:italic"># drop this column now</span>
+</span></span><span style="display:flex;"><span>    df <span style="color:#2c5dcd">=</span> df[[<span style="color:#0c6">&#34;smiles&#34;</span>, <span style="color:#0c6">&#34;BBB+/BBB-&#34;</span>]] <span style="color:#0080ff;font-style:italic"># reorder the columns with smiles first and target second</span>
+</span></span><span style="display:flex;"><span>    df<span style="color:#2c5dcd">.</span>to_csv(<span style="color:#0c6">&#39;./data/&#39;</span> <span style="color:#2c5dcd">+</span> filename <span style="color:#2c5dcd">+</span> <span style="color:#0c6">&#39;.csv&#39;</span>, index<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>) <span style="color:#0080ff;font-style:italic"># save the file</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#2c5dcd;font-weight:bold">return</span> df
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># Processing the three different datasets</span>
+</span></span><span style="display:flex;"><span>molnet_chemprop <span style="color:#2c5dcd">=</span> chemprop_prep(MolNet, <span style="color:#0c6">&#39;molnet_chemprop&#39;</span>)
+</span></span><span style="display:flex;"><span>B3DB_chemprop <span style="color:#2c5dcd">=</span> chemprop_prep(B3DB, <span style="color:#0c6">&#39;B3DB_chemprep&#39;</span>)
+</span></span><span style="display:flex;"><span>b3_mol_chemprop <span style="color:#2c5dcd">=</span> chemprop_prep(b3_molecules, <span style="color:#0c6">&#39;b3_mol_chemprop&#39;</span>)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># results of processing</span>
+</span></span><span style="display:flex;"><span>molnet_chemprop<span style="color:#2c5dcd">.</span>head(<span style="color:#5918bb;font-weight:bold">1</span>)
+</span></span></code></pre></div><table>
 <thead>
 <tr>
 <th style="text-align:left">smiles</th>
@@ -259,123 +259,123 @@ molnet_chemprop<span style="color:#2c5dcd">.</span>head(<span style="color:#5918
 <hr>
 <p>These models are trained using the MoleculeNet data (2035 molecules), further tests will use the combined dataset with ~8100 molecules.</p>
 <h2 id="model-training-1">Model training 1</h2>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">arguments <span style="color:#2c5dcd">=</span> [
-    <span style="color:#0c6">&#39;--data_path&#39;</span>, <span style="color:#0c6">&#39;./data/molnet_chemprop.csv&#39;</span>,
-    <span style="color:#0c6">&#39;--dataset_type&#39;</span>, <span style="color:#0c6">&#39;classification&#39;</span>,
-    <span style="color:#0c6">&#39;--save_dir&#39;</span>, <span style="color:#0c6">&#39;./data/chemprop_checkpoints/&#39;</span>,
-    <span style="color:#0c6">&#39;--split_type&#39;</span>, <span style="color:#0c6">&#39;scaffold_balanced&#39;</span>,
- <span style="color:#0080ff;font-style:italic">#   &#39;--separate_val_path&#39;, &#39;./data/chemprop_B3DB.csv&#39;,</span>
-    <span style="color:#0c6">&#39;--num_folds&#39;</span>, <span style="color:#0c6">&#39;10&#39;</span>,
-    <span style="color:#0c6">&#39;--class_balance&#39;</span>,
-    <span style="color:#0c6">&#39;--features_generator&#39;</span>, <span style="color:#0c6">&#39;rdkit_2d_normalized&#39;</span>,
-    <span style="color:#0c6">&#39;--no_features_scaling&#39;</span>,
-    <span style="color:#0c6">&#39;--quiet&#39;</span>
-    
-
-]
-
-args <span style="color:#2c5dcd">=</span> chemprop<span style="color:#2c5dcd">.</span>args<span style="color:#2c5dcd">.</span>TrainArgs()<span style="color:#2c5dcd">.</span>parse_args(arguments)
-mean_score, std_score <span style="color:#2c5dcd">=</span> chemprop<span style="color:#2c5dcd">.</span>train<span style="color:#2c5dcd">.</span>cross_validate(args<span style="color:#2c5dcd">=</span>args, train_func<span style="color:#2c5dcd">=</span>chemprop<span style="color:#2c5dcd">.</span>train<span style="color:#2c5dcd">.</span>run_training)
-</code></pre></div><h2 id="model-training-2">Model training 2</h2>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">arguments <span style="color:#2c5dcd">=</span> [
-    <span style="color:#0c6">&#39;--data_path&#39;</span>, <span style="color:#0c6">&#39;./data/molnet_chemprop.csv&#39;</span>,
-    <span style="color:#0c6">&#39;--dataset_type&#39;</span>, <span style="color:#0c6">&#39;classification&#39;</span>,
-    <span style="color:#0c6">&#39;--save_dir&#39;</span>, <span style="color:#0c6">&#39;./data/chemprop_checkpoints/&#39;</span>,
-    <span style="color:#0c6">&#39;--split_type&#39;</span>, <span style="color:#0c6">&#39;scaffold_balanced&#39;</span>,
- <span style="color:#0080ff;font-style:italic">#   &#39;--separate_val_path&#39;, &#39;./data/chemprop_B3DB.csv&#39;,</span>
-    <span style="color:#0c6">&#39;--num_folds&#39;</span>, <span style="color:#0c6">&#39;10&#39;</span>,
-    <span style="color:#0c6">&#39;--class_balance&#39;</span>,
-    <span style="color:#0c6">&#39;--features_generator&#39;</span>, <span style="color:#0c6">&#39;rdkit_2d_normalized&#39;</span>,
-    <span style="color:#0c6">&#39;--no_features_scaling&#39;</span>,
-    <span style="color:#0c6">&#39;--quiet&#39;</span>,
-    <span style="color:#0c6">&#39;--epochs&#39;</span>, <span style="color:#0c6">&#39;100&#39;</span>
-    
-
-]
-
-args <span style="color:#2c5dcd">=</span> chemprop<span style="color:#2c5dcd">.</span>args<span style="color:#2c5dcd">.</span>TrainArgs()<span style="color:#2c5dcd">.</span>parse_args(arguments)
-mean_score, std_score <span style="color:#2c5dcd">=</span> chemprop<span style="color:#2c5dcd">.</span>train<span style="color:#2c5dcd">.</span>cross_validate(args<span style="color:#2c5dcd">=</span>args, train_func<span style="color:#2c5dcd">=</span>chemprop<span style="color:#2c5dcd">.</span>train<span style="color:#2c5dcd">.</span>run_training)
-</code></pre></div><h2 id="model-training-3">Model training 3</h2>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">arguments <span style="color:#2c5dcd">=</span> [
-    <span style="color:#0c6">&#39;--data_path&#39;</span>, <span style="color:#0c6">&#39;./data/molnet_chemprop.csv&#39;</span>,
-    <span style="color:#0c6">&#39;--dataset_type&#39;</span>, <span style="color:#0c6">&#39;classification&#39;</span>,
-    <span style="color:#0c6">&#39;--save_dir&#39;</span>, <span style="color:#0c6">&#39;./data/chemprop_checkpoints/&#39;</span>,
-    <span style="color:#0c6">&#39;--split_type&#39;</span>, <span style="color:#0c6">&#39;scaffold_balanced&#39;</span>,
- <span style="color:#0080ff;font-style:italic">#   &#39;--separate_val_path&#39;, &#39;./data/chemprop_B3DB.csv&#39;,</span>
-    <span style="color:#0c6">&#39;--num_folds&#39;</span>, <span style="color:#0c6">&#39;30&#39;</span>,
-    <span style="color:#0c6">&#39;--class_balance&#39;</span>,
-    <span style="color:#0c6">&#39;--features_generator&#39;</span>, <span style="color:#0c6">&#39;rdkit_2d_normalized&#39;</span>,
-    <span style="color:#0c6">&#39;--no_features_scaling&#39;</span>,
-    <span style="color:#0c6">&#39;--quiet&#39;</span>,
-    <span style="color:#0c6">&#39;--epochs&#39;</span>, <span style="color:#0c6">&#39;20&#39;</span>,
-    
-
-]
-
-args <span style="color:#2c5dcd">=</span> chemprop<span style="color:#2c5dcd">.</span>args<span style="color:#2c5dcd">.</span>TrainArgs()<span style="color:#2c5dcd">.</span>parse_args(arguments)
-mean_score, std_score <span style="color:#2c5dcd">=</span> chemprop<span style="color:#2c5dcd">.</span>train<span style="color:#2c5dcd">.</span>cross_validate(args<span style="color:#2c5dcd">=</span>args, train_func<span style="color:#2c5dcd">=</span>chemprop<span style="color:#2c5dcd">.</span>train<span style="color:#2c5dcd">.</span>run_training)
-</code></pre></div><h1 id="results">Results</h1>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>arguments <span style="color:#2c5dcd">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--data_path&#39;</span>, <span style="color:#0c6">&#39;./data/molnet_chemprop.csv&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--dataset_type&#39;</span>, <span style="color:#0c6">&#39;classification&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--save_dir&#39;</span>, <span style="color:#0c6">&#39;./data/chemprop_checkpoints/&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--split_type&#39;</span>, <span style="color:#0c6">&#39;scaffold_balanced&#39;</span>,
+</span></span><span style="display:flex;"><span> <span style="color:#0080ff;font-style:italic">#   &#39;--separate_val_path&#39;, &#39;./data/chemprop_B3DB.csv&#39;,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--num_folds&#39;</span>, <span style="color:#0c6">&#39;10&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--class_balance&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--features_generator&#39;</span>, <span style="color:#0c6">&#39;rdkit_2d_normalized&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--no_features_scaling&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--quiet&#39;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>args <span style="color:#2c5dcd">=</span> chemprop<span style="color:#2c5dcd">.</span>args<span style="color:#2c5dcd">.</span>TrainArgs()<span style="color:#2c5dcd">.</span>parse_args(arguments)
+</span></span><span style="display:flex;"><span>mean_score, std_score <span style="color:#2c5dcd">=</span> chemprop<span style="color:#2c5dcd">.</span>train<span style="color:#2c5dcd">.</span>cross_validate(args<span style="color:#2c5dcd">=</span>args, train_func<span style="color:#2c5dcd">=</span>chemprop<span style="color:#2c5dcd">.</span>train<span style="color:#2c5dcd">.</span>run_training)
+</span></span></code></pre></div><h2 id="model-training-2">Model training 2</h2>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>arguments <span style="color:#2c5dcd">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--data_path&#39;</span>, <span style="color:#0c6">&#39;./data/molnet_chemprop.csv&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--dataset_type&#39;</span>, <span style="color:#0c6">&#39;classification&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--save_dir&#39;</span>, <span style="color:#0c6">&#39;./data/chemprop_checkpoints/&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--split_type&#39;</span>, <span style="color:#0c6">&#39;scaffold_balanced&#39;</span>,
+</span></span><span style="display:flex;"><span> <span style="color:#0080ff;font-style:italic">#   &#39;--separate_val_path&#39;, &#39;./data/chemprop_B3DB.csv&#39;,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--num_folds&#39;</span>, <span style="color:#0c6">&#39;10&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--class_balance&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--features_generator&#39;</span>, <span style="color:#0c6">&#39;rdkit_2d_normalized&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--no_features_scaling&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--quiet&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--epochs&#39;</span>, <span style="color:#0c6">&#39;100&#39;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>args <span style="color:#2c5dcd">=</span> chemprop<span style="color:#2c5dcd">.</span>args<span style="color:#2c5dcd">.</span>TrainArgs()<span style="color:#2c5dcd">.</span>parse_args(arguments)
+</span></span><span style="display:flex;"><span>mean_score, std_score <span style="color:#2c5dcd">=</span> chemprop<span style="color:#2c5dcd">.</span>train<span style="color:#2c5dcd">.</span>cross_validate(args<span style="color:#2c5dcd">=</span>args, train_func<span style="color:#2c5dcd">=</span>chemprop<span style="color:#2c5dcd">.</span>train<span style="color:#2c5dcd">.</span>run_training)
+</span></span></code></pre></div><h2 id="model-training-3">Model training 3</h2>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>arguments <span style="color:#2c5dcd">=</span> [
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--data_path&#39;</span>, <span style="color:#0c6">&#39;./data/molnet_chemprop.csv&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--dataset_type&#39;</span>, <span style="color:#0c6">&#39;classification&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--save_dir&#39;</span>, <span style="color:#0c6">&#39;./data/chemprop_checkpoints/&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--split_type&#39;</span>, <span style="color:#0c6">&#39;scaffold_balanced&#39;</span>,
+</span></span><span style="display:flex;"><span> <span style="color:#0080ff;font-style:italic">#   &#39;--separate_val_path&#39;, &#39;./data/chemprop_B3DB.csv&#39;,</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--num_folds&#39;</span>, <span style="color:#0c6">&#39;30&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--class_balance&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--features_generator&#39;</span>, <span style="color:#0c6">&#39;rdkit_2d_normalized&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--no_features_scaling&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--quiet&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#0c6">&#39;--epochs&#39;</span>, <span style="color:#0c6">&#39;20&#39;</span>,
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>args <span style="color:#2c5dcd">=</span> chemprop<span style="color:#2c5dcd">.</span>args<span style="color:#2c5dcd">.</span>TrainArgs()<span style="color:#2c5dcd">.</span>parse_args(arguments)
+</span></span><span style="display:flex;"><span>mean_score, std_score <span style="color:#2c5dcd">=</span> chemprop<span style="color:#2c5dcd">.</span>train<span style="color:#2c5dcd">.</span>cross_validate(args<span style="color:#2c5dcd">=</span>args, train_func<span style="color:#2c5dcd">=</span>chemprop<span style="color:#2c5dcd">.</span>train<span style="color:#2c5dcd">.</span>run_training)
+</span></span></code></pre></div><h1 id="results">Results</h1>
 <h3 id="experiment-1">Experiment 1:</h3>
 <p>10-fold cross validation</p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Seed <span style="color:#5918bb;font-weight:bold">0</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.928767</span>
-Seed <span style="color:#5918bb;font-weight:bold">1</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.903879</span>
-Seed <span style="color:#5918bb;font-weight:bold">2</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.955724</span>
-Seed <span style="color:#5918bb;font-weight:bold">3</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.862450</span>
-Seed <span style="color:#5918bb;font-weight:bold">4</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.890246</span>
-Seed <span style="color:#5918bb;font-weight:bold">5</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.892326</span>
-Seed <span style="color:#5918bb;font-weight:bold">6</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.886606</span>
-Seed <span style="color:#5918bb;font-weight:bold">7</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.951849</span>
-Seed <span style="color:#5918bb;font-weight:bold">8</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.906486</span>
-Seed <span style="color:#5918bb;font-weight:bold">9</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.937866</span>
-</code></pre></div><p>Overall test auc = 0.911620 +/- 0.029164 Elapsed time = 0:20:54</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">0</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.928767</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">1</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.903879</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">2</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.955724</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">3</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.862450</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">4</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.890246</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">5</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.892326</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">6</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.886606</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">7</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.951849</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">8</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.906486</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">9</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.937866</span>
+</span></span></code></pre></div><p>Overall test auc = 0.911620 +/- 0.029164 Elapsed time = 0:20:54</p>
 <p>This run was the fastest and used the default number of epochs and fold. The overall AUC for the test data was 0.911620 +/- 0.029164.</p>
 <h3 id="experiment-2">Experiment 2:</h3>
 <p>10-fold cross validation</p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Seed <span style="color:#5918bb;font-weight:bold">0</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.929177</span>
-Seed <span style="color:#5918bb;font-weight:bold">1</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.852848</span>
-Seed <span style="color:#5918bb;font-weight:bold">2</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.944112</span>
-Seed <span style="color:#5918bb;font-weight:bold">3</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.862913</span>
-Seed <span style="color:#5918bb;font-weight:bold">4</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.890246</span>
-Seed <span style="color:#5918bb;font-weight:bold">5</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.893487</span>
-Seed <span style="color:#5918bb;font-weight:bold">6</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.881697</span>
-Seed <span style="color:#5918bb;font-weight:bold">7</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.941933</span>
-Seed <span style="color:#5918bb;font-weight:bold">8</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.920437</span>
-Seed <span style="color:#5918bb;font-weight:bold">9</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.917494</span>
-</code></pre></div><p>Overall test auc = 0.903435 +/- 0.030385 Elapsed time = 16:49:39</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">0</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.929177</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">1</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.852848</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">2</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.944112</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">3</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.862913</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">4</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.890246</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">5</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.893487</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">6</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.881697</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">7</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.941933</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">8</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.920437</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">9</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.917494</span>
+</span></span></code></pre></div><p>Overall test auc = 0.903435 +/- 0.030385 Elapsed time = 16:49:39</p>
 <p>This run took the most time, nearing almost 17 hours with 100 epochs for each fold. The overall AUC for the test data was 0.903435 +/- 0.030385 which underperformed compared to the model in the first experiment that ran using default parameters.</p>
 <h3 id="experiment-3">Experiment 3:</h3>
 <p>30-fold cross validation</p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Seed <span style="color:#5918bb;font-weight:bold">0</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.928630</span>
-Seed <span style="color:#5918bb;font-weight:bold">1</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.907636</span>
-Seed <span style="color:#5918bb;font-weight:bold">2</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.943526</span>
-Seed <span style="color:#5918bb;font-weight:bold">3</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.882607</span>
-Seed <span style="color:#5918bb;font-weight:bold">4</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.890246</span>
-Seed <span style="color:#5918bb;font-weight:bold">5</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.892559</span>
-Seed <span style="color:#5918bb;font-weight:bold">6</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.870606</span>
-Seed <span style="color:#5918bb;font-weight:bold">7</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.947479</span>
-Seed <span style="color:#5918bb;font-weight:bold">8</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.903720</span>
-Seed <span style="color:#5918bb;font-weight:bold">9</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.930991</span>
-Seed <span style="color:#5918bb;font-weight:bold">10</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.795291</span>
-Seed <span style="color:#5918bb;font-weight:bold">11</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.894284</span>
-Seed <span style="color:#5918bb;font-weight:bold">12</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.936275</span>
-Seed <span style="color:#5918bb;font-weight:bold">13</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.930272</span>
-Seed <span style="color:#5918bb;font-weight:bold">14</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.950706</span>
-Seed <span style="color:#5918bb;font-weight:bold">15</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.919849</span>
-Seed <span style="color:#5918bb;font-weight:bold">16</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.877632</span>
-Seed <span style="color:#5918bb;font-weight:bold">17</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.871467</span>
-Seed <span style="color:#5918bb;font-weight:bold">18</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.888110</span>
-Seed <span style="color:#5918bb;font-weight:bold">19</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.905920</span>
-Seed <span style="color:#5918bb;font-weight:bold">20</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.921946</span>
-Seed <span style="color:#5918bb;font-weight:bold">21</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.928851</span>
-Seed <span style="color:#5918bb;font-weight:bold">22</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.870864</span>
-Seed <span style="color:#5918bb;font-weight:bold">23</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.865779</span>
-Seed <span style="color:#5918bb;font-weight:bold">24</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.902960</span>
-Seed <span style="color:#5918bb;font-weight:bold">25</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.946100</span>
-Seed <span style="color:#5918bb;font-weight:bold">26</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.900540</span>
-Seed <span style="color:#5918bb;font-weight:bold">27</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.923984</span>
-Seed <span style="color:#5918bb;font-weight:bold">28</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.900345</span>
-Seed <span style="color:#5918bb;font-weight:bold">29</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.905261</span>
-</code></pre></div><p>Overall test auc = 0.904481 +/- 0.031870 Elapsed time = 0:38:51</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">0</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.928630</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">1</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.907636</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">2</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.943526</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">3</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.882607</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">4</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.890246</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">5</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.892559</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">6</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.870606</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">7</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.947479</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">8</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.903720</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">9</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.930991</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">10</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.795291</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">11</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.894284</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">12</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.936275</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">13</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.930272</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">14</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.950706</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">15</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.919849</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">16</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.877632</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">17</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.871467</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">18</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.888110</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">19</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.905920</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">20</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.921946</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">21</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.928851</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">22</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.870864</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">23</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.865779</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">24</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.902960</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">25</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.946100</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">26</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.900540</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">27</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.923984</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">28</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.900345</span>
+</span></span><span style="display:flex;"><span>Seed <span style="color:#5918bb;font-weight:bold">29</span> <span style="color:#2c5dcd">==&gt;</span> test auc <span style="color:#2c5dcd">=</span> <span style="color:#5918bb;font-weight:bold">0.905261</span>
+</span></span></code></pre></div><p>Overall test auc = 0.904481 +/- 0.031870 Elapsed time = 0:38:51</p>
 <p>This run took less than an hour (~40 minutes), with 20 training epochs per fold. Increasing the number of folds and epochs seems to bring down the model&rsquo;s accuracy compared to the default settings. The overall AUC for the test data was AUC= 0.904481 +/- 0.031870, which still marginally outperformed the model in experiment 2 that took nearly 17 hours.</p>
 
             

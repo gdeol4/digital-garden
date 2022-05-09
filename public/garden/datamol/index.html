@@ -21,7 +21,7 @@
     <meta name="description" content="Sanitizing and manipulating labeled blood-brain barrier permeable molecules.">
 </head><body><nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="https://github.com/gdeol4/digital-garden">
+        <a class="navbar-brand" href="">
             
             <b style="font-weight: 800;">home</b>
             
@@ -31,16 +31,16 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ms-auto mt-2 mt-lg-0"><li class='nav-item '>
-                    <a class="nav-link" href="/gdeol4/digital-garden/garden/"> Digital Garden</a>
+                    <a class="nav-link" href="/garden/"> Digital Garden</a>
                 </li>
             <li class='nav-item '>
-                    <a class="nav-link" href="/gdeol4/digital-garden/projects/"> Projects</a>
+                    <a class="nav-link" href="/projects/"> Projects</a>
                 </li>
             <li class='nav-item '>
-                    <a class="nav-link" href="/gdeol4/digital-garden/library/"> Library</a>
+                    <a class="nav-link" href="/library/"> Library</a>
                 </li>
             <li class='nav-item '>
-                    <a class="nav-link" href="/gdeol4/digital-garden/about/"> About</a>
+                    <a class="nav-link" href="/about/"> About</a>
                 </li>
              
             <li class="nav-item px-2 pt-1">
@@ -103,12 +103,12 @@
     <div class="container-fluid py-2">
         <div class="serif main-content">
             <p>SMILES (Simplified Molecular Input Line Entry System) is a standard notation representing the molecular structure of a compound as a string representation that can be understood by a computer. The SMILES notation consists of a handful of rules which allow for converting the string to an image or graph. SMILES can then be easily used for generating further representations to train machine learning models with.</p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#2c5dcd;font-weight:bold">import</span> datamol <span style="color:#2c5dcd;font-weight:bold">as</span> dm
-<span style="color:#2c5dcd;font-weight:bold">import</span> pandas <span style="color:#2c5dcd;font-weight:bold">as</span> pd
-pd<span style="color:#2c5dcd">.</span>options<span style="color:#2c5dcd">.</span>mode<span style="color:#2c5dcd">.</span>chained_assignment <span style="color:#2c5dcd">=</span> <span style="color:#2c5dcd;font-weight:bold">None</span>  <span style="color:#0080ff;font-style:italic"># default=&#39;warn&#39;</span>
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">BBBP_df <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>read_csv(<span style="color:#0c6">&#34;data/BBBP.csv&#34;</span>)
-BBBP_df<span style="color:#2c5dcd">.</span>head()
-</code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#2c5dcd;font-weight:bold">import</span> datamol <span style="color:#2c5dcd;font-weight:bold">as</span> dm
+</span></span><span style="display:flex;"><span><span style="color:#2c5dcd;font-weight:bold">import</span> pandas <span style="color:#2c5dcd;font-weight:bold">as</span> pd
+</span></span><span style="display:flex;"><span>pd<span style="color:#2c5dcd">.</span>options<span style="color:#2c5dcd">.</span>mode<span style="color:#2c5dcd">.</span>chained_assignment <span style="color:#2c5dcd">=</span> <span style="color:#2c5dcd;font-weight:bold">None</span>  <span style="color:#0080ff;font-style:italic"># default=&#39;warn&#39;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>BBBP_df <span style="color:#2c5dcd">=</span> pd<span style="color:#2c5dcd">.</span>read_csv(<span style="color:#0c6">&#34;data/BBBP.csv&#34;</span>)
+</span></span><span style="display:flex;"><span>BBBP_df<span style="color:#2c5dcd">.</span>head()
+</span></span></code></pre></div><hr>
 <table>
 <thead>
 <tr>
@@ -152,16 +152,16 @@ BBBP_df<span style="color:#2c5dcd">.</span>head()
 </tbody>
 </table>
 <p>The dataframe shows 4 named columns, including the &ldquo;num&rdquo; of the molecule, the name, a binary label for blood brain barrier permeability status &ldquo;p_np&rdquo;, and the SMILES string.</p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#0080ff;font-style:italic"># The name and number can be dropped</span>
-BBBP_df <span style="color:#2c5dcd">=</span> BBBP_df<span style="color:#2c5dcd">.</span>drop([<span style="color:#0c6">&#34;num&#34;</span>, <span style="color:#0c6">&#34;name&#34;</span>], axis<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">1</span>)
-
-<span style="color:#0080ff;font-style:italic"># Checking the data for null values</span>
-BBBP_df[<span style="color:#0c6">&#34;smiles&#34;</span>]<span style="color:#2c5dcd">.</span>isnull()<span style="color:#2c5dcd">.</span>values<span style="color:#2c5dcd">.</span>any()
-
-<span style="color:#0080ff;font-style:italic"># Renaming the binary label to &#34;BBB+/BBB-&#34; for clarity</span>
-BBBP_df<span style="color:#2c5dcd">.</span>columns <span style="color:#2c5dcd">=</span> [<span style="color:#0c6">&#39;BBB+/BBB-&#39;</span>, <span style="color:#0c6">&#39;SMILES&#39;</span>]
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">BBBP_df
-</code></pre></div><hr>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># The name and number can be dropped</span>
+</span></span><span style="display:flex;"><span>BBBP_df <span style="color:#2c5dcd">=</span> BBBP_df<span style="color:#2c5dcd">.</span>drop([<span style="color:#0c6">&#34;num&#34;</span>, <span style="color:#0c6">&#34;name&#34;</span>], axis<span style="color:#2c5dcd">=</span><span style="color:#5918bb;font-weight:bold">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># Checking the data for null values</span>
+</span></span><span style="display:flex;"><span>BBBP_df[<span style="color:#0c6">&#34;smiles&#34;</span>]<span style="color:#2c5dcd">.</span>isnull()<span style="color:#2c5dcd">.</span>values<span style="color:#2c5dcd">.</span>any()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#0080ff;font-style:italic"># Renaming the binary label to &#34;BBB+/BBB-&#34; for clarity</span>
+</span></span><span style="display:flex;"><span>BBBP_df<span style="color:#2c5dcd">.</span>columns <span style="color:#2c5dcd">=</span> [<span style="color:#0c6">&#39;BBB+/BBB-&#39;</span>, <span style="color:#0c6">&#39;SMILES&#39;</span>]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>BBBP_df
+</span></span></code></pre></div><hr>
 <table>
 <thead>
 <tr>
@@ -192,39 +192,39 @@ BBBP_df<span style="color:#2c5dcd">.</span>columns <span style="color:#2c5dcd">=
 <p><img src="images/kekul.jpg" alt="kekul"></p>
 <p>RDkit generates the alternate position of double bonds, and then (in a second step they call &ldquo;aromatization&rdquo;) labels the ring as aromatic. In panel (2), there are three possible Lewis structures contributing to the actual structure (i.e. there is resonance), so the software would have to generate all three to be able to search for identical structures.<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
 <p>Below is a function using datamol to preprocess the dataset, including steps to generate mol objects, SELFIES, inchi, and inchikeys for each molecule. The function also standardizes mols and SMILES, drops NA values, and returns a dataframe.</p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#2c5dcd;font-weight:bold">def</span> <span style="color:#ff8000;font-weight:bold">preprocess_smiles</span>(df):
-    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>to_mol(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;SMILES&#39;</span>]] <span style="color:#0080ff;font-style:italic"># generating mols from SMILES</span>
-    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>fix_mol(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># Fixing mols</span>
-
-    df <span style="color:#2c5dcd">=</span> df<span style="color:#2c5dcd">.</span>dropna() <span style="color:#0080ff;font-style:italic"># dropping NA values</span>
-
-    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>sanitize_mol(x, sanifix<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>, charge_neutral<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># sanitize mol objects</span>
-    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>standardize_mol(x, disconnect_metals<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>, normalize<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>, reionize<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>, uncharge<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>, stereo<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># standardize mol objects</span>
-
-    df[<span style="color:#0c6">&#34;standard_smiles&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>standardize_smiles(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;SMILES&#39;</span>]] <span style="color:#0080ff;font-style:italic"># standardize SMILES</span>
-    df[<span style="color:#0c6">&#34;selfies&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>to_selfies(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># generate SELFIES</span>
-    df[<span style="color:#0c6">&#34;inchi&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>to_inchi(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># Generating InChi</span>
-    df[<span style="color:#0c6">&#34;inchikey&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>to_inchikey(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># Generating InChIKey</span>
-
-    <span style="color:#2c5dcd;font-weight:bold">return</span> df
-</code></pre></div><p>Running the function and taking a look at the outputs</p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">data_clean <span style="color:#2c5dcd">=</span> preprocess_smiles(BBBP_df)
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">data_clean<span style="color:#2c5dcd">.</span>shape
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">(<span style="color:#5918bb;font-weight:bold">2039</span>, <span style="color:#5918bb;font-weight:bold">7</span>)
-</code></pre></div><p>The data contains a 3:1 ratio of positive to negative labels, which creates a bias towards molecules with blood brain permeability properties. This may need to be addressed when training models. The next steps are to save the cleaned data for further analysis.</p>
-<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">counts <span style="color:#2c5dcd">=</span> data_clean[<span style="color:#0c6">&#39;BBB+/BBB-&#39;</span>]<span style="color:#2c5dcd">.</span>value_counts()<span style="color:#2c5dcd">.</span>to_dict()
-<span style="color:#5918bb;font-weight:bold">print</span>(counts)
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">{<span style="color:#5918bb;font-weight:bold">1</span>: <span style="color:#5918bb;font-weight:bold">1560</span>, <span style="color:#5918bb;font-weight:bold">0</span>: <span style="color:#5918bb;font-weight:bold">479</span>}
-</code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">data_clean<span style="color:#2c5dcd">.</span>to_csv(<span style="color:#0c6">&#39;./data/MoleculeNet.csv&#39;</span>, index<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>)
-</code></pre></div><h1 id="references">References</h1>
-<section class="footnotes" role="doc-endnotes">
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#2c5dcd;font-weight:bold">def</span> <span style="color:#ff8000;font-weight:bold">preprocess_smiles</span>(df):
+</span></span><span style="display:flex;"><span>    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>to_mol(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;SMILES&#39;</span>]] <span style="color:#0080ff;font-style:italic"># generating mols from SMILES</span>
+</span></span><span style="display:flex;"><span>    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>fix_mol(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># Fixing mols</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    df <span style="color:#2c5dcd">=</span> df<span style="color:#2c5dcd">.</span>dropna() <span style="color:#0080ff;font-style:italic"># dropping NA values</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>sanitize_mol(x, sanifix<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>, charge_neutral<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># sanitize mol objects</span>
+</span></span><span style="display:flex;"><span>    df[<span style="color:#0c6">&#34;mol&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>standardize_mol(x, disconnect_metals<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>, normalize<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>, reionize<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>, uncharge<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>, stereo<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">True</span>) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># standardize mol objects</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    df[<span style="color:#0c6">&#34;standard_smiles&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>standardize_smiles(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;SMILES&#39;</span>]] <span style="color:#0080ff;font-style:italic"># standardize SMILES</span>
+</span></span><span style="display:flex;"><span>    df[<span style="color:#0c6">&#34;selfies&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>to_selfies(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># generate SELFIES</span>
+</span></span><span style="display:flex;"><span>    df[<span style="color:#0c6">&#34;inchi&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>to_inchi(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># Generating InChi</span>
+</span></span><span style="display:flex;"><span>    df[<span style="color:#0c6">&#34;inchikey&#34;</span>] <span style="color:#2c5dcd">=</span> [dm<span style="color:#2c5dcd">.</span>to_inchikey(x) <span style="color:#2c5dcd;font-weight:bold">for</span> x <span style="color:#2c5dcd;font-weight:bold">in</span> df[<span style="color:#0c6">&#39;mol&#39;</span>]] <span style="color:#0080ff;font-style:italic"># Generating InChIKey</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#2c5dcd;font-weight:bold">return</span> df
+</span></span></code></pre></div><p>Running the function and taking a look at the outputs</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>data_clean <span style="color:#2c5dcd">=</span> preprocess_smiles(BBBP_df)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>data_clean<span style="color:#2c5dcd">.</span>shape
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>(<span style="color:#5918bb;font-weight:bold">2039</span>, <span style="color:#5918bb;font-weight:bold">7</span>)
+</span></span></code></pre></div><p>The data contains a 3:1 ratio of positive to negative labels, which creates a bias towards molecules with blood brain permeability properties. This may need to be addressed when training models. The next steps are to save the cleaned data for further analysis.</p>
+<div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>counts <span style="color:#2c5dcd">=</span> data_clean[<span style="color:#0c6">&#39;BBB+/BBB-&#39;</span>]<span style="color:#2c5dcd">.</span>value_counts()<span style="color:#2c5dcd">.</span>to_dict()
+</span></span><span style="display:flex;"><span><span style="color:#5918bb;font-weight:bold">print</span>(counts)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{<span style="color:#5918bb;font-weight:bold">1</span>: <span style="color:#5918bb;font-weight:bold">1560</span>, <span style="color:#5918bb;font-weight:bold">0</span>: <span style="color:#5918bb;font-weight:bold">479</span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#4d4d4d;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>data_clean<span style="color:#2c5dcd">.</span>to_csv(<span style="color:#0c6">&#39;./data/MoleculeNet.csv&#39;</span>, index<span style="color:#2c5dcd">=</span><span style="color:#2c5dcd;font-weight:bold">False</span>)
+</span></span></code></pre></div><h1 id="references">References</h1>
+<div class="footnotes" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn:1" role="doc-endnote">
+<li id="fn:1">
 <p>Urbaczek, Sascha. A consistent cheminformatics framework for automated virtual screening. Ph.D. Thesis, Universität Hamburg, August 2014. URL: <a href="http://ediss.sub.uni-hamburg.de/volltexte/2015/7349/;">http://ediss.sub.uni-hamburg.de/volltexte/2015/7349/;</a> URN: urn:nbn:de:gbv:18-73491; PDF via Semantic Scholar&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
-</section>
+</div>
 
             
         </div>

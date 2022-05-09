@@ -21,7 +21,7 @@
     <meta name="description" content="Airflow basics for reference, and some pictures I drew">
 </head><body><nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="https://github.com/gdeol4/digital-garden">
+        <a class="navbar-brand" href="">
             
             <b style="font-weight: 800;">home</b>
             
@@ -31,16 +31,16 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav ms-auto mt-2 mt-lg-0"><li class='nav-item '>
-                    <a class="nav-link" href="/gdeol4/digital-garden/garden/"> Digital Garden</a>
+                    <a class="nav-link" href="/garden/"> Digital Garden</a>
                 </li>
             <li class='nav-item '>
-                    <a class="nav-link" href="/gdeol4/digital-garden/projects/"> Projects</a>
+                    <a class="nav-link" href="/projects/"> Projects</a>
                 </li>
             <li class='nav-item '>
-                    <a class="nav-link" href="/gdeol4/digital-garden/library/"> Library</a>
+                    <a class="nav-link" href="/library/"> Library</a>
                 </li>
             <li class='nav-item '>
-                    <a class="nav-link" href="/gdeol4/digital-garden/about/"> About</a>
+                    <a class="nav-link" href="/about/"> About</a>
                 </li>
              
             <li class="nav-item px-2 pt-1">
@@ -104,7 +104,7 @@ It’s essentially a queuing system that runs on a metadata database and a sched
 <h1 id="what-are-dags">What are DAGs?</h1>
 <p>A DAG is a collection of tasks you want to run and are organized in a way that illustrates dependencies and relationships between tasks.
 The image below shows how a DAG is a unidirectional, acyclic graph, where each node in the graph is a task and edges define dependencies among tasks. There is no case where you should be able to go backwards from a forward node to one that&rsquo;s already been executed.</p>
-<p><img src="images/airflow1_1.jpeg" alt="Scenario 1: Across columns"></p>
+<p><img src="/static/images/airflow1_1.jpeg" alt="Scenario 1: Across columns"></p>
 <p>A DAG can be broken up into smaller and smaller jobs and gives the user full control by generating dynamic pipelines written in code. Airflow DAGs are also extensible and can scale. DAGs are powerful because they allow for collaborative, manageable, and testable workflows. A bonus is that Airflow is developed in python and can interface with any python API.</p>
 <p><img src="images/airflow1_2.jpeg" alt="Scenario 1: Across columns"></p>
 <p>The image above shows how Airflow divides the tasks into branches so that if one fails, there is still output from the other. Also, the processing time is reduced as parallel computing occurs. The chances of failure should decrease overall as each task is independent.</p>

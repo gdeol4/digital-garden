@@ -2,81 +2,81 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Notes on machine learning, bioinformatics, and drug discovery</title>
-    <link>https://github.com/gdeol4/digital-garden/</link>
+    <link>/</link>
     <description>Recent content on Notes on machine learning, bioinformatics, and drug discovery</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Gurkamal Deol</copyright>
-    <lastBuildDate>Fri, 06 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://github.com/gdeol4/digital-garden/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 06 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Frodotype - text generator</title>
-      <link>https://github.com/gdeol4/digital-garden/projects/frodotype/</link>
+      <link>/projects/frodotype/</link>
       <pubDate>Fri, 17 Jan 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://github.com/gdeol4/digital-garden/projects/frodotype/</guid>
+      <guid>/projects/frodotype/</guid>
       <description>A GPT2 generator finetuned on fantasy novels. Built using Tensorflow, Chart.js, GCP and Docker</description>
     </item>
     
     <item>
       <title>Toxic SMILES - molecular classification</title>
-      <link>https://github.com/gdeol4/digital-garden/projects/toxic_smiles/</link>
+      <link>/projects/toxic_smiles/</link>
       <pubDate>Sun, 01 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://github.com/gdeol4/digital-garden/projects/toxic_smiles/</guid>
+      <guid>/projects/toxic_smiles/</guid>
       <description>A Deployed machine learning model that identifies P53 agonists usings SMILES strings.</description>
     </item>
     
     <item>
       <title>Gurkamal</title>
-      <link>https://github.com/gdeol4/digital-garden/about/</link>
+      <link>/about/</link>
       <pubDate>Fri, 06 May 2022 00:00:00 +0000</pubDate>
       
-      <guid>https://github.com/gdeol4/digital-garden/about/</guid>
+      <guid>/about/</guid>
       <description>A Canadian developer, biologist, and woodworker</description>
     </item>
     
     <item>
       <title>Preprocessing molecular data with Datamol</title>
-      <link>https://github.com/gdeol4/digital-garden/garden/datamol/</link>
+      <link>/garden/datamol/</link>
       <pubDate>Fri, 22 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://github.com/gdeol4/digital-garden/garden/datamol/</guid>
+      <guid>/garden/datamol/</guid>
       <description>Sanitizing and manipulating labeled blood-brain barrier permeable molecules.</description>
     </item>
     
     <item>
       <title>Processing the B3DB brain-blood barrier dataset</title>
-      <link>https://github.com/gdeol4/digital-garden/garden/b3db/</link>
+      <link>/garden/b3db/</link>
       <pubDate>Fri, 22 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://github.com/gdeol4/digital-garden/garden/b3db/</guid>
+      <guid>/garden/b3db/</guid>
       <description>Sanitizing and manipulating labeled blood-brain barrier permeable molecules.</description>
     </item>
     
     <item>
       <title>Scaffold splitting and model training using chemprop</title>
-      <link>https://github.com/gdeol4/digital-garden/garden/chemprop/</link>
+      <link>/garden/chemprop/</link>
       <pubDate>Fri, 22 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://github.com/gdeol4/digital-garden/garden/chemprop/</guid>
+      <guid>/garden/chemprop/</guid>
       <description>Chemically aware data splitting  using scaffold splitting. Data is then trained using a directed message passing neural network (D-MPNN).</description>
     </item>
     
     <item>
       <title>A python function to perform restriction enzyme digest</title>
-      <link>https://github.com/gdeol4/digital-garden/garden/python_digest/</link>
+      <link>/garden/python_digest/</link>
       <pubDate>Mon, 18 Oct 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://github.com/gdeol4/digital-garden/garden/python_digest/</guid>
+      <guid>/garden/python_digest/</guid>
       <description>Implementing restriction digestion using regular expressions, lists, and dictionaries.</description>
     </item>
     
     <item>
       <title>A primer on Apache Airflow</title>
-      <link>https://github.com/gdeol4/digital-garden/garden/airflow-primer/</link>
+      <link>/garden/airflow-primer/</link>
       <pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://github.com/gdeol4/digital-garden/garden/airflow-primer/</guid>
+      <guid>/garden/airflow-primer/</guid>
       <description>Airflow basics for reference, and some pictures I drew</description>
     </item>
     
