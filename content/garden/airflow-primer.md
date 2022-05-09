@@ -17,11 +17,15 @@ It’s essentially a queuing system that runs on a metadata database and a sched
 A DAG is a collection of tasks you want to run and are organized in a way that illustrates dependencies and relationships between tasks.
 The image below shows how a DAG is a unidirectional, acyclic graph, where each node in the graph is a task and edges define dependencies among tasks. There is no case where you should be able to go backwards from a forward node to one that's already been executed.
 
+<<<<<<< Updated upstream
 ![Scenario 1: Across columns](/static/images/airflow1_1.jpeg)
+=======
+![Scenario 1: Across columns](/airflow1_1.jpeg)
+>>>>>>> Stashed changes
 
 A DAG can be broken up into smaller and smaller jobs and gives the user full control by generating dynamic pipelines written in code. Airflow DAGs are also extensible and can scale. DAGs are powerful because they allow for collaborative, manageable, and testable workflows. A bonus is that Airflow is developed in python and can interface with any python API.
 
-![Scenario 1: Across columns](images/airflow1_2.jpeg)
+![Scenario 1: Across columns](/airflow1_2.jpeg)
 
 The image above shows how Airflow divides the tasks into branches so that if one fails, there is still output from the other. Also, the processing time is reduced as parallel computing occurs. The chances of failure should decrease overall as each task is independent.
 
@@ -32,7 +36,7 @@ A task is an operator when instantiated. It is something on which the worker wor
 
 ## Airflow Architecture
     
-![Scenario 1: Across columns](images/airflow1_3.jpeg)
+![Scenario 1: Across columns](/airflow1_3.jpeg)
    
 - Metadata — is a relational database with info on task state, such as the top ten tasks consuming the most memory, it contains all data pertaining to jobs currently running as well as historical data.
 - Scheduler — decides which task to run, when, and in what order.
@@ -42,7 +46,7 @@ A task is an operator when instantiated. It is something on which the worker wor
 
 If you're not dealing with terabytes of data then it's better to have the scheduler, web server, and executor together in the master node/cluster. The downside is that this single cluster approach runs everything on the same machine, so if you make a change to a DAG/scheduler, then you need to restart the entire workflow — even tasks that were in the process of executing. Celery avoids this.
 
-![Scenario 1: Across columns](images/airflow1_4.jpeg)
+![Scenario 1: Across columns](/airflow1_4.jpeg)
 
 If you do build a distributed workflow with celery then a queuing system component is needed (like Redis). For local workflows, the queuing is handled by the system.
 
