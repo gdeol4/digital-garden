@@ -1,4 +1,4 @@
-baseURL = ""
+baseURL = "www.gurkamal.com"
 languageCode = "en-us"
 title = "Notes on machine learning, bioinformatics, and drug discovery"
 theme = "digital-garden"
