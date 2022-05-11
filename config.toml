@@ -9,7 +9,7 @@ copyright = "Gurkamal Deol"
   name = "Hi, I'm gurkamal deol"
   description = "I'm a developer exploring topics in drug discovery, machine learning, and bioinformatics."
   initials = "home"
-  googleAnalytics = ""
+  googleAnalytics = "G-RFK1JYB2QT"
 
   [[params.social]]
     name = "Github"
