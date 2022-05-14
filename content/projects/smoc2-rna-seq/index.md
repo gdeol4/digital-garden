@@ -366,7 +366,7 @@ PCA.
 pheatmap(vsd_cor_smoc2, annotation = select(smoc2_metadata, condition))
 ```
 
-![plot the heatmap](images/heatmap.png)
+![plot the heatmap](/heatmap.png)
 
 ### Principal component analysis
 
@@ -395,7 +395,7 @@ the principal components explaining the most variation in the data.
 plotPCA(vsd_smoc2, intgroup="condition")
 ```
 
-![plot pca](images/deseq2pca.png)
+![plot pca](/deseq2pca.png)
 
 
 ### Running the DE analysis
@@ -496,7 +496,7 @@ ggplot(df) +
   ylab("Variance per gene")
 ```
 
-![](images/dispersion.png)
+![](/dispersion.png)
 
 The variance in gene expression increases with the mean. This is expected for RNA-Seq data. Also, note how the range in values for variance is greater for 
 lower mean counts than higher mean counts. This is also expected for RNA-Seq count data.
@@ -534,7 +534,7 @@ by sample outliers or contamination.
 plotDispEsts(dds_smoc2)
 ```
 
-![](images/normalized.png)
+![](/normalized.png)
 
 ### extracting the results of DE analysis
 
