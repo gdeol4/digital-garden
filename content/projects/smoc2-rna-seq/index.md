@@ -10,7 +10,9 @@ summary: "Complete RNA-Seq analysis workflow of SMOC2 gene over expression using
 
 # Introduction
 
+
 ### What is smoc2?
+
 
 Secreted modular calcium-binding protein 2 (Smoc2) is an acidic extracellular matrix glycoprotein 
 and plays an important role in bone mineralization, cell-matrix interactions, collagen binding, and 
@@ -20,12 +22,16 @@ which is characterized as an aberrant repair response to chronic tissue injury. 
 of extracellular matrix in the space between tubules and capillaries within the kidney. However, it is 
 unknown how Smoc2 functions in the induction and progression of fibrosis[2].
 
+
 1. Bornstein P, Sage EH. Matricellular proteins: extracellular modulators of cell function. Curr Opin Cell Biol 2002; 14:608–616. doi: 10.1016/S0955-0674(02)00361-7
 2. Vannahme C, Gosling S, Paulsson M, Maurer P, Hartmann U. Characterization of SMOC-2, a modular extracellular calcium-binding protein. Biochem J 2003; 373:805–814. doi: 10.1042/bj20030532.
 
+
 ### A look at the dataset
 
+
 This dataset cpmes from the research paper: 
+
 
 **_Silencing SMOC2 ameliorates kidney fibrosis by inhibiting fibroblast to myofibroblast transformation._** 
 
@@ -67,27 +73,6 @@ Differential expression analysis:
 
 
 2. Quality control:
-
-Normalizing the raw counts to assess sample-level quality control is the first step in the workflow. The raw counts 
-represent the number of reads aligning to each gene and should be proportional to the expression of the RNA in
-the sample; however, there are factors other than RNA expression that can influence the number of reads aligning to each gene. 
-The count data can be adjusted to remove the influence of these factors on the overall counts using normalization methods. 
-The main factors often considered during normalization of count data are library depth, gene length, and RNA composition.
-
-Differences in library size between samples can lead to many more reads being aligned to genes in one sample versus another sample.
-Therefore, we need to adjust the counts assigned to each gene based on the size of the library prior to doing differential expression 
-analysis.
-
-Gene length normalization is another normalization factor often adjusted for. A longer gene generates a longer
-transcript, which generates more fragments for sequencing. Therefore, a longer gene will often have more counts than a shorter
-gene with the same level of expression. Since DE analysis compares expression levels of the same genes between conditions, we do 
-not need to normalize for gene length. However, if you were to compare the expression levels of different genes, you would need 
-to account for lengths of the genes.
-
-Library composition effect is the third factor that needs to be taken into account for by adjusting library size, the composition 
-of the library is also important. A few highly differentially expressed genes can skew many normalization methods that are not resistant 
-to these outliers. 
-
 
 * Normalize counts to account for differences in library depth.
 
@@ -166,6 +151,26 @@ rownames(smoc2_metadata) = c('smoc2_fibrosis1','smoc2_fibrosis2','smoc2_fibrosis
 ```
 
 # Normalization
+
+Normalizing the raw counts to assess sample-level quality control is the first step in the workflow. The raw counts 
+represent the number of reads aligning to each gene and should be proportional to the expression of the RNA in
+the sample; however, there are factors other than RNA expression that can influence the number of reads aligning to each gene. 
+The count data can be adjusted to remove the influence of these factors on the overall counts using normalization methods. 
+The main factors often considered during normalization of count data are library depth, gene length, and RNA composition.
+
+Differences in library size between samples can lead to many more reads being aligned to genes in one sample versus another sample.
+Therefore, we need to adjust the counts assigned to each gene based on the size of the library prior to doing differential expression 
+analysis.
+
+Gene length normalization is another normalization factor often adjusted for. A longer gene generates a longer
+transcript, which generates more fragments for sequencing. Therefore, a longer gene will often have more counts than a shorter
+gene with the same level of expression. Since DE analysis compares expression levels of the same genes between conditions, we do 
+not need to normalize for gene length. However, if you were to compare the expression levels of different genes, you would need 
+to account for lengths of the genes.
+
+Library composition effect is the third factor that needs to be taken into account for by adjusting library size, the composition 
+of the library is also important. A few highly differentially expressed genes can skew many normalization methods that are not resistant 
+to these outliers.
 
 DESeq2 normalization uses a ‘median of ratios’ method of normalization. This method adjusts the raw counts for library size
 and is resistant to large numbers of differentially expressed genes.
@@ -290,37 +295,20 @@ head(normalized_smoc2_counts)
 ```
 
 
-### Transform the normalized counts
+### Log transform the normalized counts
+
+Before visualizing the data the normalized counts should be log transformed to improve the visualization of the clustering.
+For RNA-Seq data, DESeq2 uses a variance stabilizing transformation (VST), which is a logarithmic transformation that moderates the
+variance across the mean. The normalized counts can be transformed by using the ```DESeq2 vst()``` function on the DESeq2 object. 
+The ```blind=TRUE``` argument specifies that the transformation should be blind to the sample information given in the design formula; 
+this argument should be specified when performing quality assessment.
 
 # Unsupervised clustering analysis
 
-1.  Unsupervised clustering analyses Now that we have our normalized
-    counts, we can continue on in the differential expression analysis
-    workflow.
-
-2.  Unsupervised clustering analyses With our counts normalized for
-    library size, we can now compare the counts between the different
-    samples. We can explore how similar the samples are to each other
-    with regards to gene expression to assess the quality of our
-    experiment. To do this we use visualization methods for unsupervised
-    clustering analyses, including hierarchical clustering heatmaps and
-    principal component analysis or PCA. We perform these QC methods to
-    get an idea of how similar the biological replicates are to each
-    other and to identify outlier samples and major sources of variation
-    present in the dataset.
-
-### log transformations
-
-3.  Unsupervised clustering analyses: log transformation When using
-    these visualization methods, we should first log transform the
-    normalized counts to improve the visualization of the clustering.
-    For RNA-Seq data, DESeq2 uses a variance stabilizing transformation
-    (VST), which is a logarithmic transformation that moderates the
-    variance across the mean. We can transform the normalized counts by
-    using the DESeq2 vst() function on the DESeq2 object. The blind=TRUE
-    argument specifies that the transformation should be blind to the
-    sample information given in the design formula; this argument should
-    be specified when performing quality assessment.
+With the counts normalized for library size, the counts between the different samples can now be compared. To assess the quality of 
+experiment the samples are compared to each other with regards to gene expression. These comparisons are done visually though unsupervised
+clustering analysis using hierarchical clustering heatmaps and PCA these are performed to get an idea of how similar the biological 
+replicates are to each other and to identify outlier samples and major sources of variation present in the dataset.
 
 ``` r
 #Unsupervised clustering analyses: log transformation
@@ -331,36 +319,19 @@ vsd_smoc2 = vst(dds_smoc2, blind=TRUE)
 
 ### Hierarchical clustering with a correlation heatmap
 
-4.  Hierarchical clustering with correlation heatmaps Hierarchical
-    clustering with heatmaps is used to assess the similarity in gene
-    expression between the different samples in a dataset. This
-    technique is used to explore how similar replicates are to each
-    other and whether the samples belonging to different sample groups
-    cluster separately. The heatmap is created by using the gene
-    expression correlation values for all pairwise combinations of
-    samples in the dataset, with the value 1 being perfect correlation.
-    The hierarchical tree shows which samples are more similar to each
-    other and the colors in the heatmap depict the correlation values.
-    We expect the biological replicates to cluster together and sample
-    conditions to cluster apart. Since the majority of genes should not
-    be differentially expressed, samples should generally have high
-    correlations with each other. Samples with correlation values below
-    0-point-8 may require further investigation to determine whether
-    these samples are outliers or have contamination.
+Hierarchical clustering with heatmaps is used to assess the similarity in gene expression between the different samples in a dataset. This
+technique is used to explore how similar replicates are to each other and whether the samples belonging to different sample groups
+cluster separately. The heatmap is created by using the gene expression correlation values for all pairwise combinations of samples in the dataset, 
+with the value 1 being perfect correlation. The hierarchical tree shows which samples are more similar to each other and the colors in the heatmap 
+depict the correlation values. We expect the biological replicates to cluster together and sample conditions to cluster apart. Since the majority of 
+genes should not be differentially expressed, samples should generally have high correlations with each other. Samples with correlation values below 
+**0.8** may require further investigation to determine whether these samples are outliers or have contamination.
 
-5.  Hierarchical clustering with correlation heatmaps To create a
-    hierarchical heatmap, we are going to extract the VST-transformed
-    normalized counts as a matrix from the vsd object using the assay()
-    function. Then, we can compute the pairwise correlation values
-    between each pair of samples using the cor() function. Using View()
-    we can view the correlation values between each of the sample pairs.
+To create the heatmap the VST-transformed normalized counts will be extracted as a matrix from the vsd object using the ```assay()``` function. 
+Then, the pairwise correlation values between each pair of samples will be computed using the ```cor()``` function
 
-6.  Hierarchical clustering with correlation heatmaps After generating
-    the correlation values, we can use the pheatmap package to create
-    the heatmap. The annotation argument selects which factors in the
-    metadata to include as annotation bars. We use the select() function
-    from the dplyr package to select the condition column in the
-    wildtype metadata.
+After generating the correlation values, the pheatmap package can be used to create the heatmap. The annotation argument selects which factors in the
+metadata to include as annotation bars. Use the ```select()``` function from the ```dplyr``` package to select the condition column in the metadata.
 
 ``` r
 #Hierarchical clustering with correlation heatmaps
@@ -373,352 +344,125 @@ vsd_cor_smoc2 = cor(vsd_mat_smoc2)
 
 #view correlation statistics
 vsd_cor_smoc2
+
+                     smoc2_fibrosis1 smoc2_fibrosis4 smoc2_normal1 smoc2_normal3 smoc2_fibrosis3 smoc2_normal4 smoc2_fibrosis2
+     smoc2_fibrosis1       1.0000000       0.9948457     0.9631782     0.9637385       0.9949621     0.9597660       0.9958622
+     smoc2_fibrosis4       0.9948457       1.0000000     0.9668704     0.9671808       0.9951846     0.9635529       0.9946819
+     smoc2_normal1         0.9631782       0.9668704     1.0000000     0.9935479       0.9678895     0.9940744       0.9651063
+     smoc2_normal3         0.9637385       0.9671808     0.9935479     1.0000000       0.9691965     0.9942610       0.9656578
+     smoc2_fibrosis3       0.9949621       0.9951846     0.9678895     0.9691965       1.0000000     0.9650676       0.9952111
+     smoc2_normal4         0.9597660       0.9635529     0.9940744     0.9942610       0.9650676     1.0000000       0.9618977
+     smoc2_fibrosis2       0.9958622       0.9946819     0.9651063     0.9656578       0.9952111     0.9618977       1.0000000
 ```
 
-    ##                 smoc2_fibrosis1 smoc2_fibrosis4 smoc2_normal1 smoc2_normal3 smoc2_fibrosis3 smoc2_normal4 smoc2_fibrosis2
-    ## smoc2_fibrosis1       1.0000000       0.9948457     0.9631782     0.9637385       0.9949621     0.9597660       0.9958622
-    ## smoc2_fibrosis4       0.9948457       1.0000000     0.9668704     0.9671808       0.9951846     0.9635529       0.9946819
-    ## smoc2_normal1         0.9631782       0.9668704     1.0000000     0.9935479       0.9678895     0.9940744       0.9651063
-    ## smoc2_normal3         0.9637385       0.9671808     0.9935479     1.0000000       0.9691965     0.9942610       0.9656578
-    ## smoc2_fibrosis3       0.9949621       0.9951846     0.9678895     0.9691965       1.0000000     0.9650676       0.9952111
-    ## smoc2_normal4         0.9597660       0.9635529     0.9940744     0.9942610       0.9650676     1.0000000       0.9618977
-    ## smoc2_fibrosis2       0.9958622       0.9946819     0.9651063     0.9656578       0.9952111     0.9618977       1.0000000
-
-7.  Hierarchical clustering with correlation heatmaps The output from
-    the heatmap shows that the biological replicates cluster together
-    and the conditions separate. This is encouraging since our
-    differentially expressed genes between our conditions are likely to
-    be driving this separation. Also, all correlation values are
-    expectedly high without any outlier samples. If our replicates did
-    not cluster as expected, we could plot the heatmap with all of the
-    metadata and see whether any other factor corresponds to the
-    separation of the samples. If so, you would want to see if you get
-    similar results with the Principal Component Analysis, which we will
-    be covering in the next lesson. If identified by both methods, we
-    can account for it in the DESeq2 model. If you have an outlier
-    identified, you would also want to check the PCA. If you see the
-    outlier with both methods, you could investigate that sample more
-    and decide whether to remove it from the analysis.
+The output fromthe heatmap shows that the biological replicates cluster together and the conditions separate. This is encouraging since
+differentially expressed genes between the conditions are likely to be driving this separation. Also, all correlation values are expectedly 
+high without any outlier samples. If the replicates did not cluster as expected, the heatmap could be plotted with all of the metadata and 
+see whether any other factor corresponds to the separation of the samples. If so, you would want to see if you get similar results with the 
+PCA.
 
 ``` r
 #plot the heatmap
 pheatmap(vsd_cor_smoc2, annotation = select(smoc2_metadata, condition))
 ```
 
-![](pre-post_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![plot the heatmap](images/heatmap.png)
 
 ### Principal component analysis
 
-To continue with the quality assessment of our samples, in the first
-part of this exercise, we will perform PCA to look how our samples
-cluster and whether our condition of interest corresponds with the
-principal components explaining the most variation in the data.
+PCA is a technique used to emphasize the variation present in a dataset. PCA finds the principal components of a dataset, with the first principal
+component, or PC1, representing the greatest amount of variance in the data. Genes are given quantitative scores based on how much they influence 
+the different PCs. A ‘per sample’ PC value is computed by taking the product of the influence and the normalized read count for each gene and summing 
+across all genes.For PCA we generally plot these per sample PC values. Samples that cluster together have more similar gene expression profiles than 
+samples that cluster apart, especially for the most variant genes.
 
-When performing quality assessment of our count data, we need to
-transform the normalized counts for better visualization of the variance
-for unsupervised clustering analyses. To assess the similarity of the
-smoc2 samples using hierarchical heatmaps, transform the normalized
-counts and perform hierarchical clustering analysis. Assume all
-libraries have been loaded, the DESeq2 object created, and the size
-factors have been stored in the DESeq2 object, dds_smoc2.
+This is a good method to explore the quality of the data as we hope to see replicates cluster together and conditions to separate on PC1. Sample 
+outliers and major sources of variation can also be identified with this method.
 
-Well done, now let’s assess the heatmap to determine whether our samples
-cluster as expected and if we have any outliers. If we had additional
-metadata for possible sources of variation, then we would want to
-include these factors as annotation bars as well.
+Perform PCA using DESeq2’s ```plotPCA()``` function to plot the first two PCs. This function takes as input the transformed vsd object, and the
+```intgroup``` argument to specify what factor in the metadata to use to color the plot. The sample groups, normal and fibrosis, separate well on PC1. 
+This means that the condition corresponds to PC1, which represents 88% of the variance in the data, while 4% is explained by PC2. This is great since 
+it seems that a lot of the variation in gene expression in the dataset can likely be explained by the differences between sample groups. However, if 
+the samples do not separate by PC1 or PC2, the effect of the condition could be small or there are sometimes other larger sources of variation present. 
+You can color the PCA by other factors, such as age, sex, batch, etcetera, to identify other major sources of variation that could correspond to one 
+of the large principal components.
 
-Got It! 1. Principal component analysis The next type of unsupervised
-clustering method is principal component analysis, or PCA.
-
-2.  Principal component analysis (PCA): Overview PCA is a technique used
-    to emphasize the variation present in a dataset. PCA finds the
-    principal components of a dataset, with the first principal
-    component, or PC1, representing the greatest amount of variance in
-    the data.
-
-3.  Principal component analysis (PCA): Theory To understand this a bit
-    better, we can think of a dataset with two samples. We could plot
-    the normalized counts of every gene for one sample on the x-axis and
-    the other sample on the y-axis. In this example, Gene A has four
-    counts for sample 1 plotted on the x-axis and 5 counts for sample 2
-    on the y-axis. We can plot the other genes similarly.
-
-4.  Principal component analysis (PCA): Theory We can draw a line
-    through the dataset where there exists the most variation, or where
-    there is the largest spread. In this example, the line with largest
-    spread is between genes B and C. This line represents the first
-    principal component. The second most variation in the dataset,
-    represented as PC2, must be perpendicular to PC1, in order to best
-    describe the variance in the dataset not included in PC1. In this
-    example, PC2 is drawn between genes A and D. The spread is much
-    smaller for PC2. In reality, your dataset will have more samples and
-    many more genes. The number of principal components is equal to the
-    number of samples, n, in the dataset, so finding the largest amount
-    of variation, PC1, means plotting a line through n-dimensional
-    space.
-
-5.  Principal component analysis (PCA): Theory The most variant genes
-    for a principal component have the most influence on that principal
-    component’s direction. In our example, the most variant genes for
-    PC1, genes B and C, would affect the direction of the line more than
-    genes A and D.
-
-6.  Principal component analysis (PCA): Theory We give quantitative
-    scores to genes based on how much they influence the different PCs.
-
-7.  Principal component analysis (PCA): Theory A ‘per sample’ PC value
-    is computed by taking the product of the influence and the
-    normalized read count for each gene and summing across all genes.
-
-8.  Principal component analysis (PCA): Theory For PCA we generally plot
-    these per sample PC values. Samples that cluster together have more
-    similar gene expression profiles than samples that cluster apart,
-    especially for the most variant genes.
-
-9.  Principal component analysis (PCA): Theory This is a good method to
-    explore the quality of the data as we hope to see replicates cluster
-    together and conditions to separate on PC1. Sample outliers and
-    major sources of variation can also be identified with this method.
-
-10. Principal component analysis (PCA): Theory We can perform PCA using
-    DESeq2’s plotPCA() function to plot the first two PCs. This function
-    takes as input the transformed vsd object, and we can use the
-    intgroup argument to specify what factor in the metadata to use to
-    color the plot. We can see that the sample groups, normal and
-    fibrosis, separate well on PC1. This means that our condition
-    corresponds to PC1, which represents 88% of the variance in our
-    data, while 4% is explained by PC2. This is great since it seems
-    that a lot of the variation in gene expression in the dataset can
-    likely be explained by the differences between sample groups.
-    However, if the samples do not separate by PC1 or PC2, the effect of
-    the condition could be small or there are sometimes other larger
-    sources of variation present. You can color the PCA by other
-    factors, such as age, sex, batch, etcetera, to identify other major
-    sources of variation that could correspond to one of the large
-    principal components. We’ll talk later about how we can account for
-    these sources of variation in the model. Just to note, if you would
-    like to explore PCs other than PC1 or PC2, the prcomp() base
-    function allows a more thorough analysis of PCs.
-
-PCA analysis To continue with the quality assessment of our samples, in
-the first part of this exercise, we will perform PCA to look how our
-samples cluster and whether our condition of interest corresponds with
-the principal components explaining the most variation in the data. In
-the second part, we will answer questions about the PCA plot.
-
-To assess the similarity of the smoc2 samples using PCA, we need to
-transform the normalized counts then perform the PCA analysis. Assume
-all libraries have been loaded, the DESeq2 object created, and the size
-factors have been stored in the DESeq2 object, dds_smoc2.
+Perform PCA to look how the samples cluster and whether the condition of interest corresponds with
+the principal components explaining the most variation in the data.
 
 ``` r
 #plot pca
 plotPCA(vsd_smoc2, intgroup="condition")
 ```
 
-![](pre-post_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![plot pca](images/deseq2pca.png)
 
-Well done! If there is an outlier on the heatmap, then we would want to
-see it with PCA as well. We similarly hope our biological replicates
-cluster together and conditions separate by PC1 and/or PC2. If we don’t
-see this, there may be sources of variation present in our data and if
-these sources are present in our metadata, then we can explore these
-sources of variation by coloring the PCA by these factors.
-Alternatively, we might not see sample groups separate if the condition
-of interest does not cause a big change in gene expression.
 
 ### Running the DE analysis
 
-Got It! 1. Overview of the DE analysis Now that we have explored the
-quality of our samples, removed any outlier samples, and assessed the
-major sources of variation present, we can start the differential
-expression analysis with DESeq2.
+Now that we have explored the quality of our samples, removed any outlier samples, and assessed the major sources of variation present, we can start the 
+differential expression analysis with DESeq2. by performing the differential expression analysis with DESeq2, we are trying to identify which genes have 
+significant differences in expression between the normal and fibrosis sample groups.
 
-2.  Review the dataset/question Remember, by performing the differential
-    expression analysis with DESeq2, we are trying to identify which
-    genes have significant differences in expression between the normal
-    and fibrosis sample groups.
+The differential expression analysis with DESeq2 consists of roughly three steps: 
 
-3.  Overview of the DE analysis The differential expression analysis
-    with DESeq2 consists of roughly three steps: fitting the raw counts
-    for each gene to the DESeq2 negative binomial model and testing for
-    differential expression, shrinking the log2 fold changes, and
-    extracting and visualizing the results.
+1. Fitting the raw counts for each gene to the DESeq2 negative binomial model and testing for differential expression.
+2. Shrinking the log2 fold changes.
+3. Extracting and visualizing the results.
 
-4.  DESeq2 workflow: Model We will start by fitting the raw counts to
-    the DESeq2 model. To do this, DESeq2 will first need to estimate the
-    size factors, if they haven’t already been estimated, and estimate
-    the variation in expression across replicates for each gene. After
-    these calculations, the data can be fit to the negative binomial
-    model.
 
-5.  DESeq2 workflow: Model To perform these calculations and fit the
-    negative binomial model requires only two functions. The first
-    function creates the DESeq2 object, which is the same function we
-    used previously during count normalization. We wouldn’t need to
-    re-create the object unless we removed samples or found additional
-    sources of variation during QC using PCA and the correlation
-    heatmap. When we created the DESeq2 object, we provided the raw
-    counts, metadata, and design formula. We have explored the raw
-    counts and metadata, but what exactly was specified with the design
-    formula? The design formula is an important part of modeling,
-    telling DESeq2 the known major sources of variation to control for,
-    or regress out, as well as, the condition of interest to use for
-    differential expression testing.
-
-6.  DESeq2 workflow: Design formula For example, if this is your
-    metadata and you know that strain, sex, and treatment are major
-    sources of variation in the data as determined by the PCA and
-    heatmap, then all of these factors should be included in the design
-    formula. If my condition of interest is treatment, then it would
-    come last in the formula with the other factors preceding it in any
-    order. Therefore, the design formula would be: tilde, strain plus
-    sex plus treatment. The tilde tells DESeq2 to model the counts using
-    the following formula, so it should always proceed your factors.
-    Also, the factor names in the design formula need to exactly match
-    the column names in the metadata.
-
-7.  DESeq2 workflow: Design formula DESeq2 also allows for complex
-    designs. For instance, using the same metadata, if we wanted to know
-    the effect of sex on the effect of treatment, we could use an
-    interaction term. In this case, we could regress out the variation
-    due to strain, sex and treatment and test for genes that
-    significantly differ in their treatment effect due to sex using the
-    interaction term, sex colon treatment, as the last term in the
-    formula. For more information about specifying complex designs, I
-    recommend reading through the DESeq2 vignette or the Bioconductor
-    support site.
-
-8.  DESeq2 workflow: Running Once you have the DESeq2 object with the
-    raw counts, metadata, and the appropriate design formula, you can
-    perform model fitting with the function DESeq(). As it runs it will
-    output the completed steps as it fills in the different slots in the
-    DESeq2 object. The final DESeq2 object will contain all of the
-    information needed for performing the differential expression
-    testing between specific sample groups.
+The design formula is an important part of modeling, telling DESeq2 the known major sources of variation to control for, or regress out, as well as, the condition 
+of interest to use for differential expression testing. Also, the factor names in the design formula need to exactly match the column names in the metadata.
 
 ``` r
 # Run DESeq2 analysis 
 dds_smoc2 <- DESeq(dds_smoc2)
+
+     using pre-existing size factors
+
+     estimating dispersions
+
+     gene-wise dispersion estimates
+
+     mean-dispersion relationship
+
+     final dispersion estimates
+
+     fitting model and testing
 ```
 
-    ## using pre-existing size factors
+### Mean and variance
 
-    ## estimating dispersions
+explore the fit of the smoc2 data to the negative binomial model by plotting the dispersion estimates using the ```plotDispEsts()``` function. The dispersion 
+estimates are used to model the raw counts; if the dispersions don’t follow the assumptions made by DESeq2, then the variation in the data could be poorly estimated 
+and the DE results could be less accurate.
 
-    ## gene-wise dispersion estimates
+The assumptions DESeq2 makes are that the dispersions should generally decrease with increasing mean and that they should more or less follow
+the fitted line. The goal of the differential expression analysis is to determine whether a gene’s mean expression between sample groups is
+different given the variation within groups. This is determined by testing the probability of the log2 fold changes between groups being significantly different from zero. 
+The log2 fold changes are found by the log of the one sample group mean, therefore, to model the counts requires information about the mean and variation in the data. To
+explore the variation in the data, the variance will be observed in gene expression relative to the mean. Variance is the square of the standard deviation, representing 
+how far away the expression of the individual samples are from the means.
 
-    ## mean-dispersion relationship
-
-    ## final dispersion estimates
-
-    ## fitting model and testing
-
-### Dispersion
-
-After fitting the model in the previous exercise, let’s explore the fit
-of our smoc2 data to the negative binomial model by plotting the
-dispersion estimates using the plotDispEsts() function. Remember that
-the dispersion estimates are used to model the raw counts; if the
-dispersions don’t follow the assumptions made by DESeq2, then the
-variation in the data could be poorly estimated and the DE results could
-be less accurate.
-
-The assumptions DESeq2 makes are that the dispersions should generally
-decrease with increasing mean and that they should more or less follow
-the fitted line
-
-Got It! 1. DESeq2 model Now that we have run the DE analysis, we could
-explore our results. However, before proceeding, we should explore how
-well our data fit the model.
-
-2.  DESeq2 model The goal of the differential expression analysis is to
-    determine whether a gene’s mean expression between sample groups is
-    different given the variation within groups. This is determined by
-    testing the probability of the log2 fold changes between groups
-    being significantly different from zero. The log2 fold changes are
-    found by the log of the one sample group mean, shown here as the
-    treatment group, divided by the mean of the other sample group,
-    shown here as the control group. Therefore, to model the counts
-    requires information about the mean and variation in the data. To
-    explore the variation in our data, we will observe the variance in
-    gene expression relative to the mean. Variance is the square of the
-    standard deviation, representing how far away the expression of the
-    individual samples, as shown by the dark red and blue circles, are
-    from the means, shown in pink and light blue.
-
-DESeq2 model - mean-variance relationship For RNA-Seq data, the variance
-is generally expected to increase with the gene’s mean expression. To
-observe this relationship, we can calculate the means and variances for
-every gene of the normal samples using the apply() function.
-
-4.  DESeq2 model - dispersion Then we can create a data frame for
-    plotting with ggplot2. We plot the mean and variance values for each
-    gene using log10 scales. Each black dot represents a gene.
-
-5.  DESeq2 model - dispersion We see the variance in gene expression
-    increases with the mean. This is expected for RNA-Seq data. Also,
-    note how the range in values for variance is greater for lower mean
-    counts than higher mean counts. This is also expected for RNA-Seq
-    count data. A measure of the variance for a given mean is described
-    by a metric called dispersion in the DESeq2 model. The DESeq2 model
-    uses dispersion to assess the variability in expression when
-    modeling the counts.
-
-6.  DESeq2 model - dispersion The DESeq2 model calculates dispersion as
-    being indirectly related to the mean and directly related to the
-    variance of the data using the formula displayed. So, an increase in
-    variance will increase dispersion, while an increase in mean will
-    decrease dispersion. For any two genes with the same mean
-    expression, the only difference in dispersion will be based on
-    differences in variance. To check the fit of our data to the DESeq2
-    model, it can be useful to look at the dispersion estimates.
-
-7.  DESeq2 model - dispersion To plot the dispersions relative to the
-    means for each gene, we can use the plotDispEsts() function on the
-    DESeq2 object. Each black dot is a gene with associated mean and
-    dispersion values. We expect dispersion values to decrease with
-    increasing mean, which is what we see. With only a few replicates
-    for RNA-Seq experiments, gene-wise estimates of dispersion are often
-    inaccurate, so DESeq2 uses information across all genes to determine
-    the most likely estimates of dispersion for a given mean expression
-    value, shown with the red line in the figure. Genes with
-    inaccurately small estimates of variation could yield many false
-    positives, or genes that are identified as DE, when they are really
-    not. Therefore, the original gene-wise dispersion estimates, shown
-    as the black dots in the figure, are shrunken towards the curve to
-    yield more accurate estimates of dispersion, shown as blue dots. The
-    more accurate, shrunken dispersion estimates are used to model the
-    counts for determining the differentially-expressed genes. Extremely
-    high dispersion values, shown surrounded by blue circles, are not
-    shrunken, due to the likelihood that the gene may have higher
-    variability than others for biological or technical reasons and
-    reducing the variation could result in false positives. The strength
-    of the shrinkage is dependent on the distance from the curve and
-    sample size. Larger numbers of replicates can estimate the mean and
-    variation more accurately, so yield less shrinkage.
-
-8.  DESeq2 model - dispersion Worrisome plots would include a cloud of
-    data that doesn’t follow the curve or dispersions that don’t
-    decrease with increasing mean. These problems can often be explained
-    by sample outliers or contamination. Examples of worrisome
-    dispersion plots are shown in the figures.
+For RNA-Seq data, the variance is generally expected to increase with the gene’s mean expression. To observe this relationship, calculate the means and variances for
+every gene of the normal samples using the ```apply()``` function.
 
 ``` r
 # Calculating mean for each gene (each row)
 mean_counts = apply(data[, 1:3], 1, mean)
 head(mean_counts)
-```
 
-    ## [1]  0.0000000  0.0000000 34.0000000  0.0000000  0.3333333  0.0000000
+[1]  0.0000000  0.0000000 34.0000000  0.0000000  0.3333333  0.0000000
+``` 
 
 ``` r
 # Calculating variance for each gene( each row)
 variance_counts = apply(data[, 1:3], 1, var)
 head(variance_counts)
+
+[1]    0.0000000    0.0000000 1308.0000000    0.0000000    0.3333333    0.0000000
 ```
 
-    ## [1]    0.0000000    0.0000000 1308.0000000    0.0000000    0.3333333    0.0000000
 
 ``` r
 #Plotting relationship between mean and variance:
@@ -726,17 +470,22 @@ head(variance_counts)
 # Creating data frame with mean and vairance for every gene
 df = data.frame(mean_counts, variance_counts)
 head(df)
+
+       mean_counts variance_counts
+     1   0.0000000       0.0000000
+     2   0.0000000       0.0000000
+     3  34.0000000    1308.0000000
+     4   0.0000000       0.0000000
+     5   0.3333333       0.3333333
+     6   0.0000000       0.0000000
 ```
 
-    ##   mean_counts variance_counts
-    ## 1   0.0000000       0.0000000
-    ## 2   0.0000000       0.0000000
-    ## 3  34.0000000    1308.0000000
-    ## 4   0.0000000       0.0000000
-    ## 5   0.3333333       0.3333333
-    ## 6   0.0000000       0.0000000
 
-### Relationship between mean and variance
+
+Create a data frame for plotting with ```ggplot2```. Plot the mean and variance values for each gene using log10 scales. Each black dot represents a gene.
+
+
+#### Relationship between mean and variance
 
 ``` r
 ggplot(df) +
@@ -747,20 +496,45 @@ ggplot(df) +
   ylab("Variance per gene")
 ```
 
-    ## Warning: Transformation introduced infinite values in continuous y-axis
+![](images/dispersion.png)
 
-    ## Warning: Transformation introduced infinite values in continuous x-axis
+The variance in gene expression increases with the mean. This is expected for RNA-Seq data. Also, note how the range in values for variance is greater for 
+lower mean counts than higher mean counts. This is also expected for RNA-Seq count data.
 
-![](pre-post_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+### Dispersion
 
-### Plotting dispersion estimates
+A measure of the variance for a given mean is described by a metric called dispersion in the DESeq2 model. The DESeq2 model uses dispersion to assess the variability in 
+expression when modeling the counts.
+
+The DESeq2 model calculates dispersion as being indirectly related to the mean and directly related to the variance of the  data using the formula displayed. 
+So, an increase in variance will increase dispersion, while an increase in mean will decrease dispersion. For any two genes with the same mean expression, 
+the only difference in dispersion will be based on differences in variance. To check the fit of the data to the DESeq2 model, it can be useful to look at 
+the dispersion estimates.
+
+
+#### Plotting dispersion estimates
+
+To plot the dispersions relative to the means for each gene, use the ```plotDispEsts()``` function on the DESeq2 object. Each black dot is a gene with associated 
+mean and dispersion values. Expect dispersion values to decrease with increasing mean, which is what is seen. With only a few replicates for RNA-Seq experiments, 
+gene-wise estimates of dispersion are often inaccurate, so DESeq2 uses information across all genes to determine the most likely estimates of dispersion for a 
+given mean expression value, shown with the red line in the figure. Genes with inaccurately small estimates of variation could yield many false positives, or 
+genes that are identified as DE, when they are really not. Therefore, the original gene-wise dispersion estimates, shown as the black dots in the figure, are 
+shrunken towards the curve to yield more accurate estimates of dispersion, shown as blue dots. The more accurate, shrunken dispersion estimates are used to model the
+counts for determining the differentially-expressed genes. Extremely high dispersion values, shown surrounded by blue circles, are not shrunken, due to the likelihood 
+that the gene may have higher variability than others for biological or technical reasons and reducing the variation could result in false positives. The strength
+of the shrinkage is dependent on the distance from the curve and sample size. Larger numbers of replicates can estimate the mean and variation more accurately, 
+so yield less shrinkage.
+
+Worrisome plots would include a cloud of data that doesn’t follow the curve or dispersions that don’t decrease with increasing mean. These problems can often be explained 
+by sample outliers or contamination.
+
 
 ``` r
 #plot dispersion estimates
 plotDispEsts(dds_smoc2)
 ```
 
-![](pre-post_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
+![](images/normalized.png)
 
 ### extracting the results of DE analysis
 
