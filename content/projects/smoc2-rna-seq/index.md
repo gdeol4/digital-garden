@@ -1,37 +1,68 @@
-# Introduction
+---
+title: "RNA-Seq analysis of SMOC2 using DESeq2"
+date: 2022-05-12
+draft: false
+project_tags: ["Bioinformatics", "RNA-Seq", "R"]
+status: "seeding"
+weight: 3
+summary: "Complete RNA-Seq analysis workflow of SMOC2 gene over expression using DESeq2 and Tidyverse"
+---
 
-### What is smoc2?
-
-### A look at the dataset
-
-Introduction to dataset: Smoc2 Smoc2, or Secreted modular
-calcium-binding protein 2, has been shown to have increased expression
-in kidney fibrosis, which is characterized by an excess of extracellular
-matrix in the space between tubules and capillaries within the kidney.
-However, it is unknown how Smoc2 functions in the induction and
-progression of fibrosis.
-
-Introduction to dataset: Experimental design There are four sample
-groups being tested: normal, control mice, referred to as wild type
-mice, with and without fibrosis and Smoc2 over-expressing mice with and
-without fibrosis. There are three biological replicates for all normal
-samples and four replicates for all fibrosis samples. Initially, we will
+notes:
+Initially, we will
 explore the effect of fibrosis on gene expression using ‘Wild type’
 samples during lectures and ‘Smoc2 over-expression’ data during
 exercises.
 
-### Tools used
+In this example, sample A has nearly
+    twice the reads, represented as small rectangles, aligning to each
+    of the genes as sample B only because sample A has nearly twice the
+    number of reads sequenced. 
 
-Differential expression analysis: tools While there are a large number
-of statistical packages developed for DE analysis, DESeq2 and EdgeR are
-two of the most popular tools. Both tools use the negative binomial
-model to model the raw count data, employ similar methods, and
-typically, yield similar results. Both are pretty stringent and have a
-good balance between sensitivity and specificity. Limma-Voom is another
-set of tools often used together for DE analysis, while also a good
-method, it can be a bit less sensitive for smaller sample sizes. We will
-be using DESeq2 for the DE analysis, which has an extensive vignette
-available to help with questions.
+    In this image, we can see
+    that the green DE gene takes up a large proportion of reads for
+    Sample A. If we just divided our counts by the total number of
+    reads, normalization for the majority of genes would be skewed by
+    the highly expressed DE gene. For this reason, when performing a DE
+    analysis, we need to use a method that is resistant to these outlier
+    genes.
+
+# Introduction
+
+### What is smoc2?
+
+Secreted modular calcium-binding protein 2 (Smoc2) is an acidic extracellular matrix glycoprotein 
+and plays an important role in bone mineralization, cell-matrix interactions, collagen binding, and 
+bone remodeling[1]. SMOCs also influence cell growth factor signaling, cell migration and proliferation, 
+angiogenesis. SMOC2 has been shown to have increased expression in kidney fibrosis, or renal fibrosis, 
+which is characterized as an aberrant repair response to chronic tissue injury. This results in an excess 
+of extracellular matrix in the space between tubules and capillaries within the kidney. However, it is 
+unknown how Smoc2 functions in the induction and progression of fibrosis[2].
+
+1. Bornstein P, Sage EH. Matricellular proteins: extracellular modulators of cell function. Curr Opin Cell Biol 2002; 14:608–616. doi: 10.1016/S0955-0674(02)00361-7
+2. Vannahme C, Gosling S, Paulsson M, Maurer P, Hartmann U. Characterization of SMOC-2, a modular extracellular calcium-binding protein. Biochem J 2003; 373:805–814. doi: 10.1042/bj20030532.
+
+### A look at the dataset
+
+This dataset cpmes from the research paper: 
+
+**_Silencing SMOC2 ameliorates kidney fibrosis by inhibiting fibroblast to myofibroblast transformation._** 
+
+
+The experimental design:
+
+* There are four sample groups being tested:
+
+
+    1. Normal control mice (wild type) with and without fibrosis 
+
+
+    2. Smoc2 over-expressing mice with and without fibrosis. 
+
+
+* There are three biological replicates for all normal samples and four replicates for all fibrosis samples. 
+
+### Tools used
 
 ``` r
 #Load library for DESeq2
@@ -49,20 +80,53 @@ library(tidyverse)
 
 ### Overview of workflow
 
-Differential expression analysis: DESeq2 workflow We will be using the
-DESeq2 tool to perform the differential expression analysis, but what
-are the steps we will need to perform? Displayed in the workflow are the
-steps in the differential expression analysis, separated into quality
-control and DE analysis steps. To start, we will take the count matrix
-containing the raw counts for each sample and perform quality control
-steps. First, the counts will be normalized to account for differences
-in library depth. Then, principal component analysis and hierarchical
-clustering using heatmaps will be performed to identify potential sample
-outliers and major sources of variation in the data. After QC, the DE
-analysis will be performed, including the modeling of counts, shrinking
-the log2 fold changes, and testing for differential expression. We will
-cover each of these steps in more detail as we progress through the
-workflow.
+Differential expression analysis:
+
+1. Read in count matrix and create metadata
+
+
+2. Quality control:
+
+Normalizing the raw counts to assess sample-level quality control is the first step in the workflow. The raw counts 
+represent the number of reads aligning to each gene and should be proportional to the expression of the RNA in
+the sample; however, there are factors other than RNA expression that can influence the number of reads aligning to each gene. 
+The count data can be adjusted to remove the influence of these factors on the overall counts using normalization methods. 
+The main factors often considered during normalization of count data are library depth, gene length, and RNA composition.
+
+Differences in library size between samples can lead to many more reads being aligned to genes in one sample versus another sample.
+Therefore, we need to adjust the counts assigned to each gene based on the size of the library prior to doing differential expression 
+analysis.
+
+Gene length normalization is another normalization factor often adjusted for. A longer gene generates a longer
+transcript, which generates more fragments for sequencing. Therefore, a longer gene will often have more counts than a shorter
+gene with the same level of expression. Since DE analysis compares expression levels of the same genes between conditions, we do 
+not need to normalize for gene length. However, if you were to compare the expression levels of different genes, you would need 
+to account for lengths of the genes.
+
+Library composition effect is the third factor that needs to be taken into account for by adjusting library size, the composition 
+of the library is also important. A few highly differentially expressed genes can skew many normalization methods that are not resistant 
+to these outliers. 
+
+
+* Normalize counts to account for differences in library depth.
+
+* Perform principal component analysis 
+
+* Perform hierarchical clustering using heatmaps
+
+* Identify potential sample outliers and major sources of variation in the data
+
+
+3. Differential expression analysis:
+
+    * Run differential expression analysis
+
+    * Modeling counts
+
+    * Shrinking log2 fold change
+
+
+    * Testing for differential expression
 
 # Importing read counts associated with genes
 
@@ -100,16 +164,9 @@ data <- subset (data[-c(1)])
 
 ### Putting together the metadata
 
-Preparation for differential expression analysis: metadata In addition
-to our raw counts, we require sample metadata. At the very least, we
-need to know which of our samples correspond to each condition. To
-generate our metadata, we create a vector for each column and combine
-the vectors into a data frame. The sample names are added as the row
+Sample metadata is required in addition to the raw count data, data such as which of the samples correspond to each condition. To
+create the metadata, a vector for each column is created and the vectors are combine into a data frame. The sample names are added as the row
 names.
-
-Preparation for differential expression analysis: metadata After we have
-the counts and metadata files, we can start the differential expression
-analysis workflow.
 
 ``` r
 #create genotype vector
@@ -123,84 +180,44 @@ condition = c('fibrosis','fibrosis','fibrosis','fibrosis','normal','normal','nor
 smoc2_metadata = data.frame(genotype, condition)
 
 #Assign the row names of the data frame
-rownames(smoc2_metadata) = c('smoc2_fibrosis1','smoc2_fibrosis2','smoc2_fibrosis3','smoc2_fibrosis4', 'smoc2_normal1','smoc2_normal3', 'smoc2_normal4' )
+rownames(smoc2_metadata) = c('smoc2_fibrosis1','smoc2_fibrosis2','smoc2_fibrosis3','smoc2_fibrosis4', 
+                            'smoc2_normal1','smoc2_normal3', 'smoc2_normal4' )
 ```
 
 # Normalization
 
+DESeq2 normalization uses a ‘median of ratios’ method of normalization. This method adjusts the raw counts for library size
+and is resistant to large numbers of differentially expressed genes.
+
 ### Preparing the data for DESeq2
 
-After we have our data loaded, we need to make sure it’s in a specific
-format so that it will be accepted as input to DESeq2.
+The data needs to be in a specific format to be accepted as an input to DESeq2. This requires the sample names in the 
+metadata and counts datasets to be in the same order. Therefore, the row names of our metadata need to be in the same 
+order as the column names of our counts data.
 
-Bringing in data for DESeq2: sample order DESeq2 requires the sample
-names in the metadata and counts datasets to be in the same order.
-Therefore, the row names of our metadata need to be in the same order as
-the column names of our counts data. As we can see in these images, the
-sample names for the counts are in a nice order while the names in the
-metadata are not.
+Currently the order is not the same, and this can be confirmed with the all() function to compare the row and coloumn order
+which will return FALSE.The match() function can be used to determine the order needed. The first argumnent to the function 
+is a vector of values in the order desired, and the second is a vector of values to be reordered.
 
-Bringing in data for DESeq2: sample order Alternatively, we can explore
-the row names and column names with the rownames() and colnames()
-functions.
-
-Bringing in data for DESeq2: sample order By looking at our sample names
-in both datasets, we can see that the order is not the same, but it’s
-not always clear, so using the all() function with the “double equal to”
-sign can check if all of the row names of the metadata are in the same
-order as the column names of the raw counts data. The all() function
-returns a FALSE value. Now we know that our samples are not in the same
-order, so we need to reorder the data to use it with DESeq2.
-
-Matching order between vectors To easily reorder the rows of the
-metadata to match the order of columns in the counts data, we can use
-the match() function. The match() function takes two vectors as input.
-The first is a vector of values in the order we want, and the second is
-a vector of values we would like to reorder. In our example, the column
-names of the raw counts data is the vector with the order we want, so it
-will be in the first position of the match() function. The row names of
-the metadata is the vector to be reordered, so it will be in the second
-position. The output shows how we would need to reorder the rows of the
-metadata to be in the same order as the columns in the count data. For
-instance the 6th row would need to come first, followed by the 9th row,
-then the 1st row, so on and so forth.
-
-Reordering with the match() function Now, we can use the output of the
-match() function to reorder the rows of the metadata to be in the same
-order as the columns in the count data. To do this we can save the
-indices output by match() to a variable, in this case called idx. Then,
-we can rearrange the metadata by using the square brackets and adding
-idx to the rows position. The samples should now be in the same order
-for both datasets.
-
-Checking the order To check the order we can use the all() function
-again. Since they match, we can now use these datasets to create the
-DESeq2 object needed to start the DESeq2 workflow.
-
-8.  Creating the DESeq2 object To create the DESeq2 object, use the
-    DESeqDataSetFromMatrix() function. This function takes as input the
-    raw counts, associated metadata, and a design formula detailing
-    which conditions in the metadata we want to use for differential
-    expression analysis. We will talk in more detail about the design
-    formula later. This function will create a DESeq2 object, of the
-    class Ranged Summarized Experiment. This is a list-like object with
-    slots available for the data it will generate throughout the
-    analysis. Currently, it only has a few of the slots filled with the
-    count data, metadata, and design information.
+Reordering can be done with the match() function by using the output of match() to reorder the rows of the metadata to be in
+the same order as the columns in the count data. To do this the indices output by match() need to be extracted to a variable. 
+Then, rearrange the metadata by using the square brackets and adding the index to the rows position. The samples should now be 
+in the same order for both datasets, which can be confirmed by running the all() function once again
 
 ``` r
 #check if the column orders are the same with the all function
 all(rownames(smoc2_metadata) ==  colnames(data))
-```
 
-    ## [1] FALSE
+[1] FALSE
+```
 
 ``` r
 #determine the matching order between the vectors using match()
 match(colnames(data), rownames(smoc2_metadata))
+
+[1] 1 4 5 6 3 7 2
 ```
 
-    ## [1] 1 4 5 6 3 7 2
 
 ``` r
 #use the match() function to reorder the column of the raw counts
@@ -211,29 +228,36 @@ reordered_smoc2_meta = smoc2_metadata[reorder_idx, ]
 
 #view the new table
 reordered_smoc2_meta
+
+                     genotype condition
+     smoc2_fibrosis1 smoc2_oe  fibrosis
+     smoc2_fibrosis4 smoc2_oe  fibrosis
+     smoc2_normal1   smoc2_oe    normal
+     smoc2_normal3   smoc2_oe    normal
+     smoc2_fibrosis3 smoc2_oe  fibrosis
+     smoc2_normal4   smoc2_oe    normal
+     smoc2_fibrosis2 smoc2_oe  fibrosis
 ```
 
-    ##                 genotype condition
-    ## smoc2_fibrosis1 smoc2_oe  fibrosis
-    ## smoc2_fibrosis4 smoc2_oe  fibrosis
-    ## smoc2_normal1   smoc2_oe    normal
-    ## smoc2_normal3   smoc2_oe    normal
-    ## smoc2_fibrosis3 smoc2_oe  fibrosis
-    ## smoc2_normal4   smoc2_oe    normal
-    ## smoc2_fibrosis2 smoc2_oe  fibrosis
+
 
 ``` r
 #check to see if the column and row names are in the same order
 all(rownames(reordered_smoc2_meta) ==  colnames(data))
+
+[1] TRUE
 ```
 
-    ## [1] TRUE
-
-Good work, we now have a DESeq2 object storing our raw counts and
-metadata that we can use to explore the data with DESeq2 functions and
-to use for performing the differential expression analysis.
-
 ### Creating the DESeq2 DataSet (DDS)
+
+Now a DESeq2 dataSet (DDS) needs to be created to store the raw counts and metadata to use for performing 
+the differential expression analysis. The DESeq2 object is created with the **DESeqDataSetFromMatrix()** function.
+This function takes as input the raw counts, associated metadata, and a design formula detailing which conditions 
+in the metadata to use for differential expression analysis.
+
+This function creates a DESeq2 object, of the class Ranged Summarized Experiment. This is a list-like object with slots 
+available for the data it will generate throughout the analysis. Currently, it only has a few of the slots filled with the
+count data, metadata, and design information.
 
 ``` r
 # Create a DESeq2 object
@@ -242,70 +266,12 @@ dds_smoc2 = DESeqDataSetFromMatrix(countData = data,
                                    design = ~ condition)
 ```
 
-    ## converting counts to integer mode
-
-    ## Warning in DESeqDataSet(se, design = design, ignoreRank): some variables in design formula are characters, converting to factors
-
 ### Estimating size factors
 
-Got It! 1. Count normalization Now that we have our DESeq2 object
-created with the raw counts and metadata stored inside, we can start the
-DESeq2 workflow.
-
-2.  DESeq workflow - normalization The first step in the workflow is to
-    normalize the raw counts to assess sample-level quality control
-    metrics.
-
-3.  Count normalization But what does it mean to normalize the raw
-    counts? The raw counts represent the number of reads aligning to
-    each gene and should be proportional to the expression of the RNA in
-    the sample; however, there are factors other than RNA expression
-    that can influence the number of reads aligning to each gene. We can
-    adjust the count data to remove the influence of these factors on
-    the overall counts using normalization methods. The main factors
-    often considered during normalization of count data are library
-    depth, gene length, and RNA composition.
-
-4.  Library depth normalization Differences in library size between
-    samples can lead to many more reads being aligned to genes in one
-    sample versus another sample. In this example, sample A has nearly
-    twice the reads, represented as small rectangles, aligning to each
-    of the genes as sample B only because sample A has nearly twice the
-    number of reads sequenced. Therefore, we need to adjust the counts
-    assigned to each gene based on the size of the library prior to
-    doing differential expression analysis.
-
-5.  Gene length normalization Another normalization factor often
-    adjusted for is gene length. A longer gene generates a longer
-    transcript, which generates more fragments for sequencing.
-    Therefore, a longer gene will often have more counts than a shorter
-    gene with the same level of expression. In this example, gene X is
-    twice as long as gene Y and, due to the difference in length, is
-    assigned twice as many reads. Since DE analysis compares expression
-    levels of the same genes between conditions, we do not need to
-    normalize for gene length. However, if you were to compare the
-    expression levels of different genes, you would need to account for
-    lengths of the genes.
-
-6.  Library composition effect When adjusting for library size, the
-    composition of the library is also important. A few highly
-    differentially expressed genes can skew many normalization methods
-    that are not resistant to these outliers. In this image, we can see
-    that the green DE gene takes up a large proportion of reads for
-    Sample A. If we just divided our counts by the total number of
-    reads, normalization for the majority of genes would be skewed by
-    the highly expressed DE gene. For this reason, when performing a DE
-    analysis, we need to use a method that is resistant to these outlier
-    genes.
-
-7.  Normalized counts: calculation To calculate the normalized counts
-    with DESeq2, we can use the function estimateSizeFactors() on the
-    DESeq2 object, dds_wt, and assign the output to a slot in the DESeq2
-    object, by re-assigning to dds_wt. DESeq2 will use these size
-    factors to normalize the raw counts. The raw counts for each sample
-    are divided by the associated sample-specific size factor for
-    normalization. To view the size factors used for normalization, we
-    can use the sizeFactors() function.
+The function estimateSizeFactors() can be used on the DESeq2 object to calculate the normalized counts and assign the output to a 
+slot in the DESeq2 object, by re-assigning to DDS. DESeq2 will use these size factors to normalize the raw counts. The raw counts for each 
+sample are divided by the associated sample-specific size factor for normalization. To view the size factors used for normalization, the 
+sizeFactors() function can be used.
 
 ``` r
 #estimating the size factors and feeding them back to the dds object by reassigning to the dds object
@@ -313,24 +279,16 @@ dds_smoc2 = estimateSizeFactors(dds_smoc2)
 
 #viewing the size factors
 sizeFactors(dds_smoc2)
-```
 
-    ## smoc2_fibrosis1 smoc2_fibrosis4   smoc2_normal1   smoc2_normal3 smoc2_fibrosis3   smoc2_normal4 smoc2_fibrosis2 
-    ##       1.4319832       1.0826799       0.7106482       0.7989734       1.2480024       0.8482426       1.1189642
+     smoc2_fibrosis1 smoc2_fibrosis4   smoc2_normal1   smoc2_normal3 smoc2_fibrosis3   smoc2_normal4 smoc2_fibrosis2 
+           1.4319832       1.0826799       0.7106482       0.7989734       1.2480024       0.8482426       1.1189642
+```
 
 ## Extracting normalized counts
 
-7.  DESeq2 normalization DESeq2 uses a ‘median of ratios’ method of
-    normalization. This method adjusts the raw counts for library size
-    and is resistant to large numbers of differentially expressed genes.
-
-8.  Normalized counts: extraction Once the size factors have been
-    calculated and added to the DESeq2 object, the normalized counts can
-    be extracted from it. We can extract the normalized counts from the
-    DESeq2 object using the counts() function while specifying that we
-    would like the normalized counts with the normalized = TRUE
-    argument. If the default was left as normalized = FALSE, then we
-    would extract the raw counts from the object.
+Once the size factors have been calculated and added to the DESeq2 object, the normalized counts can be extracted from it. To extract 
+the normalized counts from the DESeq2 object the ```counts()``` function can be used while specifying the normalized counts with the
+```normalized = TRUE``` argument. If the default was left as ```normalized = FALSE```, then the raw counts would be extracted from the oject.
 
 ``` r
 #once factors are calculated and reassigned then the normalized counts can be extracted using the counts function with normalized=TRUE argument
@@ -339,24 +297,19 @@ normalized_smoc2_counts = counts(dds_smoc2, normalized=TRUE)
 
 ``` r
 head(normalized_smoc2_counts)
+
+
+          smoc2_fibrosis1 smoc2_fibrosis4 smoc2_normal1 smoc2_normal3 smoc2_fibrosis3 smoc2_normal4 smoc2_fibrosis2
+     [1,]         0.00000         0.00000      0.000000      0.000000          0.0000      0.000000         0.00000
+     [2,]         0.00000         0.00000      0.000000      0.000000          0.0000      0.000000         0.00000
+     [3,]        50.27992        27.70902      0.000000      3.754818         28.8461      1.178908        45.57786
+     [4,]         0.00000         0.00000      0.000000      0.000000          0.0000      0.000000         0.00000
+     [5,]         0.00000         0.00000      1.407166      0.000000          0.0000      0.000000         0.00000
+     [6,]         0.00000         0.00000      0.000000      0.000000          0.0000      0.000000         0.00000
 ```
 
-    ##      smoc2_fibrosis1 smoc2_fibrosis4 smoc2_normal1 smoc2_normal3 smoc2_fibrosis3 smoc2_normal4 smoc2_fibrosis2
-    ## [1,]         0.00000         0.00000      0.000000      0.000000          0.0000      0.000000         0.00000
-    ## [2,]         0.00000         0.00000      0.000000      0.000000          0.0000      0.000000         0.00000
-    ## [3,]        50.27992        27.70902      0.000000      3.754818         28.8461      1.178908        45.57786
-    ## [4,]         0.00000         0.00000      0.000000      0.000000          0.0000      0.000000         0.00000
-    ## [5,]         0.00000         0.00000      1.407166      0.000000          0.0000      0.000000         0.00000
-    ## [6,]         0.00000         0.00000      0.000000      0.000000          0.0000      0.000000         0.00000
 
 ### Transform the normalized counts
-
-Congratulations, we now have our normalized counts, which we can use to
-accurately compare gene expression between samples. We will be using the
-normalized counts to explore similarities in gene expression between
-each of our samples, with the expection that our biological replicates
-are more similar to each other and the different conditions (wild type
-and fibrosis) are more different.
 
 # Unsupervised clustering analysis
 
