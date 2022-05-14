@@ -8,6 +8,8 @@ weight: 3
 summary: "Complete RNA-Seq analysis workflow of SMOC2 gene over expression using DESeq2 and Tidyverse"
 ---
 
+
+
 # Introduction
 
 
@@ -21,10 +23,6 @@ angiogenesis. SMOC2 has been shown to have increased expression in kidney fibros
 which is characterized as an aberrant repair response to chronic tissue injury. This results in an excess 
 of extracellular matrix in the space between tubules and capillaries within the kidney. However, it is 
 unknown how Smoc2 functions in the induction and progression of fibrosis[2].
-
-
-1. Bornstein P, Sage EH. Matricellular proteins: extracellular modulators of cell function. Curr Opin Cell Biol 2002; 14:608–616. doi: 10.1016/S0955-0674(02)00361-7
-2. Vannahme C, Gosling S, Paulsson M, Maurer P, Hartmann U. Characterization of SMOC-2, a modular extracellular calcium-binding protein. Biochem J 2003; 373:805–814. doi: 10.1042/bj20030532.
 
 
 ### A look at the dataset
@@ -100,29 +98,28 @@ Differential expression analysis:
 
 ``` r
 data <- read_csv("C:/Users/gurka/Downloads/fibrosis_smoc2_rawcounts/fibrosis_smoc2_rawcounts.csv")
+
+     New names:
+     Rows: 47729 Columns: 8
 ```
 
-    ## New names:
-    ## Rows: 47729 Columns: 8
-    ## ── Column specification
-    ## ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── Delimiter: "," chr
-    ## (1): ...1 dbl (7): smoc2_fibrosis1, smoc2_fibrosis4, smoc2_normal1, smoc2_normal3, smoc2_fibrosis3, smoc2_normal4, smoc2_fibrosis2
-    ## ℹ Use `spec()` to retrieve the full column specification for this data. ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-    ## • `` -> `...1`
+
 
 ``` r
 head(data)
+
+
+     # A tibble: 6 × 8
+       ...1               smoc2_fibrosis1 smoc2_fibrosis4 smoc2_normal1 smoc2_normal3 smoc2_fibrosis3 smoc2_normal4 smoc2_fibrosis2
+       <chr>                        <dbl>           <dbl>         <dbl>         <dbl>           <dbl>         <dbl>           <dbl>
+     1 ENSMUSG00000102693               0               0             0             0               0             0               0
+     2 ENSMUSG00000064842               0               0             0             0               0             0               0
+     3 ENSMUSG00000051951              72              30             0             3              36             1              51
+     4 ENSMUSG00000102851               0               0             0             0               0             0               0
+     5 ENSMUSG00000103377               0               0             1             0               0             0               0
+     6 ENSMUSG00000104017               0               0             0             0               0             0               0
 ```
 
-    ## # A tibble: 6 × 8
-    ##   ...1               smoc2_fibrosis1 smoc2_fibrosis4 smoc2_normal1 smoc2_normal3 smoc2_fibrosis3 smoc2_normal4 smoc2_fibrosis2
-    ##   <chr>                        <dbl>           <dbl>         <dbl>         <dbl>           <dbl>         <dbl>           <dbl>
-    ## 1 ENSMUSG00000102693               0               0             0             0               0             0               0
-    ## 2 ENSMUSG00000064842               0               0             0             0               0             0               0
-    ## 3 ENSMUSG00000051951              72              30             0             3              36             1              51
-    ## 4 ENSMUSG00000102851               0               0             0             0               0             0               0
-    ## 5 ENSMUSG00000103377               0               0             1             0               0             0               0
-    ## 6 ENSMUSG00000104017               0               0             0             0               0             0               0
 
 ``` r
 data <- subset (data[-c(1)])
@@ -533,57 +530,33 @@ by sample outliers or contamination.
 #plot dispersion estimates
 plotDispEsts(dds_smoc2)
 ```
+The dispersion estimates are used to model the raw counts; if the dispersions don’t follow the assumptions made by DESeq2, then the
+variation in the data could be poorly estimated and the DE results could be less accurate. The assumptions DESeq2 makes are that the dispersions should generally decrease with increasing mean and that they should more or less follow
+the fitted line.
 
-![](/normalized.png)
+![](/shrink.png)
+
 
 ### extracting the results of DE analysis
 
-DESeq2 model - exploring dispersions NOTE: It may take a bit longer to
-load this exercise.
+DESeq2 will perform the Wald test for pairwise comparisons to test for differences in expression between
+two sample groups for the condition of interest, in this case, condition. The sample groups for condition 
+are fibrosis and normal. The results of the testing can be extracted using the ```results()``` function and 
+specifying a significance level, or alpha value, using the ```alpha``` argument. You can choose the alpha 
+based on how stringent you want to be with your analysis. Lower alpha values indicate less probability of 
+identifying a gene as DE when it is actually not. We will use a standard alpha of 0-point-05. The top of 
+the output shows **"log2 foldchange condition normal versus fibrosis”**, indicating that fibrosis is the 
+base level of comparison. This means that all log2 fold changes represent the normal group relative to the 
+fibrosis group.
 
-After fitting the model in the previous exercise, let’s explore the fit
-of our smoc2 data to the negative binomial model by plotting the
-dispersion estimates using the plotDispEsts() function. Remember that
-the dispersion estimates are used to model the raw counts; if the
-dispersions don’t follow the assumptions made by DESeq2, then the
-variation in the data could be poorly estimated and the DE results could
-be less accurate.
+Contrasts specify the sample groups to compare and can be given directly to the ```results()``` function 
+using the ```contrast``` argument. Within the combine function, we need to specify the condition of interest, 
+level to compare, and base level. To specify the normal sample group as the base level for condition, we
+could create the contrast defining normal as the base level and fibrosis as the level to compare. Note that 
+the condition of interest and sample groups for the condition need to match the names in the metadata.
 
-The assumptions DESeq2 makes are that the dispersions should generally
-decrease with increasing mean and that they should more or less follow
-the fitted line. Nice work! This is always a good plot to check because
-it gives us an idea about the fit of our data to the model. Now, let’s
-observe the plot and answer questions about whether these dispersion
-estimates meet expectations for RNA-seq data.
+Now the results give log2 fold changes of the fibrosis group relative to normal.
 
-Got It! 1. DESeq2 model - contrasts Now that we have explored the fit of
-our data to the model, we can extract the DE testing results.
-
-2.  DESEq2 workflow We can also make more accurate estimates of the
-    foldchanges, which represent the expression of one samplegroup
-    relative to another.
-
-3.  DESeq2 workflow When we ran the DESeq() function, the size factors
-    were calculated to generate the normalized counts, the shrunken
-    dispersions were estimated prior to model fitting, then,
-    differential expression testing was performed. However, before we
-    extract our results, let’s explore the model a bit more to
-    understand the results.
-
-4.  DESeq2 Negative Binomial Model We know that RNA-Seq data can be
-    represented well using the negative binomial model, as it accounts
-    for the additional variation in the data added by the small number
-    of biological replicates. The size factors, indicated by Sij,
-    normalized counts, indicated by Qij, and shrunken dispersions,
-    denoted by alpha-i, are used as input to the negative binomial model
-    to fit the raw count data.
-
-5.  DESeq2 Negative Binomial Model For each gene, the model uses the
-    log2 normalized counts, denoted on the left side of the equation to
-    determine the log2 foldchange estimates, indicated by the beta-ir,
-    for the samples of the condition of interest, represented by xjr,
-    for each gene. In addition, to determining the log2 foldchanges, the
-    associated standard error is also output.
 
 ``` r
 # The syntax for DESeq2 contrasts is
@@ -599,226 +572,103 @@ smoc2_results = results(dds_smoc2,
 
 ``` r
 head(smoc2_results)
+
+     log2 fold change (MLE): condition fibrosis vs normal 
+     Wald test p-value: condition fibrosis vs normal 
+     DataFrame with 6 rows and 6 columns
+        baseMean log2FoldChange     lfcSE      stat      pvalue        padj
+       <numeric>      <numeric> <numeric> <numeric>   <numeric>   <numeric>
+     1  0.000000             NA        NA        NA          NA          NA
+     2  0.000000             NA        NA        NA          NA          NA
+     3 22.478090        4.49814  0.829291  5.424085 5.82520e-08 2.54201e-07
+     4  0.000000             NA        NA        NA          NA          NA
+     5  0.201024       -1.59170  3.816946 -0.417009 6.76672e-01          NA
+     6  0.000000             NA        NA        NA          NA          NA
 ```
 
-    ## log2 fold change (MLE): condition fibrosis vs normal 
-    ## Wald test p-value: condition fibrosis vs normal 
-    ## DataFrame with 6 rows and 6 columns
-    ##    baseMean log2FoldChange     lfcSE      stat      pvalue        padj
-    ##   <numeric>      <numeric> <numeric> <numeric>   <numeric>   <numeric>
-    ## 1  0.000000             NA        NA        NA          NA          NA
-    ## 2  0.000000             NA        NA        NA          NA          NA
-    ## 3 22.478090        4.49814  0.829291  5.424085 5.82520e-08 2.54201e-07
-    ## 4  0.000000             NA        NA        NA          NA          NA
-    ## 5  0.201024       -1.59170  3.816946 -0.417009 6.76672e-01          NA
-    ## 6  0.000000             NA        NA        NA          NA          NA
+
 
 ### MA plot
+
+The MA plot shows the  mean of the normalized counts versus the log2 fold changes for all genes tested. 
+The DESeq2 function plotMA() can be used to create the plot and the genes that are significantly DE are colored red. 
+Note the large log2 foldchanges, particularly for genes with lower mean count values. 
+These fold changes are unlikely to be as accurate for genes that have little information associated with them, 
+such as genes with low numbers of counts or high dispersion values.
 
 ``` r
 plotMA(smoc2_results, ylim=c(-8,8))
 ```
 
-![](pre-post_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+![](normalized.png)
 
 ### LFC shrinkage
 
-6.  DESeq2 contrasts By default, DESeq2 will perform the Wald test for
-    pairwise comparisons to test for differences in expression between
-    two sample groups for the condition of interest, in this case,
-    condition. The sample groups for condition are fibrosis and normal.
-    The results of the testing can be extracted using the results()
-    function and specifying a significance level, or alpha value, using
-    the alpha argument. You can choose the alpha based on how stringent
-    you want to be with your analysis. Lower alpha values indicate less
-    probability of identifying a gene as DE when it is actually not. We
-    will use a standard alpha of 0-point-05. The top of the output shows
-    “log2 foldchange condition normal versus fibrosis”, indicating that
-    fibrosis is the base level of comparison. This means that all log2
-    fold changes represent the normal group relative to the fibrosis
-    group, which doesn’t seem the most intuitive. Instead of using the
-    default results we can perform any pairwise comparison between the
-    sample groups by supplying our own contrast.
 
-7.  DESeq2 contrasts Contrasts, which specify the sample groups to
-    compare, can be given directly to the results() function using the
-    contrast argument. Within the combine function, we need to specify
-    the condition of interest, level to compare, and base level. To
-    specify the normal sample group as the base level for condition, we
-    could create the contrast defining normal as the base level and
-    fibrosis as the level to compare. Note that the condition of
-    interest and sample groups for the condition need to match the names
-    in the metadata.
+To improve the estimated fold changes we can use log2 foldchange shrinkage. For genes with low amounts of information available, shrinkage uses information from all genes to generate more likely, lower, log2 fold change estimates, similar to what we did with dispersions. DESeq2 has the ```lfcShrink()``` function to generate the shrunken log2 foldchanges. We need to specify the DESeq2 object, the contrast, and our results object.
 
-8.  DESeq2 contrasts Now the results give log2 fold changes of the
-    fibrosis group relative to normal.
 
-9.  DESeq2 LFC shrinkage To explore our results a bit, the MA plot can
-    be helpful. The MA plot shows the mean of the normalized counts
-    versus the log2 fold changes for all genes tested. We can use the
-    DESeq2 function plotMA() to create the plot and the genes that are
-    significantly DE are colored red. Note the large log2 foldchanges,
-    particularly for genes with lower mean count values. These fold
-    changes are unlikely to be as accurate for genes that have little
-    information associated with them, such as genes with low numbers of
-    counts or high dispersion values.
-
-10. LFC shrinkage To improve the estimated fold changes we can use log2
-    foldchange shrinkage. For genes with low amounts of information
-    available, shrinkage uses information from all genes to generate
-    more likely, lower, log2 fold change estimates, similar to what we
-    did with dispersions. DESeq2 has the lfcShrink() function to
-    generate the shrunken log2 foldchanges. We need to specify the
-    DESeq2 object, the contrast, and our results object. We can then
-    create the MA plot again.
-
-11. LFC shrinkage Now we see more restricted log2 foldchange values,
-    especially for lowly expressed genes. These shrunken log2
-    foldchanges should be more accurate; however, shrinking the log2
-    foldchanges will not affect the number of differentially expressed
-    genes returned, only the log2 fold change values. Now that we have
-    accurate fold changes, we can extract the significant DE genes and
-    perform further visualizations of results.
+These shrunken log2 foldchanges should be more accurate; however, shrinking the log2 foldchanges will not affect the number of differentially expressed genes returned, only the log2 fold change values. Now that we have accurate fold changes, we can extract the significant DE genes and perform further visualizations of results.
 
 ``` r
 smoc2_results = lfcShrink(dds_smoc2,
                           contrast = c("condition", "fibrosis", "normal"),
                           type = 'ashr',
                           res = smoc2_results)
+
+                          
+     using 'ashr' for LFC shrinkage. If used in published research, please cite:
+         Stephens, M. (2016) False discovery rates: a new deal. Biostatistics, 18:2.
+         https://doi.org/10.1093/biostatistics/kxw041
 ```
 
-    ## using 'ashr' for LFC shrinkage. If used in published research, please cite:
-    ##     Stephens, M. (2016) False discovery rates: a new deal. Biostatistics, 18:2.
-    ##     https://doi.org/10.1093/biostatistics/kxw041
 
-Now that we have extracted our results, we can get a nice overview of
-the number of differentially expressed genes there are for our
-designated alpha level using the summary() function. It will output the
-numbers/percentages of up- and down-regulated genes, as well as, give
-information about independent filtering and outliers removed.
+
 
 ### Create a results dataframe
 
+Now that we have extracted our results, we can get a nice overview of the number of differentially expressed genes there are for our designated alpha level using the summary() function. It will output the numbers/percentages of up- and down-regulated genes, as well as, give information about independent filtering and outliers removed.
+
+
 ``` r
 summary(smoc2_results)
+
+     out of 29556 with nonzero total read count
+     adjusted p-value < 0.05
+     LFC > 0 (up)       : 5776, 20%
+     LFC < 0 (down)     : 5332, 18%
+     outliers [1]       : 15, 0.051%
+     low counts [2]     : 7207, 24%
+     (mean count < 1)
+     [1] see 'cooksCutoff' argument of ?results
+     [2] see 'independentFiltering' argument of ?results
 ```
+DESeq2’s ```summary()``` function provides the number of differentially expressed genes for the alpha level and information about the number of genes filtered. Our results give
+over 10,000 genes as DE, which is the sum of the DE genes with log2 fold changes less than 0 and those with fold changes greater than 0. This is a lot of genes to sift through. If we wanted to return the genes most likely to be biologically relevant, we could also include a log2 fold change threshold. Oftentimes, a log2 fold change threshold isn’t preferred. However, it can be helpful when dealing with such large numbers of DE genes.
 
-    ## 
-    ## out of 29556 with nonzero total read count
-    ## adjusted p-value < 0.05
-    ## LFC > 0 (up)       : 5776, 20%
-    ## LFC < 0 (down)     : 5332, 18%
-    ## outliers [1]       : 15, 0.051%
-    ## low counts [2]     : 7207, 24%
-    ## (mean count < 1)
-    ## [1] see 'cooksCutoff' argument of ?results
-    ## [2] see 'independentFiltering' argument of ?results
-
-Well done! Now we implemented a log2 fold change threshold of 1.25 fold
-(log2 0.32) when testing for significant genes. Now we can use these
-results to subset only the significant genes with p-adjusted values less
-than 0.05. Now that we have extracted our results, we can get a nice
-overview of the number of differentially expressed genes there are for
-our designated alpha level using the summary() function. It will output
-the numbers/percentages of up- and down-regulated genes, as well as,
-give information about independent filtering and outliers removed.
+To test for significant genes using both an alpha value threshold and a log2 foldchange threshold different from 0, we need to re-run the results function.
+Let’s use a small 1-point-25-foldchange threshold, which equals 0-point-32 on the log2 scale, by adding the lfcThreshold argument to our results() function. 
+While using any log2 fold change cut-off increases the risk of losing biologically relevant genes, by using a very small log2 foldchange threshold, we are 
+hoping to reduce the risk that the genes more biologically meaningful.
 
 ``` r
 smoc2_results = results(dds_smoc2, contrast = c("condition", "fibrosis", "normal"), lfcThreshold = 0.32, alpha = 0.05)
 ```
+
+Now we implemented a log2 fold change threshold of 1.25 fold (log2 0.32) when testing for significant genes. Now we can use these results to subset only the significant genes with p-adjusted values less than 0.05.
+
+Now that we have the results, we need to re-shrink the foldchanges, then run the summary() function again. Now, we have returned just over 6,000 DE genes.
 
 ``` r
 # Save results as a data frame
 smoc2_res_all <- data.frame(smoc2_results)
 ```
 
-Got It! 1. DESeq2 results In this lesson, we will explore our
-differential expression results.
+Now let’s look at the values in the results table and identify the differentially expressed genes. To determine significant DE genes, we will be using the p-values adjusted for multiple test correction in the last column. The reason for this is that for every gene tested with an alpha of 0-point-05, there is a 5% chance that the gene is called as DE when it is not, yielding false positives. If we were to test the roughly 47,000 genes in the raw counts file, we would have about 5% or over 2,000 genes as false positives. It would be difficult to identify the true positives, or genes that are called DE when they truly are, from the false. Therefore, multiple test correction is performed by DESeq2 using the
+Benjamini-Hochberg, or BH-method, to adjust p-values for multiple testing and control the proportion of false positives relative to true. Using the BH-method and an alpha value of 0-point-05, if we had 1,000 genes identified as DE, we would expect 5% of the DE genes to be false positives, or 50 genes. To reduce the number of genes tested, DESeq2 automatically filters out genes unlikely to be truly differentially expressed prior to testing, such as genes with zero counts across all samples, genes with low mean values across all samples, and genes with extreme count outliers. 
 
-2.  DESeq2 results table To get descriptions for the columns in the
-    results table, we can use the mcols() function. The first column is
-    the mean value across all samples, followed by the shrunken log2
-    foldchanges, standard error of the fold change estimates, the Wald
-    statistics output from the Wald test for differential expression,
-    the Wald test p-value, and the Benjamini-Hochberg adjusted p-value.
 
-3.  DESeq2 results table Now let’s look at the values in the results
-    table and identify the differentially expressed genes. To determine
-    significant DE genes, we will be using the p-values adjusted for
-    multiple test correction in the last column. The reason for this is
-    that for every gene tested with an alpha of 0-point-05, there is a
-    5% chance that the gene is called as DE when it is not, yielding
-    false positives. If we were to test the roughly 47,000 genes in the
-    raw counts file, we would have about 5% or over 2,000 genes as false
-    positives. It would be difficult to identify the true positives, or
-    genes that are called DE when they truly are, from the false.
-    Therefore, multiple test correction is performed by DESeq2 using the
-    Benjamini-Hochberg, or BH-method, to adjust p-values for multiple
-    testing and control the proportion of false positives relative to
-    true. Using the BH-method and an alpha value of 0-point-05, if we
-    had 1,000 genes identified as DE, we would expect 5% of the DE genes
-    to be false positives, or 50 genes. To reduce the number of genes
-    tested, DESeq2 automatically filters out genes unlikely to be truly
-    differentially expressed prior to testing, such as genes with zero
-    counts across all samples, genes with low mean values across all
-    samples, and genes with extreme count outliers. We can see the
-    filtered genes in the results tables represented by an NA in the
-    p-adjusted column.
-
-4.  Significant DE genes - summary DESeq2’s summary() function provides
-    the number of differentially expressed genes for our alpha level and
-    information about the number of genes filtered. Our results give
-    over 10,000 genes as DE, which is the sum of the DE genes with log2
-    fold changes less than 0 and those with fold changes greater than 0.
-    This is a lot of genes to sift through. If we wanted to return the
-    genes most likely to be biologically relevant, we could also include
-    a log2 fold change threshold. Oftentimes, a log2 fold change
-    threshold isn’t preferred. However, it can be helpful when dealing
-    with such large numbers of DE genes.
-
-5.  Significant DE genes - fold-change threshold To test for significant
-    genes using both an alpha value threshold and a log2 foldchange
-    threshold different from 0, we need to re-run the results function.
-    Let’s use a small 1-point-25-foldchange threshold, which equals
-    0-point-32 on the log2 scale, by adding the lfcThreshold argument to
-    our results() function. While using any log2 fold change cut-off
-    increases the risk of losing biologically relevant genes, by using a
-    very small log2 foldchange threshold, we are hoping to reduce the
-    risk that the genes more biologically meaningful.
-
-6.  Significant DE genes - summary Now that we have the results, we need
-    to re-shrink the foldchanges, then run the summary() function again.
-    Now, we have returned just over 6,000 DE genes.
-
-7.  Results - annotate To better understand which genes the results
-    pertain to, we can use the annotables package to quickly obtain gene
-    names for the Ensembl gene IDs using the table of gene annotations
-    for the Grch38 mouse genome build.
-
-8.  Results - extract To annotate the genes with gene names and
-    descriptions, we need to first turn our results table into a data
-    frame using the data-dot-frame() function. Then, after changing the
-    row names to a column, we can merge the gene names and descriptions
-    with our results using the left_join() function and merging by
-    Ensembl gene IDs. Now we have our entire results table.
-
-9.  Significant DE genes - arrange To extract the significant DE genes,
-    we’ll subset the results table, using the subset() function, for
-    genes with p-adjusted values less than the alpha value of
-    0-point-05. We should see all p-adjusted values are less than
-    0-point-05 and log2 foldchanges are greater than the absolute value
-    of 0-point-32. We will use the arrange() function to order the genes
-    by p-adjusted values to generate the final table of significant
-    results. We can explore this table for interesting or expected genes
-    with a high probability of being related to kidney fibrosis.
-
-10. Significant DE genes If we look up many of these top genes, we will
-    find known roles associated with fibrosis, which is an encouraging
-    and exciting result for us.
-
-To reduce the number of DE genes that we are returning and to reduce the
-likelihood of the DE genes being biologically meaningful, we are going
-to use a small log2 fold change threshold to determine the DE genes.
+To extract the significant DE genes, we’ll subset the results table, using the subset() function, for genes with p-adjusted values less than the alpha value of 0-point-05. We should see all p-adjusted values are less than 0-point-05 and log2 foldchanges are greater than the absolute value of 0-point-32. We will use the arrange() function to order the genes by p-adjusted values to generate the final table of significant results. We can explore this table for interesting or expected genes with a high probability of being related to kidney fibrosis.
 
 ``` r
 # Subset the results to only return the significant genes with p-adjusted values less than 0.05
@@ -827,39 +677,22 @@ smoc2_res_sig <- subset(smoc2_res_all, padj < 0.05)
 
 ``` r
 head(smoc2_res_sig)
+
+          baseMean log2FoldChange      lfcSE       stat       pvalue         padj
+     3    22.47809      4.4981432 0.82929064   5.038213 4.698974e-07 2.829520e-06
+     17   12.06950     -2.3959881 0.60066414  -3.456155 5.479409e-04 2.278479e-03
+     33 1380.35712     -0.8942696 0.09748260  -5.890996 3.838750e-09 2.815588e-08
+     35 2522.97515     -1.9163511 0.14944995 -10.681510 1.242343e-26 2.749899e-25
+     40   11.55182      2.3983021 0.70397545   2.952237 3.154811e-03 1.160401e-02
+     45 1921.19192     -0.9062709 0.08444206  -6.942877 3.841942e-12 3.594718e-11
 ```
 
-    ##      baseMean log2FoldChange      lfcSE       stat       pvalue         padj
-    ## 3    22.47809      4.4981432 0.82929064   5.038213 4.698974e-07 2.829520e-06
-    ## 17   12.06950     -2.3959881 0.60066414  -3.456155 5.479409e-04 2.278479e-03
-    ## 33 1380.35712     -0.8942696 0.09748260  -5.890996 3.838750e-09 2.815588e-08
-    ## 35 2522.97515     -1.9163511 0.14944995 -10.681510 1.242343e-26 2.749899e-25
-    ## 40   11.55182      2.3983021 0.70397545   2.952237 3.154811e-03 1.160401e-02
-    ## 45 1921.19192     -0.9062709 0.08444206  -6.942877 3.841942e-12 3.594718e-11
+### Visualizing results
 
-4.  Visualizing results - Volcano plot In addition to the MA plot
-    explored previously, another useful plot providing a global view of
-    the results is the volcano plot, which shows the fold changes
-    relative to the adjusted p-values for all genes. First, using all
-    results, wt_res_all, convert the row names to a column called
-    ensgene, then create a column of logical values indicating if the
-    gene is DE using the mutate() function, with p-adjusted value
-    threshold less than 0-point-05. Then, use ggplot2 to plot the log2
-    foldchange values versus the -log10 adjusted p-value. The points for
-    the genes should then be colored by whether they are significant
-    using the threshold column.
+In addition to the MA plot explored previously, another useful plot providing a global view of the results is the volcano plot, which shows the fold changes relative to the adjusted p-values for all genes. First, create a column of logical values indicating if the gene is DE using the mutate() function, with p-adjusted value threshold less than 0-point-05. Then, use ggplot2 to plot the log2 foldchange values versus the -log10 adjusted p-value. The points for the genes should then be colored by whether they are significant using the threshold column.
 
-5.  Visualizing results - Volcano plot We can zoom in on the volcano
-    plot to visualize better the significance cut-off using the ylim()
-    function within ggplot2.
 
-To explore the results, visualizations can be helpful to see a global
-view of the data, as well as, characteristics of the significant genes.
-Usually, we expect to see significant genes identified across the range
-of mean values, which we can plot using the MA plot. If we only see
-significant genes with high mean values, then it could indicate an issue
-with our data. The volcano plot helps us to get an idea of the range of
-fold changes needed to identify significance in our data.
+The volcano plot helps us to get an idea of the range of fold changes needed to identify significance in our data.
 
 ``` r
 # Generate logical column 
@@ -875,8 +708,12 @@ ggplot(smoc2_res_all) +
   theme(legend.position = "none", 
         plot.title = element_text(size = rel(1.5), hjust = 0.5), 
         axis.title = element_text(size = rel(1.25)))
+
+     Warning: Removed 25395 rows containing missing values (geom_point).
 ```
 
-    ## Warning: Removed 25395 rows containing missing values (geom_point).
+![](/volcano.png)
 
-![](pre-post_files/figure-gfm/unnamed-chunk-31-1.png)<!-- -->
+# References
+1. Bornstein P, Sage EH. Matricellular proteins: extracellular modulators of cell function. Curr Opin Cell Biol 2002; 14:608–616. doi: 10.1016/S0955-0674(02)00361-7
+2. Vannahme C, Gosling S, Paulsson M, Maurer P, Hartmann U. Characterization of SMOC-2, a modular extracellular calcium-binding protein. Biochem J 2003; 373:805–814. doi: 10.1042/bj20030532.
