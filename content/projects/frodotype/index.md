@@ -4,7 +4,7 @@ date: 2020-01-17
 draft: false
 project_tags: ["Web app", "Tensorflow", NLP]
 status: "evergreen"
-weight: 2
+weight: 1
 summary: "A GPT2 generator finetuned on fantasy novels. Built using Tensorflow, Chart.js, GCP and Docker"
 links:
     external_link:
