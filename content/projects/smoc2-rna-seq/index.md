@@ -8,25 +8,6 @@ weight: 3
 summary: "Complete RNA-Seq analysis workflow of SMOC2 gene over expression using DESeq2 and Tidyverse"
 ---
 
-notes:
-Initially, we will
-explore the effect of fibrosis on gene expression using ‘Wild type’
-samples during lectures and ‘Smoc2 over-expression’ data during
-exercises.
-
-In this example, sample A has nearly
-    twice the reads, represented as small rectangles, aligning to each
-    of the genes as sample B only because sample A has nearly twice the
-    number of reads sequenced. 
-
-    In this image, we can see
-    that the green DE gene takes up a large proportion of reads for
-    Sample A. If we just divided our counts by the total number of
-    reads, normalization for the majority of genes would be skewed by
-    the highly expressed DE gene. For this reason, when performing a DE
-    analysis, we need to use a method that is resistant to these outlier
-    genes.
-
 # Introduction
 
 ### What is smoc2?
