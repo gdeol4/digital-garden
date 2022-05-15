@@ -8,7 +8,9 @@ summary: "A growing list of useful single line snippets of code"
 status: "seeding"
 ---
 
+---
 # Windows command line
+---
 
 ![intro picture](/oneliner.png)
 
