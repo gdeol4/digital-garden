@@ -10,6 +10,8 @@ status: "seeding"
 
 # Windows command line
 
+![intro picture](/oneliner.png)
+
 #### Extract .tar.gz files
 
 ```python
