@@ -8,11 +8,11 @@ summary: "A growing list of useful single line snippets of code"
 status: "seeding"
 ---
 
+![intro picture](/oneliner.png)
+
 ---
 # Windows command line
 ---
-
-![intro picture](/oneliner.png)
 
 #### Extract .tar.gz files
 
