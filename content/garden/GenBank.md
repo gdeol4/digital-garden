@@ -18,8 +18,6 @@ email_address = "gurkamal.dev@gmail.com"
 
 The goal will be to find the chloroquine resistance transporter (CRT) gene in the parasite Plasmodium flaciparum in the nucleotide database.
 
-```python
-```
 #### Loading Libraries
 
 ```python
