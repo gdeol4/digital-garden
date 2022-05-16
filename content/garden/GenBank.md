@@ -97,7 +97,9 @@ The result of ```SeqIO.parse``` is an iterator and is converted to a list. The a
 
 The disadvantage is that it will allocate memory for all records. This will not work for very large datasets
 
+```python
 recs = list(SeqIO.parse(handle_2, 'gb'))
+```
 
 #### Reading a record
 
