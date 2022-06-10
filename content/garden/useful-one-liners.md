@@ -1,7 +1,7 @@
 ---
 title: "Useful one-liners"
 date: 2022-05-15
-lastmod: 2022-05-15
+lastmod: 2022-06-09
 draft: false
 garden_tags: ["cli", "general"]
 summary: "A growing list of useful single line snippets of code"
