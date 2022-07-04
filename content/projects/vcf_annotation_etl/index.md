@@ -16,9 +16,31 @@ This project was a take home technical assessment from an AI based Biotech compa
 
 ### Sources of data
 
-Human genome assembly GRCh38 (hg38) was used as the reference genome. A VCF file from dbSNP and a GFF3 file for annotation was obtained from the Human Genome Resources at NCBI[(https://www.ncbi.nlm.nih.gov/genome/guide/human/)]
+Human genome assembly GRCh38 (hg38) was used as the reference genome. A VCF file from dbSNP and a GFF3 file for annotation was obtained from the Human Genome Resources at NCBI[(https://www.ncbi.nlm.nih.gov/genome/guide/human/)].
 
-![plot pca](/deseq2pca.png)
+### Tools used
+
+The pipeline is built using Pandas, Pysam's tabix interface, and SQLite3. Tabix is used to index and access the VCF file as it's ~26gb compressed and extracting the file would be resource consuming.
+
+I decided to use Streamlit to build a web app for this pipeline so that it can be shared and modifed to print logs, stream data from AWS S3, or build it out into a multipage app.
+
+Code refactoring was done using Sourcery and Autopep8 was used to ensure PEP8 formatting
+
+### Project structure
+
+The pipeline is built using three modules that are  named: extract, transform, load
+##### Extract:
+The extraction phase calls the extract functions to parse the data of the VCF and GFF3 files into pandas dataframes.
+
+##### Transform:
+
+The transformation phase formats the VCF and then takes the gff dataframe as input into the pandas pipe, which is a group of functions that take the output of the preceding function as their input. The annotation step merges the two processed dataframes on the Gene column
+
+##### Load:
+The load phase simply creates an SQLite3 database and the pandas 'to_sql' function handles the upload to the SQL table. Lastly, a list of genes is parameterized and sent as a uniprot query to return protein sequences.
+
+
+![etl](/etl.png)
 
 # References
 1. Bornstein P, Sage EH. Matricellular proteins: extracellular modulators of cell function. Curr Opin Cell Biol 2002; 14:608–616. doi: 10.1016/S0955-0674(02)00361-7
